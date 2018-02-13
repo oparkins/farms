@@ -1,0 +1,2 @@
+class FiledataController < ApplicationController
+end

@@ -1,0 +1,2 @@
+class OsesController < ApplicationController
+end

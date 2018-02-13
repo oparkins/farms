@@ -1,0 +1,2 @@
+class FileDatum < ApplicationRecord
+end
