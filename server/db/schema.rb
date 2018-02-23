@@ -78,9 +78,13 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "projectLead"
     t.string "email"
     t.integer "division_id"
+    t.integer "lib_id"
+    t.integer "version_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_projects_on_division_id"
+    t.index ["lib_id"], name: "index_projects_on_lib_id"
+    t.index ["version_id"], name: "index_projects_on_version_id"
   end
 
   create_table "version_types", force: :cascade do |t|
@@ -100,9 +104,11 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.datetime "buildDate"
     t.integer "versiontypes_id"
     t.integer "oses_id"
+    t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["oses_id"], name: "index_versions_on_oses_id"
+    t.index ["project_id"], name: "index_versions_on_project_id"
     t.index ["versiontypes_id"], name: "index_versions_on_versiontypes_id"
   end
 
