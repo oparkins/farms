@@ -40,8 +40,10 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "name"
     t.binary "data"
     t.string "dataHash"
+    t.integer "os_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["os_id"], name: "index_file_data_on_os_id"
   end
 
   create_table "libs", force: :cascade do |t|
