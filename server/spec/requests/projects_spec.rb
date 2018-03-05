@@ -1,14 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'Projects API', type: :request do
-  # initialize test data 
-  let!(:projects) { create_list(:project, 10) }
-  let(:projects_id) { projects.first.id }
+  # initialize test data
+  let!(:company) { create(:company) }
+  let!(:division) { create(:division, company_id: company.id) }
+
+  let!(:projects) { create_list(:project, 10, division_id: division.id) }
+  let(:project_id) { projects.first.id }
 
   # Test suite for GET /todos
   describe 'GET /projects' do
     # make HTTP get request before each example
-    before { get '/projects' }
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects" }
 
     it 'returns projects' do
       # Note `json` is a custom helper to parse JSON responses
@@ -23,7 +26,7 @@ RSpec.describe 'Projects API', type: :request do
 
   # Test suite for GET /todos/:id
   describe 'GET /projects/:id' do
-    before { get "/projects/#{project_id}" }
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     context 'when the record exists' do
       it 'returns the project' do
@@ -44,7 +47,7 @@ RSpec.describe 'Projects API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Company/)
+        expect(response.body).to match(/\"message\":\"Couldn't find Project with 'id'=100\"/)
       end
     end
   end
@@ -52,10 +55,10 @@ RSpec.describe 'Projects API', type: :request do
   # Test suite for POST /todos
   describe 'POST /projects' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
     context 'when the request is valid' do
-      before { post '/projects', params: valid_attributes }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects", params: valid_attributes }
 
       it 'creates a projects' do
         expect(json['name']).to eq('Learn Elm')
@@ -67,7 +70,7 @@ RSpec.describe 'Projects API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/projects', params: { name: 'Foobar' } }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,17 +78,17 @@ RSpec.describe 'Projects API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Addressline1 can't be blank, Addressline2 can't be blank, Addresscity can't be blank, Addressstate can't be blank, Addresszip can't be blank, Logo can't be blank, Phone can't be blank, Email can't be blank/)
+          .to match(/\"message\":\"Validation failed: Projectlead can't be blank, Email can't be blank\"/)
       end
     end
   end
 
   # Test suite for PUT /todos/:id
   describe 'PUT /projects/:id' do
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
     context 'when the record exists' do
-      before { put "/projects/#{project_id}", params: valid_attributes }
+      before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -99,7 +102,7 @@ RSpec.describe 'Projects API', type: :request do
 
   # Test suite for DELETE /todos/:id
   describe 'DELETE /projects/:id' do
-    before { delete "/projects/#{project_id}" }
+    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -2,13 +2,14 @@ require 'rails_helper'
 
 RSpec.describe 'Divisions API', type: :request do
   # initialize test data 
-  let!(:divisions) { create_list(:division, 10) }
+  let!(:company) { create(:company) }
+  let!(:divisions) { create_list(:division, 10, company_id: company.id) }
   let(:division_id) { divisions.first.id }
 
   # Test suite for GET /todos
-  describe 'GET /divisions' do
+  describe 'GET /company/:id/divisions' do
     # make HTTP get request before each example
-    before { get '/divisions' }
+    before { get "/companies/#{company.id}/divisions" }
 
     it 'returns divisions' do
       # Note `json` is a custom helper to parse JSON responses
@@ -22,8 +23,8 @@ RSpec.describe 'Divisions API', type: :request do
   end
 
   # Test suite for GET /todos/:id
-  describe 'GET /divisions/:id' do
-    before { get "/divisions/#{division_id}" }
+  describe 'GET /companies/:id/divisions/:id' do
+	  before { get "/companies/#{company.id}/divisions/#{division_id}" }
 
     context 'when the record exists' do
       it 'returns the division' do
@@ -50,12 +51,12 @@ RSpec.describe 'Divisions API', type: :request do
   end
 
   # Test suite for POST /todos
-  describe 'POST /divisions' do
+  describe 'POST /companies/:id/divisions' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Learn Elm',director: "myself", divisionLink: "some url" } }
 
     context 'when the request is valid' do
-      before { post '/divisions', params: valid_attributes }
+      before { post "/companies/#{company.id}/divisions", params: valid_attributes }
 
       it 'creates a divisions' do
         expect(json['name']).to eq('Learn Elm')
@@ -67,7 +68,7 @@ RSpec.describe 'Divisions API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/divisions', params: { name: 'Foobar' } }
+      before { post "/companies/#{company.id}/divisions", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,17 +76,17 @@ RSpec.describe 'Divisions API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Addressline1 can't be blank, Addressline2 can't be blank, Addresscity can't be blank, Addressstate can't be blank, Addresszip can't be blank, Logo can't be blank, Phone can't be blank, Email can't be blank/)
+          .to match(/"message\":\"Validation failed: Director can't be blank, Divisionlink can't be blank\"/)
       end
     end
   end
 
   # Test suite for PUT /todos/:id
   describe 'PUT /divisions/:id' do
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Eh', director: 'hello', divisionLink: 'url some' } } 
 
     context 'when the record exists' do
-      before { put "/divisions/#{division_id}", params: valid_attributes }
+	    before { put "/companies/#{company.id}/divisions/#{division_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -98,8 +99,8 @@ RSpec.describe 'Divisions API', type: :request do
   end
 
   # Test suite for DELETE /todos/:id
-  describe 'DELETE /divisions/:id' do
-    before { delete "/divisions/#{division_id}" }
+  describe 'DELETE /companies/:id/divisions/:id' do
+    before { delete "/companies/#{company.id}/divisions/#{division_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
