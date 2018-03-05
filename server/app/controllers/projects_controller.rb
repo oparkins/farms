@@ -1,15 +1,17 @@
 class ProjectsController < ApplicationController
+    before_action :set_company
+    before_action :set_division
     before_action :set_project, only: [:show, :update, :destroy]
 
     # GET /projects
     def index
-        @projects = Project.all
+        @projects = @division.projects
         json_response(@projects)
     end
 
     # POST /projects
     def create
-        @project = Project.create!(projects_params)
+	@project = @division.projects.create!(projects_params)
         json_response(@project, :created)
     end
 
@@ -31,6 +33,14 @@ class ProjectsController < ApplicationController
     end
 
     private
+
+    def set_company
+	@company = Company.find(params[:company_id])
+    end
+
+    def set_division
+        @division = @company.divisions.find_by!(id: params[:division_id]) if @company
+    end
 
     def projects_params
         # whitelist params

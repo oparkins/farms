@@ -1,15 +1,16 @@
 class DivisionsController < ApplicationController
+    before_action :set_company
     before_action :set_division, only: [:show, :update, :destroy]
+
 
     # GET /divisions
     def index
-        @divisions = division.all
-        json_response(@divisions)
+	json_response(@company.divisions)
     end
 
     # POST /divisions
     def create
-        @division = division.create!(divisions_params)
+	@division = @company.divisions.create!(divisions_params)
         json_response(@division, :created)
     end
 
@@ -32,12 +33,16 @@ class DivisionsController < ApplicationController
 
     private
 
+   def set_company
+	@company = Company.find(params[:company_id])
+   end
+
     def divisions_params
         # whitelist params
         params.permit(:name, :director, :divisionLink)
     end
 
     def set_division
-        @division = division.find(params[:id])
+        @division = @company.divisions.find_by!(id: params[:id]) if @company
     end
 end

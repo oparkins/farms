@@ -71,10 +71,8 @@ ActiveRecord::Schema.define(version: 20180210060808) do
 
   create_table "os_types", force: :cascade do |t|
     t.string "name"
-    t.integer "project_id_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_id_id"], name: "index_os_types_on_project_id_id"
   end
 
   create_table "projects", force: :cascade do |t|
