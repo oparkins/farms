@@ -1,5 +1,5 @@
 class Lib < ApplicationRecord
   belongs_to :os
-  has_many :dependencies, dependent: :destroy
+  has_one :project, dependent: :destroy
   validates_presence_of :name, :verify, :link
 end

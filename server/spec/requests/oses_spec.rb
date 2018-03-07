@@ -3,11 +3,14 @@ require 'rails_helper'
 RSpec.describe 'os API', type: :request do
   # initialize test data
   let!(:company) { create(:company) }
+  let!(:division) { create(:division) }
+  let!(:project) { create(:project) }
+  let!(:version) { create(:version) }
   let!(:os) { create_list(:division, 10, company_id: company.id) }
   let(:division_id) { os.first.id }
 
   # Test suite for GET /todos
-  describe 'GET /company/:id/os' do
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/oses/' do
     # make HTTP get request before each example
     before { get "/companies/#{company.id}/os" }
 

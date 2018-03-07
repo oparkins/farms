@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Libs API', type: :request do
   # initialize test data 
+  let!(:company) { create(:company) }
+  let!(:division) { create(:division, company_id: company.id) }
+  let!(:project) { create(:project, division_id: division.id) }
+
   let!(:libs) { create_list(:lib, 10) }
   let(:lib_id) { libs.first.id }
 
