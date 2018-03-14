@@ -5,14 +5,15 @@ RSpec.describe 'Libs API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-
-  let!(:libs) { create_list(:lib, 10) }
+  let!(:version) { create(:version, project_id: project.id) }
+  let!(:operating_system) { create(:operating_system, version_id: version.id) }
+  let!(:libs) { create_list(:lib, 10, operating_system_id: operating_system.id) }
   let(:lib_id) { libs.first.id }
 
-  # Test suite for GET /todos
-  describe 'GET /libs' do
+  # Test suite for GET
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
     # make HTTP get request before each example
-    before { get '/libs' }
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs" }
 
     it 'returns libs' do
       # Note `json` is a custom helper to parse JSON responses
@@ -25,9 +26,9 @@ RSpec.describe 'Libs API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
-  describe 'GET /libs/:id' do
-    before { get "/libs/#{lib_id}" }
+  # Test suite for GET
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
 
     context 'when the record exists' do
       it 'returns the lib' do
@@ -48,18 +49,18 @@ RSpec.describe 'Libs API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find lib/)
+        expect(response.body).to match("{\"message\":\"Couldn't find Lib with [WHERE \\\"libs\\\".\\\"operating_system_id\\\" = ? AND \\\"libs\\\".\\\"id\\\" = ?]\"}")
       end
     end
   end
 
-  # Test suite for POST /todos
-  describe 'POST /libs' do
+  # Test suite for POST
+  describe 'POST /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Learn Elm', verify: 'Street 1', link: 'line 2' } }
 
     context 'when the request is valid' do
-      before { post '/libs', params: valid_attributes }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs", params: valid_attributes }
 
       it 'creates a libs' do
         expect(json['name']).to eq('Learn Elm')
@@ -71,7 +72,7 @@ RSpec.describe 'Libs API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/libs', params: { name: 'Foobar' } }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -79,17 +80,17 @@ RSpec.describe 'Libs API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Addressline1 can't be blank, Addressline2 can't be blank, Addresscity can't be blank, Addressstate can't be blank, Addresszip can't be blank, Logo can't be blank, Phone can't be blank, Email can't be blank/)
+          .to match("{\"message\":\"Validation failed: Verify can't be blank, Link can't be blank\"}")
       end
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /libs/:id' do
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+  # Test suite for PUT
+  describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+    let(:valid_attributes) { { name: 'Learn Elm', verify: 'Street 1', link: 'line 2' } }
 
     context 'when the record exists' do
-      before { put "/libs/#{lib_id}", params: valid_attributes }
+      before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -101,9 +102,9 @@ RSpec.describe 'Libs API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
-  describe 'DELETE /libs/:id' do
-    before { delete "/libs/#{lib_id}" }
+  # Test suite for DELETE
+  describe 'DELETE /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

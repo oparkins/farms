@@ -1,16 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe 'version_type API', type: :request do
+RSpec.describe 'Version Type API', type: :request do
   # initialize test data
   let!(:company) { create(:company) }
-  let!(:os_type) { create_list(:division, 10, company_id: company.id) }
-  let(:division_id) { os_type.first.id }
-  let(:version) {create_list(:division, 10,company_id: company.id) }
-  
-  # Test suite for GET /todos
-  describe 'GET /company/:id/version_type' do
+  let!(:division) { create(:division, company_id: company.id) }
+  let!(:project) { create(:project, division_id: division.id) }
+  let!(:version) { create(:version, project_id: project.id) }
+  let!(:version_types) { create_list(:version_type, 10, project_id: project.id, version_id: version.id)}
+  let!(:version_type_id) { version_types.first.id }
+
+  # Test suite for GET
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/version_type' do
     # make HTTP get request before each example
-    before { get "/companies/#{company.id}/version_type" }
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types" }
 
     it 'returns version_type' do
       # Note `json` is a custom helper to parse JSON responses
@@ -23,14 +25,14 @@ RSpec.describe 'version_type API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
-  describe 'GET /companies/:id/version_type/:id' do
-	  before { get "/companies/#{company.id}/version_type/#{division_id}" }
+  # Test suite for GET 
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/version_type/:id' do
+	  before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types/#{version_type_id}" }
 
     context 'when the record exists' do
       it 'returns the division' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(division_id)
+        expect(json['id']).to eq(version_type_id)
       end
 
       it 'returns status code 200' do
@@ -39,25 +41,25 @@ RSpec.describe 'version_type API', type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:division_id) { 100 }
+      let(:version_type_id) { 100 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Division/)
+        expect(response.body).to match("{\"message\":\"Couldn't find VersionType with [WHERE \\\"version_types\\\".\\\"project_id\\\" = ? AND \\\"version_types\\\".\\\"id\\\" = ?]\"}")
       end
     end
   end
 
-  # Test suite for POST /todos
-  describe 'POST /companies/:id/version_type' do
+  # Test suite for POST
+  describe 'POST /companies/:id/divisions/:id/projects/:id/versions/:id/version_type' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm',director: "myself", divisionLink: "some url" } }
+    let(:valid_attributes) { { name: 'Learn Elm', version_id: version.id, project_id: project.id } }
 
     context 'when the request is valid' do
-      before { post "/companies/#{company.id}/version_type", params: valid_attributes }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types", params: valid_attributes }
 
       it 'creates a version_type' do
         expect(json['name']).to eq('Learn Elm')
@@ -69,7 +71,7 @@ RSpec.describe 'version_type API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/companies/#{company.id}/version_type", params: { name: 'Foobar' } }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types", params: { pineapple: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -77,17 +79,17 @@ RSpec.describe 'version_type API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/"message\":\"Validation failed: Director can't be blank, Divisionlink can't be blank\"/)
+          .to match("{\"message\":\"Validation failed: Version must exist, Name can't be blank\"}")
       end
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /version_type/:id' do
-    let(:valid_attributes) { { name: 'Eh', director: 'hello', divisionLink: 'url some' } }
+  # Test suite for PUT 
+  describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id/version_type/:id' do
+    let(:valid_attributes) { { name: 'Eh' } }
 
     context 'when the record exists' do
-	    before { put "/companies/#{company.id}/version_type/#{division_id}", params: valid_attributes }
+	    before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types/#{version_type_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -99,9 +101,9 @@ RSpec.describe 'version_type API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
-  describe 'DELETE /companies/:id/version_type/:id' do
-    before { delete "/companies/#{company.id}/version_type/#{division_id}" }
+  # Test suite for DELETE 
+  describe 'DELETE /companies/:id/divisions/:id/projects/:id/versions/:id/version_type/:id' do
+    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types/#{version_type_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -1,15 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe 'os_type API', type: :request do
+RSpec.describe 'OS Type API', type: :request do
   # initialize test data
   let!(:company) { create(:company) }
-  let!(:os_type) { create_list(:division, 10, company_id: company.id) }
-  let(:division_id) { os_type.first.id }
+  let!(:division) { create(:division, company_id: company.id) }
+  let!(:project) { create(:project, division_id: division.id) }
+  let!(:version) { create(:version, project_id: project.id) }
+  let!(:operating_system) { create(:operating_system,  version_id: version.id) }
 
-  # Test suite for GET /todos
-  describe 'GET /company/:id/os_type' do
+  let!(:os_types) { create_list(:os_type, 10, operating_system_id: operating_system.id) }
+  let(:os_type_id) { os_types.first.id }
+
+
+  # Test suite for GET
+  describe 'GET /os_types' do
     # make HTTP get request before each example
-    before { get "/companies/#{company.id}/os_type" }
+    before { get "/os_types" }
 
     it 'returns os_type' do
       # Note `json` is a custom helper to parse JSON responses
@@ -22,14 +28,14 @@ RSpec.describe 'os_type API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
-  describe 'GET /companies/:id/os_type/:id' do
-	  before { get "/companies/#{company.id}/os_type/#{division_id}" }
+  # Test suite for GET
+  describe 'GET /os_types/:id' do
+	  before { get "/os_types/#{os_type_id}" }
 
     context 'when the record exists' do
       it 'returns the division' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(division_id)
+        expect(json['id']).to eq(os_type_id)
       end
 
       it 'returns status code 200' do
@@ -38,25 +44,25 @@ RSpec.describe 'os_type API', type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:division_id) { 100 }
+      let(:os_type_id) { 100 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Division/)
+        expect(response.body).to match(/Couldn't find OsType/)
       end
     end
   end
 
-  # Test suite for POST /todos
-  describe 'POST /companies/:id/os_type' do
+  # Test suite for POST
+  describe 'POST /os_types' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm',director: "myself", divisionLink: "some url" } }
+    let(:valid_attributes) { { name: 'Learn Elm', operating_system_id: operating_system.id } }
 
     context 'when the request is valid' do
-      before { post "/companies/#{company.id}/os_type", params: valid_attributes }
+      before { post "/os_types", params: valid_attributes }
 
       it 'creates a os_type' do
         expect(json['name']).to eq('Learn Elm')
@@ -68,7 +74,7 @@ RSpec.describe 'os_type API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/companies/#{company.id}/os_type", params: { name: 'Foobar' } }
+      before { post "/os_types" , params: { notname: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -76,17 +82,17 @@ RSpec.describe 'os_type API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/"message\":\"Validation failed: Director can't be blank, Divisionlink can't be blank\"/)
+          .to match("{\"message\":\"Validation failed: Operating system must exist, Name can't be blank\"}")
       end
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /os_type/:id' do
-    let(:valid_attributes) { { name: 'Eh', director: 'hello', divisionLink: 'url some' } }
+  # Test suite for PUT
+  describe 'PUT /os_types/:id' do
+    let(:valid_attributes) { { name: 'Eh', operating_system_id: operating_system.id } }
 
     context 'when the record exists' do
-	    before { put "/companies/#{company.id}/os_type/#{division_id}", params: valid_attributes }
+	    before { put "/os_types/#{os_type_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -98,9 +104,9 @@ RSpec.describe 'os_type API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
-  describe 'DELETE /companies/:id/os_type/:id' do
-    before { delete "/companies/#{company.id}/os_type/#{division_id}" }
+  # Test suite for DELETE
+  describe 'DELETE /os_types/:id' do
+    before { delete "/os_types/#{os_type_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

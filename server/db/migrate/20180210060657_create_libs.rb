@@ -5,7 +5,7 @@ class CreateLibs < ActiveRecord::Migration[5.1]
       t.boolean :verify
       t.string :link
       t.references :project, foreign_key: true
-      t.references :os, foreign_key: true
+      t.references :operating_system, foreign_key: true
       t.timestamps
     end
   end

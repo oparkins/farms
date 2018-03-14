@@ -3,6 +3,7 @@ class Project < ApplicationRecord
   belongs_to :lib, optional: true
  
   has_many :versions, dependent: :destroy
+  has_many :version_types, dependent: :destroy
 
   validates_presence_of :name, :projectLead, :email
   

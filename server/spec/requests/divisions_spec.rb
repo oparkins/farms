@@ -6,7 +6,7 @@ RSpec.describe 'Divisions API', type: :request do
   let!(:divisions) { create_list(:division, 10, company_id: company.id) }
   let(:division_id) { divisions.first.id }
 
-  # Test suite for GET /todos
+  # Test suite for GET 
   describe 'GET /company/:id/divisions' do
     # make HTTP get request before each example
     before { get "/companies/#{company.id}/divisions" }
@@ -22,7 +22,7 @@ RSpec.describe 'Divisions API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
+  # Test suite for GET
   describe 'GET /companies/:id/divisions/:id' do
 	  before { get "/companies/#{company.id}/divisions/#{division_id}" }
 
@@ -50,7 +50,7 @@ RSpec.describe 'Divisions API', type: :request do
     end
   end
 
-  # Test suite for POST /todos
+  # Test suite for POST 
   describe 'POST /companies/:id/divisions' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm',director: "myself", divisionLink: "some url" } }
@@ -81,8 +81,8 @@ RSpec.describe 'Divisions API', type: :request do
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /divisions/:id' do
+  # Test suite for PUT 
+  describe 'PUT /companies/:id/divisions/:id' do
     let(:valid_attributes) { { name: 'Eh', director: 'hello', divisionLink: 'url some' } } 
 
     context 'when the record exists' do
@@ -98,7 +98,7 @@ RSpec.describe 'Divisions API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
+  # Test suite for DELETE
   describe 'DELETE /companies/:id/divisions/:id' do
     before { delete "/companies/#{company.id}/divisions/#{division_id}" }
 

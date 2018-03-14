@@ -8,8 +8,8 @@ RSpec.describe 'Projects API', type: :request do
   let!(:projects) { create_list(:project, 10, division_id: division.id) }
   let(:project_id) { projects.first.id }
 
-  # Test suite for GET /todos
-  describe 'GET /projects' do
+  # Test suite for GET
+  describe 'GET /companies/:id/divisions/:id/projects' do
     # make HTTP get request before each example
     before { get "/companies/#{company.id}/divisions/#{division.id}/projects" }
 
@@ -24,8 +24,8 @@ RSpec.describe 'Projects API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
-  describe 'GET /projects/:id' do
+  # Test suite for GET 
+  describe 'GET /companies/:id/divisions/:id/projects/:id' do
     before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     context 'when the record exists' do
@@ -47,13 +47,13 @@ RSpec.describe 'Projects API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/\"message\":\"Couldn't find Project with 'id'=100\"/)
+        expect(response.body).to match("{\"message\":\"Couldn't find Project with [WHERE \\\"projects\\\".\\\"division_id\\\" = ? AND \\\"projects\\\".\\\"id\\\" = ?]\"}")
       end
     end
   end
 
-  # Test suite for POST /todos
-  describe 'POST /projects' do
+  # Test suite for POST
+  describe 'POST /companies/:id/divisions/:id/projects' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
@@ -83,8 +83,8 @@ RSpec.describe 'Projects API', type: :request do
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /projects/:id' do
+  # Test suite for PUT
+  describe 'PUT /companies/:id/divisions/:id/projects/:id' do
     let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
     context 'when the record exists' do
@@ -100,8 +100,8 @@ RSpec.describe 'Projects API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
-  describe 'DELETE /projects/:id' do
+  # Test suite for DELETE 
+  describe 'DELETE /companies/:id/divisions/:id/projects/:id' do
     before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     it 'returns status code 204' do

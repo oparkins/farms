@@ -4,7 +4,7 @@ class CreateFileData < ActiveRecord::Migration[5.1]
       t.string :name
       t.binary :data
       t.string :dataHash
-      t.references :os, foreign_key: true
+      t.references :operating_system, foreign_key: true
 
       t.timestamps
     end

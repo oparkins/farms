@@ -1,48 +1,42 @@
 class OsTypesController < ApplicationController
-  before_action :set_company
-  before_action :set_division, only: [:show, :update, :destroy]
+  before_action :set_os_type, only: [:show, :update, :destroy]
 
 
   # GET /os_type
   def index
-json_response(@company.os_type)
+    json_response(OsType.all)
   end
 
   # POST /os_type
   def create
-@division = @company.os_type.create!(os_type_params)
-      json_response(@division, :created)
+    @os_type = OsType.create!(os_type_params)
+    json_response(@os_type, :created)
   end
 
   # GET /os_type/:id
   def show
-      json_response(@division)
+      json_response(@os_type)
   end
 
   # PUT /os_type/:id
   def update
-      @division.update(os_type_params)
+      @os_type.update(os_type_params)
       head :no_content
   end
 
   # DELETE /os_type/:id
   def destroy
-      @division.destroy
+      @os_type.destroy
       head :no_content
   end
 
   private
-
- def set_company
-@company = Company.find(params[:company_id])
- end
-
   def os_type_params
       # whitelist params
-      params.permit(:name, :director, :divisionLink)
+      params.permit(:name, :operating_system_id)
   end
 
-  def set_division
-      @division = @company.os_type.find_by!(id: params[:id]) if @company
+  def set_os_type
+      @os_type = OsType.find(params[:id])
   end
 end

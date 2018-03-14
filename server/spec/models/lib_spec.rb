@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Lib, type: :model do
-  it { should belong_to(:os) }
+  it { should belong_to(:operating_system) }
   
   it { should have_one(:project).dependent(:destroy) }
 

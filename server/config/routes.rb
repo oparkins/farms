@@ -4,14 +4,18 @@ Rails.application.routes.draw do
     resources :divisions do
       resources :projects do
         resources :versions do
-          resources :oses do
+          resources :operating_systems do
             resources :libs do
             end
             resources :filedata do
             end
           end
         end
+        resources :version_types do
+        end
       end
     end
+  end
+  resources :os_types do
   end
 end

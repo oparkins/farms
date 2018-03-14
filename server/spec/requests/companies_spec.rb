@@ -5,7 +5,7 @@ RSpec.describe 'Companies API', type: :request do
   let!(:companies) { create_list(:company, 10) }
   let(:company_id) { companies.first.id }
 
-  # Test suite for GET /todos
+  # Test suite for GET
   describe 'GET /companies' do
     # make HTTP get request before each example
     before { get '/companies' }
@@ -21,7 +21,7 @@ RSpec.describe 'Companies API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
+  # Test suite for GET
   describe 'GET /companies/:id' do
     before { get "/companies/#{company_id}" }
 
@@ -49,7 +49,7 @@ RSpec.describe 'Companies API', type: :request do
     end
   end
 
-  # Test suite for POST /todos
+  # Test suite for POST
   describe 'POST /companies' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
@@ -80,7 +80,7 @@ RSpec.describe 'Companies API', type: :request do
     end
   end
 
-  # Test suite for PUT /todos/:id
+  # Test suite for PUT
   describe 'PUT /companies/:id' do
     let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
 
@@ -97,7 +97,7 @@ RSpec.describe 'Companies API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
+  # Test suite for DELETE
   describe 'DELETE /companies/:id' do
     before { delete "/companies/#{company_id}" }
 

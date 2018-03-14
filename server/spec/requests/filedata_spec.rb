@@ -1,14 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe 'FileDatums API', type: :request do
-  # initialize test data 
-  let!(:fileDatums) { create_list(:file_datum, 10) }
+  # initialize test data
+  let!(:company) { create(:company) }
+  let!(:division) { create(:division, company_id: company.id) }
+  let!(:project) { create(:project, division_id: division.id) }
+  let!(:version) { create(:version, project_id: project.id) }
+  let!(:operating_system) { create(:operating_system, version_id: version.id) }
+  let!(:fileDatums) { create_list(:file_datum, 10, operating_system_id: operating_system.id) }
   let(:file_datum_id) { fileDatums.first.id }
 
-  # Test suite for GET /todos
-  describe 'GET /fileDatums' do
+  # Test suite for GET
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/filedata' do
     # make HTTP get request before each example
-    before { get '/fileDatums' }
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata" }
 
     it 'returns fileDatums' do
       # Note `json` is a custom helper to parse JSON responses
@@ -21,9 +26,9 @@ RSpec.describe 'FileDatums API', type: :request do
     end
   end
 
-  # Test suite for GET /todos/:id
-  describe 'GET /fileDatums/:id' do
-    before { get "/fileDatums/#{file_datum_id}" }
+  # Test suite for GET 
+  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/filedata/:id' do
+    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata/#{file_datum_id}" }
 
     context 'when the record exists' do
       it 'returns the file_datum' do
@@ -44,18 +49,18 @@ RSpec.describe 'FileDatums API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Company/)
+        expect(response.body).to match("{\"message\":\"Couldn't find FileDatum with [WHERE \\\"file_data\\\".\\\"operating_system_id\\\" = ? AND \\\"file_data\\\".\\\"id\\\" = ?]\"}")
       end
     end
   end
 
-  # Test suite for POST /todos
-  describe 'POST /fileDatums' do
+  # Test suite for POST
+  describe 'POST /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/filedata' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+    let(:valid_attributes) { { name: 'Learn Elm', data: 'Street 1', dataHash: 'line 2' } }
 
     context 'when the request is valid' do
-      before { post '/fileDatums', params: valid_attributes }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata", params: valid_attributes }
 
       it 'creates a fileDatums' do
         expect(json['name']).to eq('Learn Elm')
@@ -67,7 +72,7 @@ RSpec.describe 'FileDatums API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/fileDatums', params: { name: 'Foobar' } }
+      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,17 +80,17 @@ RSpec.describe 'FileDatums API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Addressline1 can't be blank, Addressline2 can't be blank, Addresscity can't be blank, Addressstate can't be blank, Addresszip can't be blank, Logo can't be blank, Phone can't be blank, Email can't be blank/)
+          .to match("{\"message\":\"Validation failed: Data can't be blank, Datahash can't be blank\"}")
       end
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /fileDatums/:id' do
-    let(:valid_attributes) { { name: 'Learn Elm', addressLine1: 'Street 1', addressLine2: 'line 2', addressCity: 'some city', addressState: 'some state', addressZip: 'some zip 00000', logo: 'some url/asd/', phone: '123-456-7890', email: 'bestteamever@FARMS.com' } }
+  # Test suite for PUT 
+  describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/filedata/:id' do
+    let(:valid_attributes) { { name: 'Learn Elm', data: 'Street 1', dataHash: 'line 2' } }
 
     context 'when the record exists' do
-      before { put "/fileDatums/#{file_datum_id}", params: valid_attributes }
+      before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata/#{file_datum_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -97,9 +102,9 @@ RSpec.describe 'FileDatums API', type: :request do
     end
   end
 
-  # Test suite for DELETE /todos/:id
-  describe 'DELETE /fileDatums/:id' do
-    before { delete "/fileDatums/#{file_datum_id}" }
+  # Test suite for DELETE 
+  describe 'DELETE /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/filedata/:id' do
+    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/filedata/#{file_datum_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

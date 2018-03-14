@@ -1,4 +1,6 @@
 class VersionType < ApplicationRecord
-  belongs_to :projects
-  belongs_to :versions
+  belongs_to :project
+  belongs_to :version
+
+  validates_presence_of :name
 end

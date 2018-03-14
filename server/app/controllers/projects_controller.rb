@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
     private
 
     def set_company
-	@company = Company.find(params[:company_id])
+	    @company = Company.find(params[:company_id])
     end
 
     def set_division
@@ -48,7 +48,7 @@ class ProjectsController < ApplicationController
     end
 
     def set_project
-        @project = Project.find(params[:id])
+        @project = @division.projects.find_by!(id: params[:id]) if @division
     end
 end
 

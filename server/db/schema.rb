@@ -40,10 +40,10 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "name"
     t.binary "data"
     t.string "dataHash"
-    t.integer "os_id"
+    t.integer "operating_system_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["os_id"], name: "index_file_data_on_os_id"
+    t.index ["operating_system_id"], name: "index_file_data_on_operating_system_id"
   end
 
   create_table "libs", force: :cascade do |t|
@@ -51,30 +51,26 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.boolean "verify"
     t.string "link"
     t.integer "project_id"
-    t.integer "os_id"
+    t.integer "operating_system_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["os_id"], name: "index_libs_on_os_id"
+    t.index ["operating_system_id"], name: "index_libs_on_operating_system_id"
     t.index ["project_id"], name: "index_libs_on_project_id"
   end
 
-  create_table "os", force: :cascade do |t|
-    t.integer "binaries_id"
-    t.integer "supportingDocs_id"
+  create_table "operating_systems", force: :cascade do |t|
     t.integer "version_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["binaries_id"], name: "index_os_on_binaries_id"
-    t.index ["supportingDocs_id"], name: "index_os_on_supportingDocs_id"
-    t.index ["version_id"], name: "index_os_on_version_id"
+    t.index ["version_id"], name: "index_operating_systems_on_version_id"
   end
 
   create_table "os_types", force: :cascade do |t|
     t.string "name"
-    t.integer "os_id"
+    t.integer "operating_system_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["os_id"], name: "index_os_types_on_os_id"
+    t.index ["operating_system_id"], name: "index_os_types_on_operating_system_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -95,12 +91,12 @@ ActiveRecord::Schema.define(version: 20180210060808) do
 
   create_table "version_types", force: :cascade do |t|
     t.string "name"
-    t.integer "projects_id"
-    t.integer "versions_id"
+    t.integer "project_id"
+    t.integer "version_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["projects_id"], name: "index_version_types_on_projects_id"
-    t.index ["versions_id"], name: "index_version_types_on_versions_id"
+    t.index ["project_id"], name: "index_version_types_on_project_id"
+    t.index ["version_id"], name: "index_version_types_on_version_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -108,14 +104,10 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "docLink"
     t.string "ciLink"
     t.datetime "buildDate"
-    t.integer "versiontypes_id"
-    t.integer "oses_id"
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["oses_id"], name: "index_versions_on_oses_id"
     t.index ["project_id"], name: "index_versions_on_project_id"
-    t.index ["versiontypes_id"], name: "index_versions_on_versiontypes_id"
   end
 
 end
