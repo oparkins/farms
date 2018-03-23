@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 //import Dialog from 'material-ui/Dialog';
 import Tabs, { Tab } from 'material-ui/Tabs';
-
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+
+// menu
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+import Toolbar from 'material-ui/Toolbar';
 
 // floating icon 
 import AppBar from 'material-ui/AppBar';
@@ -16,19 +20,25 @@ import Typography from 'material-ui/Typography';
 
 //import '../styles/Overview.css';
 
+// theme settings
 const styles = theme => ({
     root: {
-        width: '100%',
-        minWidth: 360,
-        position: 'relative',
-        minHeight: 200,
-        backgroundColor: theme.palette.background.paper,
+        flexGrow: 1,
     },
+
+    flex: {
+        flex: 1,
+    },
+    menuButton: {
+        marginLeft: 0,
+        marginRight: 20,
+    },
+
     fab: {
-        position: 'absolute',
-        bottom: theme.spacing.unit * 2,
-        right: theme.spacing.unit * 2,
-      },
+        bottom: 20,
+        right: 20,
+        position: 'fixed'
+    },
 });
 
 function TabContainer(props) {
@@ -68,21 +78,28 @@ class Overview extends Component {
         const { value } = this.state;
         const { classes, theme } = this.props;
 
+
+
         return  (
             <div className={classes.root}>
                 <AppBar position="static">
+                <Toolbar>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                        <MenuIcon />
+                    </IconButton>
                     <Tabs value={value} onChange={this.handleChange} centered >
                         <Tab label="Overview" />
                         <Tab label="Projects" />
                         <Tab label="Versions"/>
                     </Tabs>
+                </Toolbar>
                 </AppBar>
 
                 {value === 0 && <TabContainer>{this.InsetList()}</TabContainer>}
                 {value === 1 && <TabContainer>Item Two</TabContainer>}
                 {value === 2 && <TabContainer>Item Three</TabContainer>}
 
-                <Button variant="fab" color="primary" aria-label="add" className={classes.button}>
+                <Button variant="fab" color="primary" aria-label="add" className={classes.fab}>
                     <AddIcon />
                 </Button>
 
@@ -92,15 +109,14 @@ class Overview extends Component {
     }
 
     TabContainer() {
-        const { children, dir } = this.props;
-      
+        const { classes, theme } = this.props;
         return (
-          <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
-            {children}
-          </Typography>
+        <Typography component="div" style={{ padding: 8 * 3 }}>
+            {this.children}
+        </Typography>
         );
     }
-
+  
 
     InsetList() {
         const { classes, theme } = this.props;
@@ -117,8 +133,6 @@ class Overview extends Component {
         </div>
         );
     }
-
-
 }
 
 //export default Overview;
