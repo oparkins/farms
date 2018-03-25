@@ -2,7 +2,7 @@ language: ruby
 rvm:
   - 2.5
 install:
-  - bundle install
+  - cd server && bundle install
 
 script:
   - cd server && bundle exec rspec
