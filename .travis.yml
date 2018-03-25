@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - 2.5
+install:
+  - cd server && bundle install
+
+script:
+  - bundle exec rspec
