@@ -5,4 +5,4 @@ install:
   - cd server && bundle install
 
 script:
-  - cd server && bundle exec rspec
+  - bundle exec rspec
