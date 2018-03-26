@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
-
 import Login from './Login';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 
 class Loginscreen extends Component {
   constructor(props){
@@ -33,7 +34,9 @@ class Loginscreen extends Component {
           {this.state.loginmessage}
           <MuiThemeProvider>
             <div>
-               <RaisedButton label={this.state.buttonLabel} primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+              <Button variant="raised" color="primary">
+                Log In
+              </Button>
            </div>
           </MuiThemeProvider>
         </div>
