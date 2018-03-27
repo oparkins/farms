@@ -21,14 +21,14 @@ class Login extends Component {
                             title="Login"
                         />
                         <TextField
-                            hintText="Enter your Username"
+                            label="Enter your Username"
                             floatingLabelText="Username"
                             onChange={(event, newValue) => this.setState({ username: newValue })}
                         />
                         <br />
                         <TextField
                             type="password"
-                            hintText="Enter your Password"
+                            label="Enter your Password"
                             floatingLabelText="Password"
                             onChange={(event, newValue) => this.setState({ password: newValue })}
                         />
