@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
@@ -10,6 +10,8 @@ import SendIcon from 'material-ui-icons/Send';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import StarBorder from 'material-ui-icons/StarBorder';
+import Button from 'material-ui/Button';
+
 
 const styles = theme => ({
   root: {
@@ -22,8 +24,14 @@ const styles = theme => ({
   },
 });
 
-class NestedList extends React.Component {
-  state = { open: true };
+class ProjectView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      changeWindowHandler: props.changeWindowHandler,
+      open : true
+    }
+  }
 
   handleClick = () => {
     this.setState({ open: !this.state.open });
@@ -34,6 +42,7 @@ class NestedList extends React.Component {
 
     return (
       <div className={classes.root}>
+        <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
         <List
           component="nav"
           subheader={<ListSubheader component="div">Nested List Items</ListSubheader>}
@@ -42,19 +51,19 @@ class NestedList extends React.Component {
             <ListItemText inset primary="Windows" />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.open} timeout="auto" unmountOnExit={true}>
             <List component="div" disablePadding>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Win10 1.3.9" />
+                <ListItemText inset primary="Debug 1.2.3" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Win8.1 0.4.4" />
+                <ListItemText inset primary="Release 1.2.3" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Win7 1.4.3" />
+                <ListItemText inset primary="Debug 1.2.2" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Win7 1.4.2" />
+                <ListItemText inset primary="Release 1.2.2" />
               </ListItem>
               </List>
           </Collapse>
@@ -66,14 +75,17 @@ class NestedList extends React.Component {
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="High Sierra 0.2.8" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Snow Leopard 3.1.4" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Yosemite 1.4.3" />
-              </ListItem>
+            <ListItemText inset primary="Debug 1.2.3" />
+            </ListItem>
+            <ListItem button className={classes.nested}>
+              <ListItemText inset primary="Release 1.2.3" />
+            </ListItem>
+            <ListItem button className={classes.nested}>
+              <ListItemText inset primary="Debug 1.2.2" />
+            </ListItem>
+            <ListItem button className={classes.nested}>
+              <ListItemText inset primary="Release 1.2.2" />
+            </ListItem>
               </List>
           </Collapse>
           
@@ -83,23 +95,17 @@ class NestedList extends React.Component {
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Fedora 1.4.5" />
+                <ListItem button className={classes.nested}>
+              <ListItemText inset primary="Debug 1.2.3" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Fedora 1.4.4" />
+                <ListItemText inset primary="Release 1.2.3" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Fedora 1.4.3" />
+                <ListItemText inset primary="Debug 1.2.2" />
               </ListItem>
               <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Ubuntu 4.0.2" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Ubuntu 3.2.0" />
-              </ListItem>
-              <ListItem button className={classes.nested}>
-                <ListItemText inset primary="Arch 1.2.6" />
+                <ListItemText inset primary="Release 1.2.2" />
               </ListItem>
             </List>
           </Collapse>
@@ -109,8 +115,8 @@ class NestedList extends React.Component {
   }
 }
 
-NestedList.propTypes = {
+ProjectView.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NestedList);
+export default withStyles(styles)(ProjectView);

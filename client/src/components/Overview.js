@@ -4,9 +4,12 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
 import AppBar from 'material-ui/AppBar';
 
-import DivisionsTab from './overview/1_divisions';
+import CompaniesTab from './overview/1_companies';
+import DivisionsTab from './overview/2_divisions';
+import ProjectsTab from './overview/3_projects';
 import '../styles/Overview.css';
 
 class Overview extends Component {
@@ -14,7 +17,8 @@ class Overview extends Component {
         super(props);
         this.state = {
             open : true,
-            value: 0
+            value: 0,
+            changeWindowHandler: props.changeWindowHandler
         }
 
     }
@@ -34,18 +38,21 @@ class Overview extends Component {
             <div>
                 <Dialog fullScreen open={this.state.open} onClose={this.handleClose}>
                     <AppBar position="static">
-                    <Toolbar>
-                        <IconButton color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
-                        <Tabs value={value} onChange={this.handleChange} style={{width: '46%', margin: '0 auto'}} >
-                            <Tab label="Divisions"/>
-                            <Tab label="Projects"/>
-                            <Tab label="Versions"/>
-                        </Tabs>
-                    </Toolbar>
+                        <Toolbar>
+                            <IconButton color="inherit" aria-label="Menu">
+                                <MenuIcon />
+                            </IconButton>
+                            <Tabs value={value} onChange={this.handleChange} style={{width: '46%', margin: '0 auto'}} >
+                                <Tab label="Companies"/>
+                                <Tab label="Divisions"/>
+                                <Tab label="Projects"/>
+                            </Tabs>
+                        </Toolbar>
                     </AppBar>
-                    {value === 0 && <DivisionsTab callback={this.chengeTab}/>}
+                    {value === 0 && <CompaniesTab callback={this.changeTab}/>}
+                    {value === 1 && <DivisionsTab callback={this.changeTab}/>}
+                    {value === 2 && <ProjectsTab callback={this.changeTab} changeWindowHandler={this.state.changeWindowHandler}/>}
+                    <Button variant="raised" onClick={(value) => this.state.changeWindowHandler(0)}>Logout</Button>
                 </Dialog>
             </div>
         );

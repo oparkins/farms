@@ -11,7 +11,8 @@ class Login extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            changeWindowHandler: props.changeWindowHandler
         }
     }
     render() {
@@ -39,7 +40,7 @@ class Login extends Component {
                             onChange={(event, newValue) => this.setState({ password: newValue })}
                         />
                         <br />
-                        <Button variant="raised">
+                        <Button variant="raised" onClick={(value) => {this.state.changeWindowHandler(1)}}>
                             Log In
                         </Button>
                     </div>
