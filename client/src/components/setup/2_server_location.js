@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import '../../styles/setup/2_server_location.css';
 import Paper from 'material-ui/Paper';
+import Config from '../../config/config';
 
 class ServerLocationTab extends Component {
     constructor(props) {
@@ -36,8 +37,11 @@ class ServerLocationTab extends Component {
                                 label="Server Address"
                                 margin="normal"
                                 placeholder="Server Address"
+                                value={Config.ServerAddress}
+                                disabled="true"
                             />
                             <br/>
+                            <Typography>If the above address is incorrect, change the address located in the 'src/config/config.js' file. Then recompile the project</Typography>
                             <Button variant="raised" color="primary"  onClick={this.handleChange}>Check Address</Button>
                         </CardContent>
                     </Card>

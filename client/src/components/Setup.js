@@ -41,8 +41,8 @@ class Setup extends Component {
                         <Tab label="Finished"/>
                     </Tabs>
                 </AppBar>
-                {value === 0 && <InitialTab callback={this.changeTab} /> }
                 {value === 1 && <ServerLocationTab callback={this.changeTab} /> }
+                {value === 0 && <InitialTab callback={this.changeTab} /> }
                 {value === 2 && <InitialDataTab callback={this.changeTab} /> }
                 {value === 3 && <FinalTab/> }
             </Dialog>
