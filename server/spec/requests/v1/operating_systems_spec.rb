@@ -10,9 +10,9 @@ RSpec.describe 'Operating Systems API', type: :request do
   let(:operating_system_id) { operating_systems.first.id }
 
   # Test suite for GET 
-  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/' do
+  describe 'GET /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/' do
     # make HTTP get request before each example
-    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems" }
+    before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems" }
 
     it 'returns operating system' do
       # Note `json` is a custom helper to parse JSON responses
@@ -26,8 +26,8 @@ RSpec.describe 'Operating Systems API', type: :request do
   end
 
   # Test suite for GET 
-  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
-	  before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}" }
+  describe 'GET /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
+	  before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}" }
 
     context 'when the record exists' do
       it 'returns the division' do
@@ -54,12 +54,12 @@ RSpec.describe 'Operating Systems API', type: :request do
   end
 
   # Test suite for POST 
-  describe 'POST /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
+  describe 'POST /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
     # valid payload
     let(:valid_attributes) { {  } }
 
     context 'when the request is valid' do
-      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems", params: valid_attributes }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems", params: valid_attributes }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -68,11 +68,11 @@ RSpec.describe 'Operating Systems API', type: :request do
   end
 
   # Test suite for PUT
-  describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
+  describe 'PUT /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
     let(:valid_attributes) { { } }
 
     context 'when the record exists' do
-	    before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}", params: valid_attributes }
+	    before { put "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -85,8 +85,8 @@ RSpec.describe 'Operating Systems API', type: :request do
   end
 
   # Test suite for DELETE
-  describe 'DELETE /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
-    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}" }
+  describe 'DELETE /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
+    before { delete "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

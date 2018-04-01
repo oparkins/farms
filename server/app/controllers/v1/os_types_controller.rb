@@ -1,4 +1,4 @@
-class OsTypesController < ApplicationController
+class V1::OsTypesController < V1::ApplicationController
   before_action :set_os_type, only: [:show, :update, :destroy]
 
 

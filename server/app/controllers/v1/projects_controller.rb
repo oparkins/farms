@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class V1::ProjectsController < V1::ApplicationController
     before_action :set_company
     before_action :set_division
     before_action :set_project, only: [:show, :update, :destroy]
