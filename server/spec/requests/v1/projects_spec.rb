@@ -9,9 +9,9 @@ RSpec.describe 'Projects API', type: :request do
   let(:project_id) { projects.first.id }
 
   # Test suite for GET
-  describe 'GET /companies/:id/divisions/:id/projects' do
+  describe 'GET /v1/companies/:id/divisions/:id/projects' do
     # make HTTP get request before each example
-    before { get "/companies/#{company.id}/divisions/#{division.id}/projects" }
+    before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects" }
 
     it 'returns projects' do
       # Note `json` is a custom helper to parse JSON responses
@@ -25,8 +25,8 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   # Test suite for GET 
-  describe 'GET /companies/:id/divisions/:id/projects/:id' do
-    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
+  describe 'GET /v1/companies/:id/divisions/:id/projects/:id' do
+    before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     context 'when the record exists' do
       it 'returns the project' do
@@ -53,12 +53,12 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   # Test suite for POST
-  describe 'POST /companies/:id/divisions/:id/projects' do
+  describe 'POST /v1/companies/:id/divisions/:id/projects' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
     context 'when the request is valid' do
-      before { post "/companies/#{company.id}/divisions/#{division.id}/projects", params: valid_attributes }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects", params: valid_attributes }
 
       it 'creates a projects' do
         expect(json['name']).to eq('Learn Elm')
@@ -70,7 +70,7 @@ RSpec.describe 'Projects API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/companies/#{company.id}/divisions/#{division.id}/projects", params: { name: 'Foobar' } }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -84,11 +84,11 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   # Test suite for PUT
-  describe 'PUT /companies/:id/divisions/:id/projects/:id' do
+  describe 'PUT /v1/companies/:id/divisions/:id/projects/:id' do
     let(:valid_attributes) { { name: 'Learn Elm', projectLead: 'me', email: 'hello@test.com' } }
 
     context 'when the record exists' do
-      before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}", params: valid_attributes }
+      before { put "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -101,8 +101,8 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   # Test suite for DELETE 
-  describe 'DELETE /companies/:id/divisions/:id/projects/:id' do
-    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
+  describe 'DELETE /v1/companies/:id/divisions/:id/projects/:id' do
+    before { delete "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -1,4 +1,4 @@
-class CompaniesController < ApplicationController
+class V1::CompaniesController < V1::ApplicationController
     before_action :set_company, only: [:show, :update, :destroy]
 
     # GET /companies

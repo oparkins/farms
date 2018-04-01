@@ -1,23 +1,29 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resources :companies do
-    resources :divisions do
-      resources :projects do
-        resources :versions do
-          resources :operating_systems do
-            resources :libs do
-            end
-            resources :filedata do
+  concern :api_base do
+    resources :companies do
+      resources :divisions do
+        resources :projects do
+          resources :versions do
+            resources :operating_systems do
+              resources :libs do
+              end
+              resources :filedata do
+              end
             end
           end
-        end
-        resources :version_types do
+          resources :version_types do
+          end
         end
       end
     end
+    resources :os_types do
+    end
   end
-  resources :os_types do
+
+  namespace :v1 do
+    concerns :api_base
   end
-  resource :server_info do
-  end
+  
 end
+

@@ -11,9 +11,9 @@ RSpec.describe 'Libs API', type: :request do
   let(:lib_id) { libs.first.id }
 
   # Test suite for GET
-  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
+  describe 'GET /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
     # make HTTP get request before each example
-    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs" }
+    before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs" }
 
     it 'returns libs' do
       # Note `json` is a custom helper to parse JSON responses
@@ -27,8 +27,8 @@ RSpec.describe 'Libs API', type: :request do
   end
 
   # Test suite for GET
-  describe 'GET /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
-    before { get "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
+  describe 'GET /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+    before { get "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
 
     context 'when the record exists' do
       it 'returns the lib' do
@@ -55,12 +55,12 @@ RSpec.describe 'Libs API', type: :request do
   end
 
   # Test suite for POST
-  describe 'POST /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
+  describe 'POST /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs' do
     # valid payload
     let(:valid_attributes) { { name: 'Learn Elm', verify: 'Street 1', link: 'line 2' } }
 
     context 'when the request is valid' do
-      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs", params: valid_attributes }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs", params: valid_attributes }
 
       it 'creates a libs' do
         expect(json['name']).to eq('Learn Elm')
@@ -72,7 +72,7 @@ RSpec.describe 'Libs API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/", params: { name: 'Foobar' } }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/", params: { name: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -86,11 +86,11 @@ RSpec.describe 'Libs API', type: :request do
   end
 
   # Test suite for PUT
-  describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+  describe 'PUT /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
     let(:valid_attributes) { { name: 'Learn Elm', verify: 'Street 1', link: 'line 2' } }
 
     context 'when the record exists' do
-      before { put "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}", params: valid_attributes }
+      before { put "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -103,8 +103,8 @@ RSpec.describe 'Libs API', type: :request do
   end
 
   # Test suite for DELETE
-  describe 'DELETE /companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
-    before { delete "/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
+  describe 'DELETE /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id/libs/:id' do
+    before { delete "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/#{lib_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
