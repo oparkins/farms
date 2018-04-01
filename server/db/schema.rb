@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180210060808) do
+ActiveRecord::Schema.define(version: 20180401184920) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -87,6 +87,14 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.index ["lib_id"], name: "index_projects_on_lib_id"
     t.index ["lib_id_id"], name: "index_projects_on_lib_id_id"
     t.index ["version_id"], name: "index_projects_on_version_id"
+  end
+
+  create_table "server_infos", force: :cascade do |t|
+    t.integer "server_version"
+    t.integer "api_version"
+    t.boolean "app_setup"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "version_types", force: :cascade do |t|

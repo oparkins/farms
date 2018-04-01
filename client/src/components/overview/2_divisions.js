@@ -51,6 +51,30 @@ class DivisionsTab extends Component {
                         value="checked2"
                     />
                 </ListItem>
+                <ListItem button>
+                    <ListItemText inset primary="Item 2" />
+                    <Checkbox
+                        checked={this.state.checked2}
+                        onChange={this.handleChange('checked2')}
+                        value="checked2"
+                    />
+                </ListItem>
+                <ListItem button>
+                    <ListItemText inset primary="Item 2" />
+                    <Checkbox
+                        checked={this.state.checked2}
+                        onChange={this.handleChange('checked2')}
+                        value="checked2"
+                    />
+                </ListItem>
+                <ListItem button>
+                    <ListItemText inset primary="Item 2" />
+                    <Checkbox
+                        checked={this.state.checked2}
+                        onChange={this.handleChange('checked2')}
+                        value="checked2"
+                    />
+                </ListItem>
                 </List>
 
                 <Button variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>

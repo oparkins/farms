@@ -15,9 +15,17 @@ class InitialDataTab extends Component {
         }
     }
 
+    componentDidMount() {
+        this.initializeDatabase();
+    }
+
     handleChange = (value) => {
         this.state.callback(3);
-      };
+    };
+
+    initializeDatabase = () => {
+        this.handleChange();
+    }
 
     render () {
         const { value } = this.state;

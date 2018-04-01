@@ -6,18 +6,46 @@ import Button from 'material-ui/Button';
 import '../../styles/setup/2_server_location.css';
 import Paper from 'material-ui/Paper';
 import Config from '../../config/config';
+import {CircularProgress} from 'material-ui/Progress';
 
 class ServerLocationTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            callback : props.callback
+            callback : props.callback,
+            serverValid : true,
+            loading: false
         }
     }
 
     handleChange = (value) => {
         this.state.callback(2);
-      };
+    };
+
+    checkServerStatus = () => {
+        let fetchData = {
+            method: 'GET',
+            headers: new Headers()
+        }
+        var currentThis = this;
+        console.log("Server: " + Config.ServerAddress + "/companies");
+        fetch(Config.ServerAddress + "/companies", fetchData)
+            .then(function(data) { //data will be companies
+                currentThis.setState({serverValid : true, loading: false});
+                currentThis.handleChange();
+                return true;
+            })
+            .catch(function(error) {
+                console.log(error)
+                currentThis.setState({serverValid : false, loading: false});
+                return false;
+            });
+    }
+
+    buttonHandler = (value) => {
+        this.setState({loading : true});
+        this.checkServerStatus();
+    }
 
     render () {
         const { value } = this.state;
@@ -38,11 +66,13 @@ class ServerLocationTab extends Component {
                                 margin="normal"
                                 placeholder="Server Address"
                                 value={Config.ServerAddress}
-                                disabled="true"
+                                disabled={true}
                             />
                             <br/>
                             <Typography>If the above address is incorrect, change the address located in the 'src/config/config.js' file. Then recompile the project</Typography>
-                            <Button variant="raised" color="primary"  onClick={this.handleChange}>Check Address</Button>
+                            <Button variant="raised" color="primary"  onClick={this.buttonHandler}>Check Address</Button>
+                            {this.state.loading && <CircularProgress />}
+                            {!this.state.serverValid && <Typography>Address Invalid. Please update the address and try again.</Typography>}
                         </CardContent>
                     </Card>
                 </Paper>

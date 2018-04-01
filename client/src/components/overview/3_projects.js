@@ -49,7 +49,7 @@ class ProjectsTab extends Component {
                     />
                 </ListItem>
                 <ListItem button={true} onClick={this.changeWindow}>
-                    <ListItemText inset primary="Item 2" />
+                    <ListItemText inset primary="PROJECT 2" />
                     <Checkbox
                         checked={this.state.checked2}
                         onChange={this.handleChange('checked2')}

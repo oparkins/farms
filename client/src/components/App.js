@@ -3,6 +3,7 @@ import logo from '../logo.svg';
 import LoginScreen from './LoginScreen';
 import Overview from './Overview';
 import ProjectView from './ProjectView'; 
+import SetupView from './Setup';
 import '../styles/App.css';
 
 import Dialog from 'material-ui/Dialog';
@@ -16,7 +17,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        currentWindow: 0,
+        currentWindow: -1,
     }
   }
   render() {
@@ -29,6 +30,7 @@ class App extends Component {
             </IconButton>
         </Toolbar>
         </AppBar>
+        { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }

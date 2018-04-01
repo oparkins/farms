@@ -42,7 +42,7 @@ class Overview extends Component {
                             <IconButton color="inherit" aria-label="Menu">
                                 <MenuIcon />
                             </IconButton>
-                            <Tabs value={value} onChange={this.handleChange} style={{width: '46%', margin: '0 auto'}} >
+                            <Tabs value={value} onChange={this.handleChange} style={{width: '50%', margin: '0 auto'}} >
                                 <Tab label="Companies"/>
                                 <Tab label="Divisions"/>
                                 <Tab label="Projects"/>

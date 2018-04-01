@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   end
   resources :os_types do
   end
+  resource :server_info do
+  end
 end

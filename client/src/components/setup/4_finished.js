@@ -16,7 +16,7 @@ class FinalTab extends Component {
     }
 
     handleChange = (value) => {
-        //this.state.callback();
+        this.state.callback(1);
       };
 
     render () {
