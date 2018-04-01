@@ -12,14 +12,29 @@ import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import AppBar from 'material-ui/AppBar';
+import NetworkManager from './NetworkManager';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        currentWindow: -1,
+        currentWindow: 0,
     }
   }
+
+  componentDidMount() {
+    //Need to determine if the server is setup properly
+    console.log("Checking for valid server...");
+    var thisWindow = this;
+    NetworkManager.isServerValid().then(function(data) {
+      thisWindow.setState({currentWindow: 0});
+      console.log("Server Found");
+    }).catch(function(error) {
+      thisWindow.setState({currentWindow: -1});
+      console.log("Server Not Found");
+    })
+  }
+
   render() {
     return (
       <div className="App">
