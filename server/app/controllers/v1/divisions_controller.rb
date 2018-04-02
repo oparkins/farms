@@ -1,4 +1,4 @@
-class DivisionsController < ApplicationController
+class V1::DivisionsController < V1::ApplicationController
     before_action :set_company
     before_action :set_division, only: [:show, :update, :destroy]
 

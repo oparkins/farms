@@ -13,7 +13,8 @@ class Setup extends Component {
         super(props);
         this.state = {
             open : true,
-            value: 0
+            value: 0,
+            changeWindowHandler: props.changeWindowHandler
         }
     }
 
@@ -44,7 +45,7 @@ class Setup extends Component {
                 {value === 1 && <ServerLocationTab callback={this.changeTab} /> }
                 {value === 0 && <InitialTab callback={this.changeTab} /> }
                 {value === 2 && <InitialDataTab callback={this.changeTab} /> }
-                {value === 3 && <FinalTab/> }
+                {value === 3 && <FinalTab callback={(value) => {this.state.changeWindowHandler(0); }}/> }
             </Dialog>
         );
     }

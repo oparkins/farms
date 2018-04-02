@@ -1,4 +1,4 @@
-class VersionsController < ApplicationController
+class V1::VersionsController < V1::ApplicationController
   before_action :set_company
   before_action :set_division
   before_action :set_project

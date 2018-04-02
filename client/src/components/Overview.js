@@ -75,7 +75,6 @@ class Overview extends Component {
                             <IconButton color="inherit" aria-label="Menu" style={{ marginLeft: -12, marginRight: 20,}}>
                                 <MenuIcon />
                             </IconButton>
-
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             F.A.R.M.S
                         </Typography>
@@ -110,7 +109,6 @@ class Overview extends Component {
                                 </Menu>
                             </div>
                             )}
-
                         </Toolbar>
 
                         <Tabs
