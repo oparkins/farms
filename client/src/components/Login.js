@@ -20,13 +20,6 @@ class Login extends Component {
             <div>
                 <MuiThemeProvider>
                     <div>
-                        <AppBar position="static" color="default">
-                            <Toolbar>
-                                <Typography variant="title" color="inherit">
-                                    F.A.R.M.S: The Free Automated Repository Management System
-                                </Typography>
-                            </Toolbar>
-                        </AppBar>
                         <TextField
                             label="Enter your Username"
                             floatingLabelText="Username"
