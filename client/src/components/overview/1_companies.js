@@ -60,6 +60,7 @@ class CompaniesTab extends Component {
         return (<ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
+                        key={name + id + "checkbox"}
                         onChange={(event, checked) => {_self.checkboxHandler({id})}}
                         value='checked1'
                     />
