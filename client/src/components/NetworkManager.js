@@ -9,8 +9,8 @@ class NetworkManager {
     static fetch(url, method) {
         return new Promise(function(resolve, reject) {
             let fetchData = {
-                method: method,
-                headers: new Headers()
+                method: method || "GET",
+                headers: new Headers(),
             }
             console.log(method + ":  " + Config.ServerAddress + "/v1" + url);
             fetch(Config.ServerAddress + "/v1" + url, fetchData)
@@ -24,6 +24,35 @@ class NetworkManager {
                 });
         });
     }
+
+    static post(url, method, data) {
+        var params = [];
+        for(var k in data) params.push(k);
+
+        console.log("Sending data...");
+        return new Promise(function(resolve, reject) {
+            let fetchData = {
+                method: method || "GET",
+                headers: new Headers(),
+            }
+            var query = params.map(k => `${k}=${data[k]}`)
+                              .join('&');
+            console.log("Query: ?" + query);
+            console.log(method + ":  " + Config.ServerAddress + "/v1" + url + query);
+            fetch(encodeURI(Config.ServerAddress + "/v1" + url + "?" + query), fetchData)
+                .then(function(data) { //data will be companies
+                    resolve(data);                    
+                    return true;
+                })
+                .catch(function(error) {
+                    reject(error);
+                    return false;
+                });
+        });
+    }
+
+
+
 
     static isServerValid() {
         return new Promise(function(resolve, reject) {
