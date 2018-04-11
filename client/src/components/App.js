@@ -5,7 +5,7 @@ import Overview from './Overview';
 import ProjectView from './ProjectView'; 
 import SetupView from './Setup';
 import '../styles/App.css';
-
+import CreateHistory from 'history/createBrowserHistory';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
@@ -18,6 +18,8 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 
 class App extends Component {
+
+  AppHistory = CreateHistory();
   constructor(props) {
     super(props);
     this.state = {
@@ -40,6 +42,15 @@ class App extends Component {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
     })
+    
+    this.AppHistory.listen((location, action) => {
+        console.log(action, location.pathname, location.state)
+        console.log("History Length: " + this.AppHistory.length);
+        if(action === "POP") {
+            this.setState({ currentWindow: location.state["currentWindow"] });
+        }
+    })
+    this.AppHistory.push("/login", { currentWindow : 0 });
   }
 
   handleMenu = event => {
@@ -55,7 +66,7 @@ class App extends Component {
       this.setState({ value: 0 });
       this.setState({ currentWindow: 0 });
   };
-
+  
   render() {
     const { value, auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -105,8 +116,8 @@ class App extends Component {
 
         </AppBar>
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
       </div>
     );
