@@ -16,7 +16,6 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 3,
     }),
 });
-//const { classes } = props;
 
 class Login extends Component {
     constructor(props) {
@@ -28,11 +27,20 @@ class Login extends Component {
         }
     }
     render() {
+        var divStyleFullScreen = {
+            paddingRight: window.innerWidth * .40,
+            paddingLeft: window.innerWidth * .40,
+            paddingTop: window.innerHeight * .25,
+        };
+
+        var paperStyleFullScreen ={
+            minHeight: window.innerHeight * .4
+        };
         return (
             <div>
                 <MuiThemeProvider>
-                    <div>
-                        <Paper elevation={4}>
+                    <div style={divStyleFullScreen} >
+                        <Paper elevation={4} style={paperStyleFullScreen}>
                             <div>
                                 <TextField
                                     label="Enter your Username"
