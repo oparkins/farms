@@ -30,36 +30,63 @@ class Login extends Component {
         var divStyleFullScreen = {
             paddingRight: window.innerWidth * .40,
             paddingLeft: window.innerWidth * .40,
-            paddingTop: window.innerHeight * .25,
+            paddingTop: window.innerHeight * .10,
         };
 
-        var paperStyleFullScreen ={
-            minHeight: window.innerHeight * .4
+        var paperStyleFullScreen = {
+            minHeight: window.innerHeight * .25
         };
         return (
             <div>
                 <MuiThemeProvider>
                     <div style={divStyleFullScreen} >
                         <Paper elevation={4} style={paperStyleFullScreen}>
+                            <br>
+                            </br>
+                            <br>
+                            </br>
                             <div>
                                 <TextField
-                                    label="Enter your Username"
-                                    floatingLabelText="Username"
+                                    label="Enter your username:"
+                                    placeholder="Username"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                     onChange={(event, newValue) => this.setState({ username: newValue })}
                                 />
-                                <br />
+                                <br>
+                                </br>
+                                <br/>
                                 <TextField
-                                    type="password"
-                                    label="Enter your Password"
-                                    floatingLabelText="Password"
+                                    label="Enter your password:"
+                                    placeholder="Password"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                     onChange={(event, newValue) => this.setState({ password: newValue })}
                                 />
-                                <br />
-                                <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1) }}>
-                                    Log In
-                        </Button>
+                                <br/>
+                                <br>
+                                </br>
+                                <div>
+                                    <Button 
+                                        variant="raised"
+                                        size="large"
+                                        onClick={(value) => { this.state.changeWindowHandler(1) }}>
+                                        Log In
+                                    </Button>
+                                </div>
+                                <br>
+                                </br>
+                                <br>
+                                </br>
+                                Forgot your password? Click here.
                             </div>
                         </Paper>
+                        <div>
+                        <Paper elevation={4}>
+                        </Paper>
+                        </div>
                     </div>
                 </MuiThemeProvider>
             </div>
