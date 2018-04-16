@@ -1,7 +1,10 @@
 class V1::ApplicationController < ActionController::API
     include Response
     include ExceptionHandler
+    include DeviseTokenAuth::Concerns::SetUserByToken
 
+    before_action :authenticate_user!
+    
     after_action :set_headers
 
     protected
