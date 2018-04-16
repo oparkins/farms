@@ -6,5 +6,10 @@ class Project < ApplicationRecord
   has_many :version_types, dependent: :destroy
 
   validates_presence_of :name, :projectLead, :email
+
+  after_initialize do |project|
+    project.projectLead ||= ""
+    project.email ||= ""
+  end
   
 end
