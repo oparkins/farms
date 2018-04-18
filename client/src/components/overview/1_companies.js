@@ -86,7 +86,7 @@ class CompaniesTab extends Component {
             phone: "Right",
             email: "contactus@sandia.gov"
         };
-        NetworkManager.post("/companies", "POST", tmpData).then((data) => {
+        NetworkManager.fetchWithParameters("/companies", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getCompanies(_self);
         }).catch((error) => { 

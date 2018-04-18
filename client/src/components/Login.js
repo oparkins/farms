@@ -8,6 +8,7 @@ import Typography from 'material-ui/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import AuthenticationManager from './AuthenticationManager';
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -47,7 +48,12 @@ class Login extends Component {
                                     onChange={(event, newValue) => this.setState({ password: newValue })}
                                 />
                                 <br />
-                                <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1) }}>
+                                <Button variant="raised" onClick={(value) => { var _self = this; AuthenticationManager.signIn("farms@farms.fake.email", "Bob123456").then(function (data) {
+                                    _self.state.changeWindowHandler(1) 
+                                }).catch(function (error) {
+                                    console.log(error)
+                                    alert("login failed");
+                                })}}>
                                     Log In
                         </Button>
                             </div>
