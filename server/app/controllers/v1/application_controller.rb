@@ -3,9 +3,7 @@ class V1::ApplicationController < ActionController::API
     include ExceptionHandler
     include DeviseTokenAuth::Concerns::SetUserByToken
 
-    before_action :authenticate_user!
-    
-    after_action :set_headers
+    before_action :set_headers, :authenticate_user!
 
     protected
         def set_headers
