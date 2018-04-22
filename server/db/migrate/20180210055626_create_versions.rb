@@ -6,6 +6,7 @@ class CreateVersions < ActiveRecord::Migration[5.1]
       t.string :ciLink
       t.datetime :buildDate
       t.references :project, foreign_key: true
+      t.references :version_type, foreign_key: true
       t.timestamps
     end
   end
