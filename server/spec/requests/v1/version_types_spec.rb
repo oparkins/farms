@@ -5,8 +5,7 @@ RSpec.describe 'Version Type API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-  let!(:version) { create(:version, project_id: project.id) }
-  let!(:version_types) { create_list(:version_type, 10, project_id: project.id, version_id: version.id)}
+  let!(:version_types) { create_list(:version_type, 10, project_id: project.id)}
   let!(:version_type_id) { version_types.first.id }
 
   # Test suite for GET
@@ -56,7 +55,7 @@ RSpec.describe 'Version Type API', type: :request do
   # Test suite for POST
   describe 'POST /v1/companies/:id/divisions/:id/projects/:id/versions/:id/version_type' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', version_id: version.id, project_id: project.id } }
+    let(:valid_attributes) { { name: 'Learn Elm', project_id: project.id } }
 
     context 'when the request is valid' do
       before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/version_types", params: valid_attributes }
@@ -79,7 +78,7 @@ RSpec.describe 'Version Type API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Version must exist, Name can't be blank\"}")
+          .to match("{\"message\":\"Validation failed: Name can't be blank\"}")
       end
     end
   end

@@ -2,13 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'OS Type API', type: :request do
   # initialize test data
-  let!(:company) { create(:company) }
-  let!(:division) { create(:division, company_id: company.id) }
-  let!(:project) { create(:project, division_id: division.id) }
-  let!(:version) { create(:version, project_id: project.id) }
-  let!(:operating_system) { create(:operating_system,  version_id: version.id) }
-
-  let!(:os_types) { create_list(:os_type, 10, operating_system_id: operating_system.id) }
+  let!(:os_types) { create_list(:os_type, 10) }
   let(:os_type_id) { os_types.first.id }
 
 
@@ -59,7 +53,7 @@ RSpec.describe 'OS Type API', type: :request do
   # Test suite for POST
   describe 'POST /v1/os_types' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', operating_system_id: operating_system.id } }
+    let(:valid_attributes) { { name: 'Learn Elm' } }
 
     context 'when the request is valid' do
       before { post "/v1/os_types", params: valid_attributes }
@@ -82,14 +76,14 @@ RSpec.describe 'OS Type API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Operating system must exist, Name can't be blank\"}")
+          .to match("{\"message\":\"Validation failed: Name can't be blank\"}")
       end
     end
   end
 
   # Test suite for PUT
   describe 'PUT /v1/os_types/:id' do
-    let(:valid_attributes) { { name: 'Eh', operating_system_id: operating_system.id } }
+    let(:valid_attributes) { { name: 'Eh' } }
 
     context 'when the record exists' do
 	    before { put "/v1/os_types/#{os_type_id}", params: valid_attributes }

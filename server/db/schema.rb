@@ -50,12 +50,10 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "name"
     t.boolean "verify"
     t.string "link"
-    t.integer "project_id"
     t.integer "operating_system_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["operating_system_id"], name: "index_libs_on_operating_system_id"
-    t.index ["project_id"], name: "index_libs_on_project_id"
   end
 
   create_table "operating_systems", force: :cascade do |t|
@@ -78,9 +76,11 @@ ActiveRecord::Schema.define(version: 20180210060808) do
     t.string "projectLead"
     t.string "email"
     t.integer "division_id"
+    t.integer "lib_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_projects_on_division_id"
+    t.index ["lib_id"], name: "index_projects_on_lib_id"
   end
 
   create_table "version_types", force: :cascade do |t|

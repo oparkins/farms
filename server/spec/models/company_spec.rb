@@ -7,12 +7,4 @@ RSpec.describe Company, type: :model do
   #Validation Tests
   #ensure columns are present before saving
   it {should validate_presence_of(:name) }
-  it {should validate_presence_of(:addressLine1) }
-  it {should validate_presence_of(:addressLine2) }
-  it {should validate_presence_of(:addressCity) }
-  it {should validate_presence_of(:addressState) }
-  it {should validate_presence_of(:addressZip) }
-  it {should validate_presence_of(:logo) }
-  it {should validate_presence_of(:phone) }
-  it {should validate_presence_of(:email) }
 end

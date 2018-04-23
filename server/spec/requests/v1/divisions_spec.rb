@@ -68,7 +68,7 @@ RSpec.describe 'Divisions API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/v1/companies/#{company.id}/divisions", params: { name: 'Foobar' } }
+      before { post "/v1/companies/#{company.id}/divisions", params: { director: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -76,7 +76,7 @@ RSpec.describe 'Divisions API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/"message\":\"Validation failed: Director can't be blank, Divisionlink can't be blank\"/)
+          .to match(/"message\":\"Validation failed: Name can't be blank\"/)
       end
     end
   end
