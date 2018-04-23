@@ -70,7 +70,7 @@ RSpec.describe 'Projects API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects", params: { name: 'Foobar' } }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects", params: { idk: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -78,7 +78,7 @@ RSpec.describe 'Projects API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/\"message\":\"Validation failed: Projectlead can't be blank, Email can't be blank\"/)
+          .to match(/\"message\":\"Validation failed: Name can't be blank\"/)
       end
     end
   end

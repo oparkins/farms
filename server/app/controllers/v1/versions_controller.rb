@@ -45,7 +45,7 @@ class V1::VersionsController < V1::ApplicationController
 
     def version_params
         # whitelist params
-        params.permit(:gitLink, :docLink, :ciLink, :buildDate)
+        params.permit(:gitLink, :docLink, :ciLink, :buildDate, :version_type_id)
     end
 
     def set_project

@@ -46,7 +46,7 @@ class V1::OperatingSystemsController < V1::ApplicationController
 
     def os_params
         # whitelist params
-        params.permit()
+        params.permit(:os_type_id)
     end
 
     def set_project

@@ -5,8 +5,13 @@ RSpec.describe 'FileDatums API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-  let!(:version) { create(:version, project_id: project.id) }
-  let!(:operating_system) { create(:operating_system, version_id: version.id) }
+
+  let!(:version_type) { create(:version_type, project_id: project.id) }
+  let!(:version) { create(:version, project_id: project.id, version_type_id: version_type.id) }
+
+  let!(:os_type) { create(:os_type) }
+  let!(:operating_system) { create(:operating_system, version_id: version.id, os_type_id: os_type.id) }
+  
   let!(:fileDatums) { create_list(:file_datum, 10, operating_system_id: operating_system.id) }
   let(:file_datum_id) { fileDatums.first.id }
 
