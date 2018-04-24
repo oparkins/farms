@@ -1,13 +1,13 @@
 /*
- * Configuration file for FARMS 
- *  
- *  
- * 
- * 
+ * Configuration file for FARMS
+ *
+ *
+ *
+ *
  */
 
 var Config = {
-    ServerAddress : "http://localhost:3001"
+    ServerAddress : "http://localhost:3002"
 }
 
 export default Config

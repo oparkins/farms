@@ -47,64 +47,64 @@ class ProjectView extends Component {
           component="nav"
           subheader={<ListSubheader component="div">Nested List Items</ListSubheader>}
         >
-          <ListItem button>
+          <ListItem button onClick={this.handleClick}>
             <ListItemText inset primary="Windows" />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit={true}>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Debug 1.2.3" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Release 1.2.3" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Debug 1.2.2" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Release 1.2.2" />
               </ListItem>
               </List>
           </Collapse>
-          
-          <ListItem button>
+
+          <ListItem button onClick={this.handleClick}>
             <ListItemText inset primary="Mac" />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
             <ListItemText inset primary="Debug 1.2.3" />
             </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemText inset primary="Release 1.2.3" />
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
+            <ListItemText inset primary="Release 1.2.3" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
               <ListItemText inset primary="Debug 1.2.2" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
               <ListItemText inset primary="Release 1.2.2" />
             </ListItem>
               </List>
           </Collapse>
-          
+
           <ListItem button onClick={this.handleClick}>
             <ListItemText inset primary="Linux" />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
               <ListItemText inset primary="Debug 1.2.3" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Release 1.2.3" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Debug 1.2.2" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
                 <ListItemText inset primary="Release 1.2.2" />
               </ListItem>
             </List>
