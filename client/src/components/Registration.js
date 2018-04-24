@@ -41,10 +41,8 @@ class Login extends Component {
                 <MuiThemeProvider>
                     <div style={divStyleFullScreen} >
                         <Paper elevation={4} style={paperStyleFullScreen}>
-                            <br>
-                            </br>
-                            <br>
-                            </br>
+                            <br></br>
+                            <br></br>
                             <div>
                                 <TextField
                                     label="Enter your username:"
@@ -55,8 +53,7 @@ class Login extends Component {
                                     onChange={(event, newValue) => this.setState({ username: newValue })}
                                 />
                                 <br>
-                                </br>
-                                <br/>
+                                </br><br/>
                                 <TextField
                                     label="Enter your password:"
                                     placeholder="Password"
@@ -66,8 +63,7 @@ class Login extends Component {
                                     onChange={(event, newValue) => this.setState({ password: newValue })}
                                 />
                                 <br/>
-                                <br>
-                                </br>
+                                <br></br>
                                 <div>
                                     <Button 
                                         variant="raised"
@@ -76,17 +72,11 @@ class Login extends Component {
                                         Log In
                                     </Button>
                                 </div>
-                                <br>
-                                </br>
-                                <br>
-                                </br>
+                                <br></br>
+                                <br></br>
                                 Forgot your password? Click here.
                             </div>
                         </Paper>
-                        <div>
-                        <Paper elevation={4}>
-                        </Paper>
-                        </div>
                     </div>
                 </MuiThemeProvider>
             </div>
