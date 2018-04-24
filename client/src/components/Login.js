@@ -28,6 +28,14 @@ class Login extends Component {
             changeWindowHandler: props.changeWindowHandler
         }
     }
+    handleClick = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     render() {
         var divStyleFullScreen = {
             paddingRight: window.innerWidth * .40,
@@ -54,8 +62,8 @@ class Login extends Component {
                                     }}
                                     onChange={(event, newValue) => this.setState({ username: newValue })}
                                 />
-                                <br>
-                                </br><br/>
+                                <br></br>
+                                <br />
                                 <TextField
                                     label="Enter your password:"
                                     placeholder="Password"
@@ -64,10 +72,10 @@ class Login extends Component {
                                     }}
                                     onChange={(event, newValue) => this.setState({ password: newValue })}
                                 />
-                                <br/>
+                                <br />
                                 <br></br>
                                 <div>
-                                    <Button 
+                                    <Button
                                         variant="raised"
                                         size="large"
                                         onClick={(value) => { this.state.changeWindowHandler(1) }}>
@@ -76,7 +84,7 @@ class Login extends Component {
                                 </div>
                                 <br></br>
                                 <br></br>
-                                Forgot your password? Click here.
+                                Forgot your password? Click <Button size="small" onClick={this.handleClick}>here</Button>.
                             </div>
                         </Paper>
                         <Snackbar
@@ -86,7 +94,7 @@ class Login extends Component {
                             SnackbarContentProps={{
                                 'aria-describedby': 'message-id',
                             }}
-                            message={<span id="message-id">I love snacks</span>}
+                            message={<span id="message-id">Password Recovery E-Mail Sent</span>}
                         />
                     </div>
                 </MuiThemeProvider>
