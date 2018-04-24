@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import LoginScreen from './LoginScreen';
 import Overview from './Overview';
-import ProjectView from './ProjectView'; 
+import ProjectView from './ProjectView';
 import SetupView from './Setup';
+import ListFolder from './Files'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
 import Dialog from 'material-ui/Dialog';
@@ -26,7 +27,7 @@ class App extends Component {
         value: 0,
         auth: false,
         anchorEl: null,
-        currentWindow: 0,
+        currentWindow: 3,
         changeWindowHandler: props.changeWindowHandler
     }
   }
@@ -59,7 +60,7 @@ class App extends Component {
   handleClose = () => {
       this.setState({ anchorEl: null });
   };
-  
+
   handleLogout = () => {
       this.setState({ anchorEl: null });
       this.setState({ auth: false });
@@ -119,6 +120,7 @@ class App extends Component {
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 3 && <ListFolder changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
       </div>
     );
   }
