@@ -1,11 +1,7 @@
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
@@ -66,8 +62,6 @@ class Login extends Component {
     render() {
         console.log(window.innerWidth);
         var divStyleFullScreen = {
-            //paddingRight: window.innerWidth * .40,
-            //paddingLeft: window.innerWidth * .40,
             paddingRight: this.setWidthStuff(),
             paddingLeft: this.setWidthStuff(),
             paddingTop: window.innerHeight * .10,
@@ -133,4 +127,4 @@ class Login extends Component {
     }
 }
 
-export default withStyles(styles)(Login);
+export default Login;
