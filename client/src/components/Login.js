@@ -38,20 +38,38 @@ class Login extends Component {
 
     setHeightStuff() {
         console.log(window.innerHeight)
-        if(window.innerHeight >= 1000) {
+        if(window.innerHeight >= 2000) {
+            return(window.innerHeight * .15)
+        }else if(window.innerHeight >= 1000) {
             return(window.innerHeight * .25)
         } else if (window.innerHeight >= 800) {
             return(window.innerHeight * .35)
+        } else if(window.innerHeight >= 700) {
+            return(window.innerHeight * .42)
         } else {
             return(window.innerHeight * .55)
+        }
+    }
+
+    setWidthStuff() {
+        if(window.innerWidth >= 3800) { //4K
+            return(window.innerWidth * .40)
+        } else if (window.innerWidth >= 1800) { //1080p
+            return(window.innerWidth * .40)
+        } else if (window.innerWidth >= 1200) { //720p
+            return(window.innerWidth * .35)
+        } else {
+            return(window.innerWidth * .30)
         }
     }
 
     render() {
         console.log(window.innerWidth);
         var divStyleFullScreen = {
-            paddingRight: window.innerWidth * .40,
-            paddingLeft: window.innerWidth * .40,
+            //paddingRight: window.innerWidth * .40,
+            //paddingLeft: window.innerWidth * .40,
+            paddingRight: this.setWidthStuff(),
+            paddingLeft: this.setWidthStuff(),
             paddingTop: window.innerHeight * .10,
         };
 
