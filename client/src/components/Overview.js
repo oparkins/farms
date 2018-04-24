@@ -10,9 +10,8 @@ class Overview extends Component {
         super(props);
         this.state = {
             value: 0,
-            changeWindowHandler: props.changeWindowHandler
+            changeWindowHandler: props.changeWindowHandler,
         }
-
     }
 
     handleChange = (event, value) => {
@@ -25,7 +24,7 @@ class Overview extends Component {
 
     render () {
         const { value } = this.state;
-
+        const _self = this;
         return  (
             <div>
                 <Tabs
@@ -38,7 +37,7 @@ class Overview extends Component {
                     <Tab label="Divisions" />
                     <Tab label="Projects" />
                 </Tabs>
-
+                <br/>
                 {value === 0 && <CompaniesTab callback={this.changeTab}/>}
                 {value === 1 && <DivisionsTab callback={this.changeTab}/>}
                 {value === 2 && <ProjectsTab callback={this.changeTab} changeWindowHandler={this.state.changeWindowHandler}/>}

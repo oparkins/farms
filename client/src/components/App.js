@@ -27,7 +27,7 @@ class App extends Component {
         value: 0,
         auth: false,
         anchorEl: null,
-        currentWindow: 3,
+        currentWindow: 0,
         changeWindowHandler: props.changeWindowHandler
     }
   }
@@ -114,8 +114,10 @@ class App extends Component {
                 </div>
                 )}
             </Toolbar>
-
         </AppBar>
+
+        { this.state.currentWindow !== 1 && <br/>}
+
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
