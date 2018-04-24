@@ -36,15 +36,27 @@ class Login extends Component {
         this.setState({ open: false });
     };
 
+    setHeightStuff() {
+        console.log(window.innerHeight)
+        if(window.innerHeight >= 1000) {
+            return(window.innerHeight * .25)
+        } else if (window.innerHeight >= 800) {
+            return(window.innerHeight * .35)
+        } else {
+            return(window.innerHeight * .55)
+        }
+    }
+
     render() {
+        console.log(window.innerWidth);
         var divStyleFullScreen = {
             paddingRight: window.innerWidth * .40,
             paddingLeft: window.innerWidth * .40,
             paddingTop: window.innerHeight * .10,
         };
 
-        var paperStyleFullScreen = {
-            minHeight: window.innerHeight * .25
+        var paperStyleFullScreen = { 
+            minHeight: this.setHeightStuff(),
         };
         return (
             <div>
@@ -84,7 +96,7 @@ class Login extends Component {
                                 </div>
                                 <br></br>
                                 <br></br>
-                                Forgot your password? Click <Button size="small" onClick={this.handleClick}>here</Button>.
+                                Forgot your password? Click <Button size="small" onClick={this.handleClick}>here</Button>
                             </div>
                         </Paper>
                         <Snackbar
