@@ -10,21 +10,21 @@ import Paper from 'material-ui/Paper';
 
 
 
-class FileView extends Component {
+class FileList extends Component {
   createFileListItem (name) {
-    return(
+   return(
       <ListItem>
-        <Avatar>
-          <WorkIcon />
-        </Avatar>
+          <Avatar>
+            <WorkIcon/>
+          </Avatar>
         <ListItemText primary={name} secondary="Today" />
       </ListItem>
-    );
-  }
+   );
+ }
 
   render() {
     return (
-      <div >
+      <div>
         <Paper style={{width: '50%', margin: '0 auto'}}>
           <List>
             {this.createFileListItem("aname")}
@@ -38,4 +38,4 @@ class FileView extends Component {
 }
 
 
-export default FileView;
+export default FileList;
