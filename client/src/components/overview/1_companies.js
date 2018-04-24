@@ -132,6 +132,9 @@ class CompaniesTab extends Component {
     deleteCompanies = (_self) => {
         _self = _self || this;
         var i;
+
+        // get reid of dialg immediately: not sure is this should be done because the dialog disappears if it fails
+        _self.setState({showDialog: false});
         for(i = 0; i < _self.state.checkedItems.length -1; i++) {
             NetworkManager.fetch("/companies/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
                 console.log(data);              
@@ -140,7 +143,7 @@ class CompaniesTab extends Component {
             });
         }
         NetworkManager.fetch("/companies/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
-            _self.setState({showDialog: false, deleteItem: false, checkedItems: []});
+            _self.setState({deleteItem: false, checkedItems: []});
             _self.getCompanies(_self);
         }).catch(function(error) {
             console.log(error);//TODO: show error?
@@ -169,19 +172,6 @@ class CompaniesTab extends Component {
      */
     render () {
         const { value } = this.state;
-
-        const DeleteButton = (
-            <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
-                <DeleteIcon/>
-            </Button>
-
-        );
-        
-        const AddButton = (
-            <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
-                <AddIcon/>
-            </Button>
-        );
 
         const AddDialog = (
             <div>
@@ -249,7 +239,7 @@ class CompaniesTab extends Component {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.buttonHandler} color="primary" autoFocus style={{ marginLeft: "100%"}}>
+                    <Button onClick={() => {this.addCompany(this)}} color="primary" autoFocus style={{ marginLeft: "100%"}}>
                     Add
                     </Button>
                 </DialogActions>
@@ -265,10 +255,10 @@ class CompaniesTab extends Component {
                     This will compleetly remove all slected companies. Do you wish to continue?
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={(value) => {this.setState({showDialog: false})}} color="primary" autoFocus>
+                    <Button onClick={() => {this.setState({showDialog: false})}} color="primary" autoFocus>
                     No
                     </Button>
-                    <Button onClick={this.buttonHandler} color="primary" autoFocus>
+                    <Button onClick={() => this.deleteCompanies(this)} color="primary" autoFocus>
                     Yes
                     </Button>
                 </DialogActions>
@@ -283,9 +273,11 @@ class CompaniesTab extends Component {
                 {this.state.listItems}
                 </List>
 
-                { this.state.deleteItem ? DeleteButton : AddButton}
+                <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
+                    { this.state.deleteItem ? <DeleteIcon/>: <AddIcon/>}
+                </Button>
 
-                <Dialog open={this.state.showDialog} onClose={this.closeDialog}>
+                <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
                     { this.state.deleteItem ? DeleteDialog : AddDialog}
                 </Dialog>
             </Paper>
