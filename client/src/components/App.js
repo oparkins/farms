@@ -4,7 +4,7 @@ import LoginScreen from './LoginScreen';
 import Overview from './Overview';
 import ProjectView from './ProjectView';
 import SetupView from './Setup';
-import ListFolder from './Files'
+import ListFolder from './FileView'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
 import Dialog from 'material-ui/Dialog';
@@ -43,7 +43,7 @@ class App extends Component {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
     })
-    
+
     this.AppHistory.listen((location, action) => {
         console.log(action, location.pathname, location.state)
         console.log("History Length: " + this.AppHistory.length);
@@ -67,7 +67,7 @@ class App extends Component {
       this.setState({ value: 0 });
       this.setState({ currentWindow: 0 });
   };
-  
+
   render() {
     const { value, auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
