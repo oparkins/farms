@@ -4,7 +4,7 @@ import LoginScreen from './LoginScreen';
 import Overview from './Overview';
 import ProjectView from './ProjectView';
 import SetupView from './Setup';
-import ListFolder from './Files'
+import ListFolder from './FileView'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
 import Dialog from 'material-ui/Dialog';
@@ -33,7 +33,7 @@ class App extends Component {
         anchorEl: null,
         currentWindow: 0,
         changeWindowHandler: props.changeWindowHandler,
-        openDrawer: false,
+        openDrawer: false
     }
   }
 
@@ -48,7 +48,7 @@ class App extends Component {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
     })
-    
+
     this.AppHistory.listen((location, action) => {
         console.log(action, location.pathname, location.state)
         console.log("History Length: " + this.AppHistory.length);
@@ -77,10 +77,11 @@ class App extends Component {
   toggleDrawer = () => {
     this.setState({ openDrawer: true});
   };
-  
+
   toggleDrawerClose = () => {
     this.setState({ openDrawer: false });
   };
+
 
   render() {
     const { value, auth, anchorEl, openDrawer } = this.state;
@@ -154,9 +155,10 @@ class App extends Component {
                 </List>
             </div>
             </Drawer>
-
-
         </AppBar>
+
+        { this.state.currentWindow !== 1 && <br/>}
+
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
