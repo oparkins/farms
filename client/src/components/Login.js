@@ -8,6 +8,8 @@ import Typography from 'material-ui/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import Snackbar from 'material-ui/Snackbar';
+import Fade from 'material-ui/transitions/Fade';
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -77,6 +79,15 @@ class Login extends Component {
                                 Forgot your password? Click here.
                             </div>
                         </Paper>
+                        <Snackbar
+                            open={this.state.open}
+                            onClose={this.handleClose}
+                            transition={Fade}
+                            SnackbarContentProps={{
+                                'aria-describedby': 'message-id',
+                            }}
+                            message={<span id="message-id">I love snacks</span>}
+                        />
                     </div>
                 </MuiThemeProvider>
             </div>
