@@ -17,6 +17,10 @@ import NetworkManager from './NetworkManager';
 import Typography from 'material-ui/Typography';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
+import ArrowBack from 'material-ui-icons/ArrowBack';
+import Info from 'material-ui-icons/Info';
+import Drawer from 'material-ui/Drawer';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 
 class App extends Component {
 
@@ -27,8 +31,9 @@ class App extends Component {
         value: 0,
         auth: false,
         anchorEl: null,
-        currentWindow: 3,
-        changeWindowHandler: props.changeWindowHandler
+        currentWindow: 0,
+        changeWindowHandler: props.changeWindowHandler,
+        openDrawer: false,
     }
   }
 
@@ -66,10 +71,19 @@ class App extends Component {
       this.setState({ auth: false });
       this.setState({ value: 0 });
       this.setState({ currentWindow: 0 });
+      this.setState({ openDrawer: false });
+  };
+
+  toggleDrawer = () => {
+    this.setState({ openDrawer: true});
   };
   
+  toggleDrawerClose = () => {
+    this.setState({ openDrawer: false });
+  };
+
   render() {
-    const { value, auth, anchorEl } = this.state;
+    const { value, auth, anchorEl, openDrawer } = this.state;
     const open = Boolean(anchorEl);
 
 
@@ -77,7 +91,11 @@ class App extends Component {
       <div className="App">
         <AppBar position="static" className="App-Appbar">
             <Toolbar>
-                <IconButton color="inherit" aria-label="Menu" style={{ marginLeft: -12, marginRight: 20,}}>
+                <IconButton 
+                    onClick={this.toggleDrawer} 
+                    color="inherit" aria-label="Menu" 
+                    style={{ marginLeft: -12, marginRight: 20,}}
+                >
                     <MenuIcon />
                 </IconButton>
             <Typography variant="title" color="inherit" className="appbarFlex">
@@ -114,6 +132,26 @@ class App extends Component {
                 </div>
                 )}
             </Toolbar>
+
+            <Drawer open={openDrawer} onClose={this.toggleDrawerClose}>
+            <div>
+                <List style={{paddingLeft: "10px", paddingRight: "100px"}}>
+                <ListItem button> 
+                    <AccountCircle />
+                    <ListItemText primary="Profile" /> 
+                </ListItem>
+                <ListItem button onClick={this.handleLogout}>
+                    <ArrowBack />
+                    <ListItemText primary="Logout" /> 
+                </ListItem>
+                <ListItem button> 
+                    <Info />
+                    <ListItemText primary="About" /> 
+                </ListItem>
+                </List>
+            </div>
+            </Drawer>
+
 
         </AppBar>
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
