@@ -91,6 +91,7 @@ class App extends Component {
       <div className="App">
         <AppBar position="static" className="App-Appbar">
             <Toolbar>
+            {this.state.currentWindow > 0 && (
                 <IconButton 
                     onClick={this.toggleDrawer} 
                     color="inherit" aria-label="Menu" 
@@ -98,6 +99,8 @@ class App extends Component {
                 >
                     <MenuIcon />
                 </IconButton>
+            )}
+
             <Typography variant="title" color="inherit" className="appbarFlex">
                 F.A.R.M.S
             </Typography>
@@ -134,9 +137,9 @@ class App extends Component {
             </Toolbar>
 
             <Drawer open={openDrawer} onClose={this.toggleDrawerClose}>
-            <div>
-                <List style={{paddingLeft: "10px", paddingRight: "100px"}}>
-                <ListItem button> 
+            <div style={{ width: '100%', minWidth: 300 }}>
+                <List>
+                <ListItem button className="App-drawerListItem"> 
                     <AccountCircle />
                     <ListItemText primary="Profile" /> 
                 </ListItem>

@@ -34,13 +34,6 @@ root {
   width: drawerWidth;
 }
 
-.App-drawerHeader {
-  display: 'flex';
-  alignItems: 'center';
-  justifyContent: 'flex-end';
-  padding: '0 8px';
-}
-
 .appbarFlex{
       flex: 3;
 }
