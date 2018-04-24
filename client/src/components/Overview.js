@@ -10,9 +10,26 @@ class Overview extends Component {
         super(props);
         this.state = {
             value: 0,
-            changeWindowHandler: props.changeWindowHandler
+            changeWindowHandler: props.changeWindowHandler,
+            extraAppBarCodeHandler : props.extraAppBarCodeHandler
         }
+        this.state.extraAppBarCodeHandler(
+            <Tabs
+                value={this.state.value}
+                onChange={this.handleChange}
+                centered
+                className="Overview-TabBar"
+                >
+                <Tab label="Companies" />
+                <Tab label="Divisions" />
+                <Tab label="Projects" />
+            </Tabs>
+        )
 
+    }
+
+    componentWillUnmount() {
+        this.state.extraAppBarCodeHandler(null)
     }
 
     handleChange = (event, value) => {
@@ -28,17 +45,6 @@ class Overview extends Component {
 
         return  (
             <div>
-                <Tabs
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    centered
-                    className="Overview-TabBar"
-                    >
-                    <Tab label="Companies" />
-                    <Tab label="Divisions" />
-                    <Tab label="Projects" />
-                </Tabs>
-
                 {value === 0 && <CompaniesTab callback={this.changeTab}/>}
                 {value === 1 && <DivisionsTab callback={this.changeTab}/>}
                 {value === 2 && <ProjectsTab callback={this.changeTab} changeWindowHandler={this.state.changeWindowHandler}/>}

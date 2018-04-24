@@ -28,6 +28,7 @@ class App extends Component {
         auth: false,
         anchorEl: null,
         currentWindow: 0,
+        extraAppBarCode : null,
         changeWindowHandler: props.changeWindowHandler
     }
   }
@@ -67,6 +68,10 @@ class App extends Component {
       this.setState({ value: 0 });
       this.setState({ currentWindow: 0 });
   };
+
+  setExtraAppBarCode(code) {
+      this.setState({ extraAppBarCode : code });
+  }
   
   render() {
     const { value, auth, anchorEl } = this.state;
@@ -114,12 +119,13 @@ class App extends Component {
                 </div>
                 )}
             </Toolbar>
-
         </AppBar>
+        { this.state.extraAppBarCode }
+        <br/>
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} extraAppBarCodeHandler={ (code) => this.setExtraAppBarCode(code) } /> }
+        { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value, })}} /> }
         { this.state.currentWindow === 3 && <ListFolder changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
       </div>
     );
