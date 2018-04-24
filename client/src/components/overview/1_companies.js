@@ -6,7 +6,13 @@ import AddIcon from 'material-ui-icons/Add';
 import DeleteIcon from 'material-ui-icons/Delete';
 import Checkbox from 'material-ui/Checkbox';
 import NetworkManager from '../NetworkManager';
-import Dialog, {DialogTitle} from 'material-ui/Dialog';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+  } from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 class CompaniesTab extends Component {
     constructor(props) {
@@ -154,8 +160,21 @@ class CompaniesTab extends Component {
         }
     }
 
+    closeDialog = () => {
+        this.setState({showDialog: false});
+    }
+
     /**
      * Renders the view based on the state of the component.
+            addressLine1: "The",
+            addressLine2: "Data",
+            addressCity: "Never",
+            addressState: "Lies",
+            addressZip: "Am",
+            logo: "I",
+            phone: "Right",
+            email: "contactus@sandia.gov"
+     * 
      */
     render () {
         const { value } = this.state;
@@ -169,10 +188,74 @@ class CompaniesTab extends Component {
                 <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
                     { this.state.deleteItem ? <DeleteIcon/> : <AddIcon/>}
                 </Button>
-                <Dialog open={this.state.showDialog}>
-                    <Button onClick={this.buttonHandler}>
-                        Add Test Data (TODO: Make this a real form for users)
-                    </Button> 
+                <Dialog open={this.state.showDialog} onClose={this.closeDialog}>
+                <DialogTitle>
+                    Add Company
+                </DialogTitle>
+                <DialogContent>
+                    <TextField
+                        id="company"
+                        label="Company Name"
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        id="address1"
+                        label="Primary Address"
+                        margin="normal"
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        id="address2"
+                        label="Secondary Address"
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        id="city"
+                        label="City"
+                        margin="normal"
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        id="state"
+                        label="State"
+                        margin="normal"
+                    />
+                    <TextField
+                        id="zip"
+                        label="Zip"
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        id="phone"
+                        label="Phone"
+                        margin="normal"
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        id="email"
+                        label="Email"
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        id="logo"
+                        label="Logo Path"
+                        margin="normal"
+                    />
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.buttonHandler} color="primary" autoFocus style={{ marginLeft: "100%"}}>
+                    Add
+                    </Button>
+                </DialogActions>
                 </Dialog>
             </Paper>
             </div>
