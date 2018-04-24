@@ -152,7 +152,7 @@ class CompaniesTab extends Component {
      * on if we are deleting or adding, it will act accordingly.
      */
     buttonHandler = () => {
-        this.setState({showDialog : true});
+        //this.setState({showDialog : true});
         if(this.state.deleteItem) {
             this.deleteCompanies(this);
         } else {
@@ -166,36 +166,33 @@ class CompaniesTab extends Component {
 
     /**
      * Renders the view based on the state of the component.
-            addressLine1: "The",
-            addressLine2: "Data",
-            addressCity: "Never",
-            addressState: "Lies",
-            addressZip: "Am",
-            logo: "I",
-            phone: "Right",
-            email: "contactus@sandia.gov"
-     * 
      */
     render () {
         const { value } = this.state;
 
-        return  (
+        const DeleteButton = (
+            <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
+                <DeleteIcon/>
+            </Button>
+
+        );
+        
+        const AddButton = (
+            <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
+                <AddIcon/>
+            </Button>
+        );
+
+        const AddDialog = (
             <div>
-            <Paper style={{width: '50%', margin: '0 auto'}}>
-                <List component="nav">
-                {this.state.listItems}
-                </List>
-                <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
-                    { this.state.deleteItem ? <DeleteIcon/> : <AddIcon/>}
-                </Button>
-                <Dialog open={this.state.showDialog} onClose={this.closeDialog}>
                 <DialogTitle>
                     Add Company
                 </DialogTitle>
                 <DialogContent>
+                    Add a company to your list. Enter in the fallowing information.
                     <TextField
                         id="company"
-                        label="Company Name"
+                        label="Company Name *"
                         margin="normal"
                     />
 
@@ -256,6 +253,40 @@ class CompaniesTab extends Component {
                     Add
                     </Button>
                 </DialogActions>
+            </div>
+        );
+        
+        const DeleteDialog = (
+            <div>
+                <DialogTitle>
+                    Delete Company
+                </DialogTitle>
+                <DialogContent>
+                    This will compleetly remove all slected companies. Do you wish to continue?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={(value) => {this.setState({showDialog: false})}} color="primary" autoFocus>
+                    No
+                    </Button>
+                    <Button onClick={this.buttonHandler} color="primary" autoFocus>
+                    Yes
+                    </Button>
+                </DialogActions>
+            </div>
+        );
+
+
+        return  (
+            <div>
+            <Paper style={{width: '50%', margin: '0 auto'}}>
+                <List component="nav">
+                {this.state.listItems}
+                </List>
+
+                { this.state.deleteItem ? DeleteButton : AddButton}
+
+                <Dialog open={this.state.showDialog} onClose={this.closeDialog}>
+                    { this.state.deleteItem ? DeleteDialog : AddDialog}
                 </Dialog>
             </Paper>
             </div>
