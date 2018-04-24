@@ -27,7 +27,7 @@ class App extends Component {
         value: 0,
         auth: false,
         anchorEl: null,
-        currentWindow: 3,
+        currentWindow: 0,
         changeWindowHandler: props.changeWindowHandler
     }
   }
