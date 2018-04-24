@@ -7,7 +7,7 @@
  */
 
 var Config = {
-    ServerAddress : "http://localhost:3002"
+    ServerAddress : "http://localhost:3001"
 }
 
 export default Config
