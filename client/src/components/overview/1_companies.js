@@ -75,11 +75,9 @@ class CompaniesTab extends Component {
         console.log("Creating list item...");
         return (<ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
-                    <Checkbox
-                        key={name + id + "checkbox"}
-                        onChange={(event, checked) => {_self.checkboxHandler({id})}}
-                        value='checked1'
-                    />
+                    <Button onClick={() => {this.setState({showDialog : true})}} color='primary'>
+                        <DeleteIcon/>
+                    </Button>
                 </ListItem>);
     }
 
