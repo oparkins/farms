@@ -22,8 +22,18 @@ class CompaniesTab extends Component {
             callback: props.callback,
             showDialog: false, //Shows the dialog box
             deleteItem: false, //Decide if we are deleting or adding companies
-            checkedItems: [] //Holds the id numbers of the checked items
-        }
+            checkedItems: [], //Holds the id numbers of the checked items
+            
+            name: "",
+            addressLine1: "",
+            addressLine2: "",
+            addressCity: "",
+            addressState: "",
+            addressZip: "",
+            logo: "",
+            phone: "",
+            email: ""
+        };
         this.getCompanies(this); //Populate the list with companies
     }
     
@@ -80,18 +90,18 @@ class CompaniesTab extends Component {
      * of the component.
      */
     addCompany = (_self) => {
+        var tmpData = {
+            name: _self.state.name,
+            addressLine1: _self.state.addressLine1,
+            addressLine2: _self.state.addressLine2,
+            addressCity: _self.state.addressCity,
+            addressState: _self.state.addressState,
+            addressZip: _self.state.addressZip,
+            logo: _self.state.logo,
+            phone: _self.state.phone,
+            email: _self.state.email
+        }
         //TODO: Change the below template to use input values from dialog box
-        var tmpData = { 
-            name: "Sandia National Laboratories",
-            addressLine1: "The",
-            addressLine2: "Data",
-            addressCity: "Never",
-            addressState: "Lies",
-            addressZip: "Am",
-            logo: "I",
-            phone: "Right",
-            email: "contactus@sandia.gov"
-        };
         NetworkManager.post("/companies", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getCompanies(_self);
@@ -99,6 +109,19 @@ class CompaniesTab extends Component {
             //TODO: Show some banner? Like a snack bar? https://material-ui-next.com/demos/snackbars/
             console.log("Error happened with addCompany(); " + error);
         });
+
+        // TODO: find a better way to reset everything, maybe an array of elements?
+        // set everything back to zero
+        _self.state.name = ""
+        _self.state.addressLine1 = ""
+        _self.state.addressLine2 = ""
+        _self.state.addressCity = ""
+        _self.state.addressState = ""
+        _self.state.addressZip = ""
+        _self.state.logo = ""
+        _self.state.phone = ""
+        _self.state.emai = ""
+
 
     }
 
@@ -150,18 +173,10 @@ class CompaniesTab extends Component {
         });
     }
 
-    /**
-     * Handles the floating action button click. Depending
-     * on if we are deleting or adding, it will act accordingly.
-     */
-    buttonHandler = () => {
-        //this.setState({showDialog : true});
-        if(this.state.deleteItem) {
-            this.deleteCompanies(this);
-        } else {
-            this.addCompany(this);
-        }
+    addInfo = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
     }
+
 
     closeDialog = () => {
         this.setState({showDialog: false});
@@ -181,59 +196,76 @@ class CompaniesTab extends Component {
                 <DialogContent>
                     Add a company to your list. Enter in the fallowing information.
                     <TextField
-                        id="company"
+                        name="name"
                         label="Company Name *"
+                        value={this.state.name}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
 
                     <br></br>
                     <TextField
-                        id="address1"
+                        name="addressLine1"
                         label="Primary Address"
-                        margin="normal"
+                        value={this.state.addressLine1}
+                        onChange={this.addInfo}
                         style={{ marginRight: "20px" }}
                     />
                     <TextField
-                        id="address2"
+                        name="addressLine2"
                         label="Secondary Address"
+                        value={this.state.addressLine2}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
 
                     <br></br>
                     <TextField
-                        id="city"
+                        name="addressCity"
                         label="City"
+                        value={this.state.addressCity}
+                        onChange={this.addInfo}
                         margin="normal"
                         style={{ marginRight: "20px" }}
                     />
                     <TextField
-                        id="state"
+                        name="addressState"
                         label="State"
+                        value={this.state.addressState}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
                     <TextField
-                        id="zip"
+                        name="addressZip"
                         label="Zip"
+                        value={this.state.addressZip}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
 
                     <br></br>
                     <TextField
-                        id="phone"
+                        name="phone"
                         label="Phone"
                         margin="normal"
+                        value={this.state.phone}
+                        onChange={this.addInfo}
                         style={{ marginRight: "20px" }}
                     />
                     <TextField
-                        id="email"
+                        name="email"
                         label="Email"
+                        value={this.state.email}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
 
                     <br></br>
                     <TextField
-                        id="logo"
+                        name="logo"
                         label="Logo Path"
+                        value={this.state.logo}
+                        onChange={this.addInfo}
                         margin="normal"
                     />
 
