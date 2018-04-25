@@ -6,7 +6,13 @@ import AddIcon from 'material-ui-icons/Add';
 import DeleteIcon from 'material-ui-icons/Delete';
 import Checkbox from 'material-ui/Checkbox';
 import NetworkManager from '../NetworkManager';
-import Dialog, {DialogTitle} from 'material-ui/Dialog';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+  } from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 class CompaniesTab extends Component {
     constructor(props) {
@@ -16,8 +22,18 @@ class CompaniesTab extends Component {
             callback: props.callback,
             showDialog: false, //Shows the dialog box
             deleteItem: false, //Decide if we are deleting or adding companies
-            checkedItems: [] //Holds the id numbers of the checked items
-        }
+            checkedItems: [], //Holds the id numbers of the checked items
+            
+            name: "",
+            addressLine1: "",
+            addressLine2: "",
+            addressCity: "",
+            addressState: "",
+            addressZip: "",
+            logo: "",
+            phone: "",
+            email: ""
+        };
         this.getCompanies(this); //Populate the list with companies
     }
     
@@ -74,18 +90,18 @@ class CompaniesTab extends Component {
      * of the component.
      */
     addCompany = (_self) => {
+        var tmpData = {
+            name: _self.state.name,
+            addressLine1: _self.state.addressLine1,
+            addressLine2: _self.state.addressLine2,
+            addressCity: _self.state.addressCity,
+            addressState: _self.state.addressState,
+            addressZip: _self.state.addressZip,
+            logo: _self.state.logo,
+            phone: _self.state.phone,
+            email: _self.state.email
+        }
         //TODO: Change the below template to use input values from dialog box
-        var tmpData = { 
-            name: "Sandia National Laboratories",
-            addressLine1: "The",
-            addressLine2: "Data",
-            addressCity: "Never",
-            addressState: "Lies",
-            addressZip: "Am",
-            logo: "I",
-            phone: "Right",
-            email: "contactus@sandia.gov"
-        };
         NetworkManager.post("/companies", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getCompanies(_self);
@@ -93,6 +109,19 @@ class CompaniesTab extends Component {
             //TODO: Show some banner? Like a snack bar? https://material-ui-next.com/demos/snackbars/
             console.log("Error happened with addCompany(); " + error);
         });
+
+        // TODO: find a better way to reset everything, maybe an array of elements?
+        // set everything back to zero
+        _self.state.name = ""
+        _self.state.addressLine1 = ""
+        _self.state.addressLine2 = ""
+        _self.state.addressCity = ""
+        _self.state.addressState = ""
+        _self.state.addressZip = ""
+        _self.state.logo = ""
+        _self.state.phone = ""
+        _self.state.emai = ""
+
 
     }
 
@@ -126,6 +155,9 @@ class CompaniesTab extends Component {
     deleteCompanies = (_self) => {
         _self = _self || this;
         var i;
+
+        // get reid of dialg immediately: not sure is this should be done because the dialog disappears if it fails
+        _self.setState({showDialog: false});
         for(i = 0; i < _self.state.checkedItems.length -1; i++) {
             NetworkManager.fetch("/companies/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
                 console.log(data);              
@@ -134,24 +166,20 @@ class CompaniesTab extends Component {
             });
         }
         NetworkManager.fetch("/companies/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
-            _self.setState({showDialog: false, deleteItem: false, checkedItems: []});
+            _self.setState({deleteItem: false, checkedItems: []});
             _self.getCompanies(_self);
         }).catch(function(error) {
             console.log(error);//TODO: show error?
         });
     }
 
-    /**
-     * Handles the floating action button click. Depending
-     * on if we are deleting or adding, it will act accordingly.
-     */
-    buttonHandler = () => {
-        this.setState({showDialog : true});
-        if(this.state.deleteItem) {
-            this.deleteCompanies(this);
-        } else {
-            this.addCompany(this);
-        }
+    addInfo = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
+
+    closeDialog = () => {
+        this.setState({showDialog: false});
     }
 
     /**
@@ -160,19 +188,129 @@ class CompaniesTab extends Component {
     render () {
         const { value } = this.state;
 
+        const AddDialog = (
+            <div>
+                <DialogTitle>
+                    Add Company
+                </DialogTitle>
+                <DialogContent>
+                    Add a company to your list. Enter in the fallowing information.
+                    <TextField
+                        name="name"
+                        label="Company Name *"
+                        value={this.state.name}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        name="addressLine1"
+                        label="Primary Address"
+                        value={this.state.addressLine1}
+                        onChange={this.addInfo}
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        name="addressLine2"
+                        label="Secondary Address"
+                        value={this.state.addressLine2}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        name="addressCity"
+                        label="City"
+                        value={this.state.addressCity}
+                        onChange={this.addInfo}
+                        margin="normal"
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        name="addressState"
+                        label="State"
+                        value={this.state.addressState}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+                    <TextField
+                        name="addressZip"
+                        label="Zip"
+                        value={this.state.addressZip}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        name="phone"
+                        label="Phone"
+                        margin="normal"
+                        value={this.state.phone}
+                        onChange={this.addInfo}
+                        style={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                        name="email"
+                        label="Email"
+                        value={this.state.email}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+
+                    <br></br>
+                    <TextField
+                        name="logo"
+                        label="Logo Path"
+                        value={this.state.logo}
+                        onChange={this.addInfo}
+                        margin="normal"
+                    />
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {this.addCompany(this)}} color="primary" autoFocus style={{ marginLeft: "100%"}}>
+                    Add
+                    </Button>
+                </DialogActions>
+            </div>
+        );
+        
+        const DeleteDialog = (
+            <div>
+                <DialogTitle>
+                    Delete Company
+                </DialogTitle>
+                <DialogContent>
+                    This will compleetly remove all slected companies. Do you wish to continue?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {this.setState({showDialog: false})}} color="primary" autoFocus>
+                    No
+                    </Button>
+                    <Button onClick={() => this.deleteCompanies(this)} color="primary" autoFocus>
+                    Yes
+                    </Button>
+                </DialogActions>
+            </div>
+        );
+
+
         return  (
             <div>
             <Paper style={{width: '50%', margin: '0 auto'}}>
                 <List component="nav">
                 {this.state.listItems}
                 </List>
-                <Button onClick={(value) => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
-                    { this.state.deleteItem ? <DeleteIcon/> : <AddIcon/>}
+
+                <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
+                    { this.state.deleteItem ? <DeleteIcon/>: <AddIcon/>}
                 </Button>
-                <Dialog open={this.state.showDialog}>
-                    <Button onClick={this.buttonHandler}>
-                        Add Test Data (TODO: Make this a real form for users)
-                    </Button> 
+
+                <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
+                    { this.state.deleteItem ? DeleteDialog : AddDialog}
                 </Dialog>
             </Paper>
             </div>
