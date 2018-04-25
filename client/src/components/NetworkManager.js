@@ -12,7 +12,7 @@ class NetworkManager {
                 method: method || "GET",
                 headers: new Headers(),
             }
-            console.log(method + ":  " + Config.ServerAddress + "/v1" + url);
+            console.log(fetchData['method'] + ":  " + Config.ServerAddress + "/v1" + url);
             fetch(Config.ServerAddress + "/v1" + url, fetchData)
                 .then(function(data) { //data will be companies
                     resolve(data);                    

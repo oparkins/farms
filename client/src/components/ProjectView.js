@@ -8,6 +8,8 @@ import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
+import NetworkManager from './NetworkManager';
 
 
 const styles = theme => ({
@@ -23,28 +25,87 @@ const styles = theme => ({
 function getItems() {
      var json =  {
       "list": [{ "id": 1,
-                 "title": "Windows",
+                 "title": "Version 1.2 JSON",
                  "items": [{
                             "id": 1,
-                            "name": "Version 1.2.3",
+                            "name": "Android",
                             "subitems": [{
                               "id": 1,
-                              "name": "Debug 1.2.3"
+                              "name": "Nougat"
                             },
                              {
                               "id": 2,
-                              "name": "Production 1.2.3"
+                              "name": "Lollipop"
                             }]
                           },
                           {
                             "id": 2,
-                            "name": "Version 1.2.2"
-                            }
-                        ]
-          
-        }]
-         
-    };
+                            "name": "Chrome",
+                            "subitems": [{
+                              "id": 1,
+                              "name": "Iphone 6"
+                            },
+                             {
+                              "id": 2,
+                              "name": "Iphone 10"
+                            }]
+                          }
+                        ]},
+              { "id": 2,
+                 "title": "Mac JSON",
+                 "items": [{
+                            "id": 1,
+                            "name": "Mac"
+                          },
+                          {
+                            "id": 2,
+                            "name": "Iphone",
+                            "subitems": [{
+                              "id": 1,
+                              "name": "Iphone 6"
+                            },
+                             {
+                              "id": 2,
+                              "name": "Iphone 10",
+                              "subitems": [{
+                              "id": 1,
+                              "name": "Iphone 6"
+                            },
+                             {
+                              "id": 2,
+                              "name": "Iphone 10"
+                            }]
+                            }]
+                          }
+                        ]},
+              { "id": 3,
+                            "title": "Linux JSON",
+                            "items": [{
+                              "id": 1,
+                              "name": "Eats",
+                              "subitems": [{
+                              "id": 1,
+                              "name": "Iphone 6"
+                            },
+                             {
+                              "id": 2,
+                              "name": "Iphone 10"
+                            }]
+                            },
+                             {
+                              "id": 2,
+                              "name": "Freight",
+                              "subitems": [{
+                              "id": 1,
+                              "name": "Iphone 6"
+                            },
+                             {
+                              "id": 2,
+                              "name": "Iphone 10"
+                                }]
+                            }]
+                          }
+                        ]};
   return json;
 }
 
@@ -53,106 +114,111 @@ class ProjectView extends Component {
     super(props);
     this.state = {
       changeWindowHandler: props.changeWindowHandler,
-      open1 : false, //closed initially
-      open2 : false, //closed initially
-      open3 : false //closed initially
+      open : false, //closed initially
+      company_id : 1,
+      division_id : 1,
+      project_id : 1,
+      items: new Array()
     }
+    this.getJSONData();
   }
   
-//   handleClick = (e) => {
-//     this.setState({ [e]: !this.state[e] });
-//   };
-
-  handleClick1 = () => {
-    this.setState({ open1: !this.state.open1 });
-  };
+    getVersions() {
+        var data = [];
+        var _self = this;
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/versions", "GET").then((versions_list) => { 
+            versions_list.json().then((versions) => {
+                for(var version_id in versions) {     
+                    console.log("Doing Version: " + version_id);
+                    _self.setState({items: _self.state.items.push(_self.getVersionTypes(versions[version_id], _self))});
+                }
+            });            
+        }).catch(function(error){
+            console.log(" Versions Error " + error);
+        });
+    }
+    
+    getVersionTypes(version, _self) {
+        _self = _self || this;
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/version_types/" + version['version_type_id']).then(function(version_type){                     
+                    return _self.getOperationSystems(version, _self);
+                }).catch(function(error){
+                       console.log(" Versions Error " + error);
+                });
+    }
+    
+    getOperationSystems(version, _self) {
+        
+        _self = _self || this;
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/versions/" + version['id'] + "/operating_systems/").then(function(operating_systems_list) {
+                        operating_systems_list.json().then((operating_systems) => {
+                            var os_array = [];
+                            for(var os_id in operating_systems) {
+                                
+                                var os = operating_systems[os_id];
+                                os_array.push(_self.getOperatingSystemType(os));
+                                console.log(os_array);
+                            }
+                            console.log(os_array);
+                            return {id : version['id'], name : version['buildDate'], os : os_array };
+                        });
+                    })
+    }
+    
+    getOperatingSystemType(os) {
+        console.log("OS: " + os);
+        NetworkManager.fetch("/os_types/" + os['os_type_id']).then(function(operating_systems_type) {  
+            operating_systems_type.json().then((os_type) => {
+                var os_item = {id : os['id'], name : os_type['name']};
+                console.log("OS_ITEM: " + os_item);
+                console.log(os_item);
+                return os_item;
+            });
+                
+        }).catch(function(error){
+            console.log(" Versions Error " + error);
+        });
+    }
   
-  handleClick2 = () => {
-    this.setState({ open2: !this.state.open2 });
-  };
+    getJSONData() {
+        this.getVersions();
+    }
   
-    handleClick3 = () => {
-    this.setState({ open3: !this.state.open3 });
-  };
+   handleClick = (e) => {
+     this.setState({ [e]: !this.state[e] });
+   };
 
-  render() {
-    const { classes } = this.props;
+   
 
-    return (
-      <div className={classes.root}>
-      <Paper style={{width: '50%', margin: '0 auto'}}>
-            <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
-            <List
-            component="nav"
-            subheader={<ListSubheader component="div">Project Name Here</ListSubheader>}
-            >
-            <ListItem button onClick={this.handleClick1}>
-                <ListItemText inset primary="Windows" />
-                {this.state.open1 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.open1} timeout="auto" unmountOnExit={true}>
-                <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Debug 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Release 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Debug 1.2.2" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Release 1.2.2" />
-                </ListItem>
-                </List>
-            </Collapse>
-
-            <ListItem button onClick={this.handleClick2}>
-                <ListItemText inset primary="Mac" />
-                {this.state.open2 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.open2} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                <ListItemText inset primary="Debug 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                <ListItemText inset primary="Release 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                <ListItemText inset primary="Debug 1.2.2" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                <ListItemText inset primary="Release 1.2.2" />
-                </ListItem>
-                </List>
-            </Collapse>
-
-            <ListItem button onClick={this.handleClick3}>
-                <ListItemText inset primary="Linux" />
-                {this.state.open3 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.open3} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                    <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                <ListItemText inset primary="Debug 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Release 1.2.3" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Debug 1.2.2" />
-                </ListItem>
-                <ListItem button className={classes.nested} onClick={(event) => {this.state.changeWindowHandler(3)}}>
-                    <ListItemText inset primary="Release 1.2.2" />
-                </ListItem>
-                </List>
-            </Collapse>
-            </List>
-        </Paper>
-      </div>
-    );
-  }
+   render() {
+    const items = getItems();
+ 
+     return (
+        <div>
+        <p> {this.state.items} </p>
+            <Paper style={{width: '50%', margin: '0 auto'}}>
+                <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
+                {items.list.map((list) => {
+                return (
+                    <List key={list.id} subheader={<ListSubheader>{list.title}</ListSubheader>}>
+                        {list.items.map((item) => {
+                            return ( 
+                                <div key={item.id}>
+                                    <ListItem button key={item.id}>
+                                        <ListItemText primary={item.name} />
+                                    </ListItem>
+                                </div>                            
+                            )
+                                                
+                          })}
+                        
+                    </List>
+                )
+                })}
+            </Paper>
+        </div>
+     );
+   }
 }
 
 ProjectView.propTypes = {
