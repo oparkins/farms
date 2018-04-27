@@ -118,9 +118,10 @@ class ProjectView extends Component {
       company_id : 1,
       division_id : 1,
       project_id : 1,
-      items: new Array()
+      items: new Array(),
+      os_array: new Array()
     }
-    this.getJSONData();
+    this.getVersions();
   }
   
     getVersions() {
@@ -130,7 +131,7 @@ class ProjectView extends Component {
             versions_list.json().then((versions) => {
                 for(var version_id in versions) {     
                     console.log("Doing Version: " + version_id);
-                    _self.setState({items: _self.state.items.push(_self.getVersionTypes(versions[version_id], _self))});
+                    _self.setState({items: versions});
                 }
             });            
         }).catch(function(error){
@@ -160,7 +161,9 @@ class ProjectView extends Component {
                                 console.log(os_array);
                             }
                             console.log(os_array);
-                            return {id : version['id'], name : version['buildDate'], os : os_array };
+                            _self.state.os_array.push({id : version['id'], name : version['buildDate'], os : os_array });
+                            
+                            _self.setState({os_array: _self.state.os_array});
                         });
                     })
     }
@@ -188,6 +191,14 @@ class ProjectView extends Component {
      this.setState({ [e]: !this.state[e] });
    };
 
+   get_os_array_item(version_id) {
+        for(var os in this.state.os_array) {
+            if(os["id"] === version_id) {
+                return os;
+            }
+        }
+        return new Array({ id: "", name: ""});
+   }
    
 
    render() {
@@ -195,13 +206,12 @@ class ProjectView extends Component {
  
      return (
         <div>
-        <p> {this.state.items} </p>
             <Paper style={{width: '50%', margin: '0 auto'}}>
                 <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
-                {items.list.map((list) => {
+                {this.state.items.map((list) => {
                 return (
-                    <List key={list.id} subheader={<ListSubheader>{list.title}</ListSubheader>}>
-                        {list.items.map((item) => {
+                    <List key={list.id} subheader={<ListSubheader>{list.buildDate + "  Release | DEBUG"}</ListSubheader>}>
+                        {this.get_os_array_item(list.id).map((item) => {
                             return ( 
                                 <div key={item.id}>
                                     <ListItem button key={item.id}>
