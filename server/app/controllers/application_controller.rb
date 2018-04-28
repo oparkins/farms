@@ -7,5 +7,11 @@ class ApplicationController < ActionController::API
         def set_headers
             headers['FARMS-Server'] = 'yes-sir'
             headers['FARMS-API'] = 'v1'
+            if User.count() == 0 then
+                headers['FARMS-SETUP'] = 'no'
+                puts "FARMS is not setup"
+            end
         end
+
+    
 end
