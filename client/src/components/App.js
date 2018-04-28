@@ -36,8 +36,14 @@ class App extends Component {
     console.log("Checking for valid server...");
     var thisWindow = this;
     NetworkManager.isServerValid().then(function(data) {
-      thisWindow.setState({currentWindow: 0});
-      console.log("Server Found");
+      var contentType = data.headers.get("FARMS-SETUP");
+      if(contentType && contentType.indexOf("no") !== -1) {
+        thisWindow.setState({currentWindow: -1});
+        console.log("Server has not been setup yet!");
+      }  else {
+        thisWindow.setState({currentWindow: 0});
+        console.log("Server Found");
+      }
     }).catch(function(error) {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
