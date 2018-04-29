@@ -41,7 +41,11 @@ class App extends Component {
         thisWindow.setState({currentWindow: -1});
         console.log("Server has not been setup yet!");
       }  else {
-        thisWindow.setState({currentWindow: 0});
+          if(data.status !== 401) {
+            thisWindow.setState({currentWindow: 1});
+          } else {
+            thisWindow.setState({currentWindow: 0});
+          }        
         console.log("Server Found");
       }
     }).catch(function(error) {

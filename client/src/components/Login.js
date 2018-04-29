@@ -38,17 +38,24 @@ class Login extends Component {
                                 <TextField
                                     label="Enter your Username"
                                     floatingLabelText="Username"
-                                    onChange={(event, newValue) => this.setState({ username: newValue })}
+                                    onChange={(event, newValue) => this.setState({ username: event.target.value })}
                                 />
                                 <br />
                                 <TextField
                                     type="password"
                                     label="Enter your Password"
                                     floatingLabelText="Password"
-                                    onChange={(event, newValue) => this.setState({ password: newValue })}
+                                    onChange={(event, newValue) => this.setState({ password: event.target.value })}
                                 />
                                 <br />
-                                <Button variant="raised" onClick={(value) => { var _self = this; AuthenticationManager.signIn("farms@farms.fake.email", "Bob123456").then(function (data) {
+                                <Button variant="raised" onClick={(value) => { var _self = this; AuthenticationManager.signIn(this.state.username, this.state.password).then(function (data) {
+                                    console.log(data.status_code);
+                                    if(data.status === 401)
+                                    {
+                                        //Sign-in error
+                                        alert("login failed");
+                                        return;
+                                    }                                    
                                     _self.state.changeWindowHandler(1) 
                                 }).catch(function (error) {
                                     console.log(error)

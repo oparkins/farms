@@ -25,54 +25,130 @@ class InitialDataTab extends Component {
             company: "",
             division: "",
             project: "",
-            company_id: nil,
-            division_id: nil,
-            project_id: nil
+            os_types: ["Windows x64", "Windows x86", "Linux x64", "Linux x86", "Mac x64", "Mac x32"],
+            version_types: ["Release", "Debug"],
+            company_id: null,
+            division_id: null,
+            project_id: null,
+            addUserCompleted: false,
+            addOperatingSystemsCompleted: false
         }
     }
 
-    componentDidMount() {
-        this.initializeDatabase();
-    }
-
-    handleChange = (value) => {
-        //this.state.callback(3);
-    };
-
     initializeDatabase() {
-        this.addUser();
+        this.addUser(this).
+        this.addOperatingSystems(this);
+        this.state.callback(3);
     }
 
-    addUser() {
-        AuthenticationManager.createAccount(this.state.email, this.state.password);
+    addUser(_self) {
+        _self = _self || this;
+        AuthenticationManager.createAccount(_self.state.email, _self.state.password).then((response) => {
+            AuthenticationManager.signIn(_self.state.email, _self.state.password).then((response) => {
+                _self.addCompany(_self);
+            });           
+        }).catch((error) => {
+            
+        });
     }
 
-    addCompany() {
+    addCompany(_self) {
+        _self = _self || this;
         NetworkManager.fetchWithParameters("/companies", "POST", {
-            name: this.state.company
+            name: _self.state.company
         }).then((response) => {
-            addDivision();
+            response.json().then((data) => {
+                _self.setState({company_id: data["id"]});
+                _self.addDivision(_self);
+            }); 
         }).catch((error) => {
             //TODO: Show an error
         });
     }
 
-    addDivision() {
-
+    addDivision(_self) {
+        _self = _self || this;
+        NetworkManager.fetchWithParameters("/companies/" + _self.state.company_id + "/divisions", "POST", {
+            name: _self.state.division
+        }).then((response) => {
+            response.json().then((data) => {
+                _self.setState({division_id: data["id"]});
+                _self.addProject(_self);
+            }); 
+        }).catch((error) => {
+            //TODO: Show an error
+        });
     }
 
-    addProject() {
-        
+    addProject(_self) {
+        _self = _self || this;
+        NetworkManager.fetchWithParameters("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects", "POST", {
+            name: _self.state.project
+        }).then((response) => {
+            response.json().then((data) => {
+                this.state.project_id = data["id"];
+                _self.addVersionTypes(_self);
+            }); 
+        }).catch((error) => {
+            //TODO: Show an error
+        });
     }
 
-    
-
-    addOperationSystems() {
-
+    addOperatingSystems(_self) {
+        _self = _self || this;
+        for(var name in _self.state.os_types) {
+            NetworkManager.fetchWithParameters("/os_types/", "POST", {
+                name: name
+            });
+        }
+        this.setState({addOperatingSystemsCompleted: true});
     }
 
-    addVersionTypes() {
+    addVersionTypes(_self) {
+        _self = _self || this;
+        for(var name in _self.state.version_types) {
+            NetworkManager.fetchWithParameters("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/version_types", "POST", {
+                name: name
+            });
+        }
+        this.setState({addUserCompleted: true});
+    }
 
+    listVersionTypes() {
+        var lists = [];
+        for(var name in this.state.version_types) {
+            lists.push(
+            <FormControlLabel
+                key={name+"form_key"}
+                control={
+                <Checkbox
+                    onChange={(event) => {}}
+                    value="gilad"
+                    key={name+"_key"}
+                />
+                }
+                label={this.state.version_types[name]}
+            />);
+        }
+        return lists;
+    }
+
+    listOperatingSystemTypes() {
+        var lists = [];
+        for(var name in this.state.os_types) {
+            lists.push(
+                <FormControlLabel
+                    key={name+"form_key"}
+                    control={
+                    <Checkbox
+                        onChange={(event) => {}}
+                        value="gilad"
+                    />
+                    }
+                    label={this.state.os_types[name]}
+                />);
+        }
+        return lists;
     }
     
 
@@ -132,13 +208,13 @@ class InitialDataTab extends Component {
                             <TextField                             
                                 id="division"
                                 label="Division"
-                                onChange={(event) => { this.setState({company: event.target.value})}}/>
+                                onChange={(event) => { this.setState({division: event.target.value})}}/>
                             <br/>
                             <TextField 
                                 required
                                 id="project"
                                 label="Project"
-                                onChange={(event) => { this.setState({company: event.target.value})}}/>
+                                onChange={(event) => { this.setState({project: event.target.value})}}/>
                         </CardContent>
                     </Card>
                     <br/>
@@ -149,56 +225,7 @@ class InitialDataTab extends Component {
                             </Typography>
                             <br/>
                             <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.gilad}
-                                        onChange={this.handleChange('gilad')}
-                                        value="gilad"
-                                    />
-                                    }
-                                    label="Windows x64"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.jason}
-                                        onChange={this.handleChange('jason')}
-                                        value="jason"
-                                    />
-                                    }
-                                    label="Windows x86"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.antoine}
-                                        onChange={this.handleChange('antoine')}
-                                        value="antoine"
-                                    />
-                                    }
-                                    label="Linux x64"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.antoine}
-                                        onChange={this.handleChange('antoine')}
-                                        value="antoine"
-                                    />
-                                    }
-                                    label="Linux x86"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.antoine}
-                                        onChange={this.handleChange('antoine')}
-                                        value="antoine"
-                                    />
-                                    }
-                                    label="MacOS"
-                                />
+                                { this.listOperatingSystemTypes() }
                             </FormGroup>
                         </CardContent>
                     </Card>
@@ -206,33 +233,14 @@ class InitialDataTab extends Component {
 
                     <Card className="card">
                         <CardContent>
-                            <Typography className="title" variant="headline" component="h2">
-z                            </Typography>
+                            <Typography className="title" variant="headline" component="h2">Last, but not least...</Typography>
                             <br/>
                             <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.gilad}
-                                        onChange={this.handleChange('gilad')}
-                                        value="gilad"
-                                    />
-                                    }
-                                    label="Release"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox
-                                        checked={this.state.jason}
-                                        onChange={this.handleChange('jason')}
-                                        value="jason"
-                                    />
-                                    }
-                                    label="Debug"
-                                />                
+                                {
+                                    this.listVersionTypes()
+                                }
                             </FormGroup>
-
-                            <Button variant="raised" color="primary"> Continue </Button>
+                            <Button variant="raised" color="primary" onClick={(value) => {this.initializeDatabase()} }> Continue </Button>
                         </CardContent>
                     </Card>
                 </Paper>
