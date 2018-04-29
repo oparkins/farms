@@ -1,11 +1,11 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python
 
 import base64
 import requests
 from faker import Faker
 
 # Change this depending on which port you have decided to run the server on.
-server_address = "http://localhost:3001"
+server_address = "http://localhost:300"
 
 # Create faker class
 faker = Faker()
