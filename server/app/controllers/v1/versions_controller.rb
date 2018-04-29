@@ -7,7 +7,7 @@ class V1::VersionsController < V1::ApplicationController
   # GET /version
   def index
       @versions = @project.versions
-	  json_response(@versions)
+      render :json => @versions.to_json(:include => [:version_type]), status: :ok
   end
 
   # POST /version
@@ -18,7 +18,7 @@ class V1::VersionsController < V1::ApplicationController
 
   # GET /version/:id
   def show
-      json_response(@version)
+      render :json => @version.to_json(:include => [:version_type]), status: :ok
   end
 
   # PUT /version/:id
@@ -53,6 +53,6 @@ class V1::VersionsController < V1::ApplicationController
     end
 
     def set_version
-        @version = @project.versions.find_by!(id: params[:id]) if @project
+        @version = @project.versions.joins(:version_type).find_by!(id: params[:id]) if @project
     end
 end
