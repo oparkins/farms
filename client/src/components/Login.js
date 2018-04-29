@@ -3,8 +3,10 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
+
 import Snackbar from 'material-ui/Snackbar';
 import Fade from 'material-ui/transitions/Fade';
+
 
 class Login extends Component {
     constructor(props) {
@@ -99,7 +101,19 @@ class Login extends Component {
                                     <Button
                                         variant="raised"
                                         size="large"
-                                        onClick={(value) => { this.state.changeWindowHandler(1) }}>
+                                        onClick=onClick={(value) => { var _self = this; AuthenticationManager.signIn(this.state.username, this.state.password).then(function (data) {
+                                            console.log(data.status_code);
+                                            if(data.status === 401)
+                                            {
+                                                //Sign-in error
+                                                alert("login failed");
+                                                return;
+                                            }                                    
+                                            _self.state.changeWindowHandler(1) 
+                                        }).catch(function (error) {
+                                            console.log(error)
+                                            alert("login failed");
+                                        })}}>
                                         Log In
                                     </Button>
                                 </div>

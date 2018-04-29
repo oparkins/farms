@@ -46,6 +46,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+#Authentication Gems
+gem 'devise_token_auth'
+
 group :test do
   gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 3.1'

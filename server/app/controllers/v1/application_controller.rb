@@ -1,12 +1,4 @@
-class V1::ApplicationController < ActionController::API
-    include Response
-    include ExceptionHandler
-
-    after_action :set_headers
-
-    protected
-        def set_headers
-            headers['FARMS-Server'] = 'yes-sir'
-            headers['FARMS-API'] = 'v1'
-        end
+class V1::ApplicationController < ApplicationController
+    include DeviseTokenAuth::Concerns::SetUserByToken
+    before_action :authenticate_v1_user!
 end
