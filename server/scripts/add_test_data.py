@@ -5,7 +5,7 @@ import requests
 from faker import Faker
 
 # Change this depending on which port you have decided to run the server on.
-server_address = "http://localhost:300"
+server_address = "http://localhost:3000"
 
 # Create faker class
 faker = Faker()
