@@ -4,10 +4,6 @@ import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 
-import Snackbar from 'material-ui/Snackbar';
-import Fade from 'material-ui/transitions/Fade';
-
-
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -17,13 +13,6 @@ class Login extends Component {
             changeWindowHandler: props.changeWindowHandler
         }
     }
-    handleClick = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
 
     setHeightStuff() {
         if (window.innerHeight >= 2000) {
@@ -57,28 +46,21 @@ class Login extends Component {
             paddingLeft: this.setWidthStuff(),
             paddingTop: window.innerHeight * .10,
         };
-        var divStyleSecondaryPaper = {
-            paddingRight: this.setWidthStuff(),
-            paddingLeft: this.setWidthStuff(),
-            //paddingTop: window.innerHeight * .10,
-        };
-
         var paperStyleFullScreen = {
-            minHeight: this.setHeightStuff(),
-        };
-        var paperStyleSecondary = {
-            minHeight: this.setHeightStuff() - 225,
+            minHeight: this.setHeightStuff() + 20,
         };
         return (
             <div>
                 <MuiThemeProvider>
                     <div style={divStyleFullScreen} >
                         <Paper elevation={4} style={paperStyleFullScreen}>
+                        <br></br>
+                        Welcome to FARMS!
                             <br></br>
                             <br></br>
                             <div>
                                 <TextField
-                                    label="Enter your username:"
+                                    label="Enter a username:"
                                     placeholder="Username"
                                     InputLabelProps={{
                                         shrink: true,
@@ -86,10 +68,20 @@ class Login extends Component {
                                     onChange={(event, newValue) => this.setState({ username: newValue })}
                                 />
                                 <br></br>
-                                <br />
+                                <br/>
                                 <TextField
-                                    label="Enter your password:"
+                                    label="Enter a password:"
                                     placeholder="Password"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    onChange={(event, newValue) => this.setState({ password: newValue })}
+                                />
+                                <br></br>
+                                <br></br>
+                                <TextField
+                                    label="Enter your e-mail:"
+                                    placeholder="Email"
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -101,42 +93,12 @@ class Login extends Component {
                                     <Button
                                         variant="raised"
                                         size="large"
-                                        onClick=onClick={(value) => { var _self = this; AuthenticationManager.signIn(this.state.username, this.state.password).then(function (data) {
-                                            console.log(data.status_code);
-                                            if(data.status === 401)
-                                            {
-                                                //Sign-in error
-                                                alert("login failed");
-                                                return;
-                                            }                                    
-                                            _self.state.changeWindowHandler(1) 
-                                        }).catch(function (error) {
-                                            console.log(error)
-                                            alert("login failed");
-                                        })}}>
-                                        Log In
+                                        //THIS ON CLICK NEEDS TO CALL THE BACK END
+                                        onClick={(value) => { this.state.changeWindowHandler(0) }}>
+                                        Register
                                     </Button>
                                 </div>
-                                <br></br>
-                                <br></br>
-                                Forgot your password? Click <Button size="small" onClick={this.handleClick}>here</Button>
                             </div>
-                        </Paper>
-                        <Snackbar
-                            open={this.state.open}
-                            onClose={this.handleClose}
-                            transition={Fade}
-                            SnackbarContentProps={{
-                                'aria-describedby': 'message-id',
-                            }}
-                            message={<span id="message-id">Password Recovery E-Mail Sent</span>}
-                        />
-                    </div>
-                    <br></br>
-                    <div style={divStyleSecondaryPaper} >
-                        <Paper elevation={4} style={paperStyleSecondary}>
-                            <br></br>
-                            New to FARMS? Register <Button size="small" onClick={(value) => { this.state.changeWindowHandler(4) }}>here</Button>
                         </Paper>
                     </div>
                 </MuiThemeProvider>

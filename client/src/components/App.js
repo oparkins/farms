@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import LoginScreen from './LoginScreen';
 import Overview from './Overview';
-import ProjectView from './ProjectView'; 
+import ProjectView from './ProjectView';
 import SetupView from './Setup';
+import ListFolder from './FileView'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
 import Dialog from 'material-ui/Dialog';
@@ -16,6 +17,11 @@ import NetworkManager from './NetworkManager';
 import Typography from 'material-ui/Typography';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
+import ArrowBack from 'material-ui-icons/ArrowBack';
+import Info from 'material-ui-icons/Info';
+import Drawer from 'material-ui/Drawer';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Registration from './Registration';
 
 class App extends Component {
 
@@ -27,7 +33,8 @@ class App extends Component {
         auth: false,
         anchorEl: null,
         currentWindow: 0,
-        changeWindowHandler: props.changeWindowHandler
+        changeWindowHandler: props.changeWindowHandler,
+        openDrawer: false
     }
   }
 
@@ -52,7 +59,7 @@ class App extends Component {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
     })
-    
+
     this.AppHistory.listen((location, action) => {
         console.log(action, location.pathname, location.state)
         console.log("History Length: " + this.AppHistory.length);
@@ -69,16 +76,26 @@ class App extends Component {
   handleClose = () => {
       this.setState({ anchorEl: null });
   };
-  
+
   handleLogout = () => {
       this.setState({ anchorEl: null });
       this.setState({ auth: false });
       this.setState({ value: 0 });
       this.setState({ currentWindow: 0 });
+      this.setState({ openDrawer: false });
   };
-  
+
+  toggleDrawer = () => {
+    this.setState({ openDrawer: true});
+  };
+
+  toggleDrawerClose = () => {
+    this.setState({ openDrawer: false });
+  };
+
+
   render() {
-    const { value, auth, anchorEl } = this.state;
+    const { value, auth, anchorEl, openDrawer } = this.state;
     const open = Boolean(anchorEl);
 
 
@@ -86,9 +103,16 @@ class App extends Component {
       <div className="App">
         <AppBar position="static" className="App-Appbar">
             <Toolbar>
-                <IconButton color="inherit" aria-label="Menu" style={{ marginLeft: -12, marginRight: 20,}}>
+            {this.state.currentWindow > 0 && (
+                <IconButton 
+                    onClick={this.toggleDrawer} 
+                    color="inherit" aria-label="Menu" 
+                    style={{ marginLeft: -12, marginRight: 20,}}
+                >
                     <MenuIcon />
                 </IconButton>
+            )}
+
             <Typography variant="title" color="inherit" className="appbarFlex">
                 F.A.R.M.S
             </Typography>
@@ -124,11 +148,34 @@ class App extends Component {
                 )}
             </Toolbar>
 
+            <Drawer open={openDrawer} onClose={this.toggleDrawerClose}>
+            <div style={{ width: '100%', minWidth: 300 }}>
+                <List>
+                <ListItem button className="App-drawerListItem"> 
+                    <AccountCircle />
+                    <ListItemText primary="Profile" /> 
+                </ListItem>
+                <ListItem button onClick={this.handleLogout}>
+                    <ArrowBack />
+                    <ListItemText primary="Logout" /> 
+                </ListItem>
+                <ListItem button> 
+                    <Info />
+                    <ListItemText primary="About" /> 
+                </ListItem>
+                </List>
+            </div>
+            </Drawer>
         </AppBar>
+
+        { this.state.currentWindow !== 1 && <br/>}
+
         { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 3 && <ListFolder changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        { this.state.currentWindow === 4 && <Registration changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
       </div>
     );
   }

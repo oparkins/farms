@@ -5,8 +5,13 @@ RSpec.describe 'Libs API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-  let!(:version) { create(:version, project_id: project.id) }
-  let!(:operating_system) { create(:operating_system, version_id: version.id) }
+
+  let!(:version_type) { create(:version_type, project_id: project.id) }
+  let!(:version) { create(:version, project_id: project.id, version_type_id: version_type.id) }
+
+  let!(:os_type) { create(:os_type) }
+  let!(:operating_system) { create(:operating_system, version_id: version.id, os_type_id: os_type.id) }
+
   let!(:libs) { create_list(:lib, 10, operating_system_id: operating_system.id) }
   let(:lib_id) { libs.first.id }
 
@@ -72,7 +77,7 @@ RSpec.describe 'Libs API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/", params: { name: 'Foobar' } }
+      before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system.id}/libs/", params: { idk: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -80,7 +85,7 @@ RSpec.describe 'Libs API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Verify can't be blank, Link can't be blank\"}")
+          .to match("{\"message\":\"Validation failed: Name can't be blank\"}")
       end
     end
   end

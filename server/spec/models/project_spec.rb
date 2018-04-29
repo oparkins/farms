@@ -7,7 +7,5 @@ RSpec.describe Project, type: :model do
   it { should have_many(:versions).dependent(:destroy) }
 
   it { should validate_presence_of(:name) }
-  it { should validate_presence_of(:projectLead) }
-  it { should validate_presence_of(:email) }
   
 end

@@ -67,7 +67,7 @@ RSpec.describe 'Companies API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/v1/companies', params: { name: 'Foobar' } }
+      before { post '/v1/companies', params: { addressCity: 'invalid hopefully' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,7 +75,7 @@ RSpec.describe 'Companies API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Addressline1 can't be blank, Addressline2 can't be blank, Addresscity can't be blank, Addressstate can't be blank, Addresszip can't be blank, Logo can't be blank, Phone can't be blank, Email can't be blank/)
+          .to match(/Validation failed: Name can't be blank/)
       end
     end
   end

@@ -5,7 +5,8 @@ RSpec.describe 'Version API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-  let!(:versions) {create_list(:version, 10, project_id: project.id) }
+  let!(:version_type) { create(:version_type, project_id: project.id) }
+  let!(:versions) {create_list(:version, 10, project_id: project.id, version_type_id: version_type.id) }
   let(:version_id) { versions.first.id }
   
   # Test suite for GET 
@@ -55,12 +56,12 @@ RSpec.describe 'Version API', type: :request do
   # Test suite for POST
   describe 'POST /v1/companies/:id/divisions/:id/projects/:id/versions' do
     # valid payload
-    let(:valid_attributes) { { gitLink: 'Learn Elm', docLink: "myself", ciLink: "some url", buildDate: "2001-02-03T12:00:00+00:00" } }
+    let(:valid_attributes) { { gitLink: 'Learn Elm', docLink: "myself", ciLink: "some url", buildDate: "2001-02-03T12:00:00+00:00", version_type_id: version_type.id } }
 
     context 'when the request is valid' do
       before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions", params: valid_attributes }
 
-      it 'creates a version_type' do
+      it 'creates a version' do
         expect(json['gitLink']).to eq('Learn Elm')
       end
 
@@ -78,14 +79,14 @@ RSpec.describe 'Version API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Gitlink can't be blank, Doclink can't be blank, Cilink can't be blank, Builddate can't be blank\"}")
+          .to match("{\"message\":\"Validation failed: Version type must exist, Builddate can't be blank\"}")
       end
     end
   end
 
   # Test suite for PUT
   describe 'PUT /companies/:id/divisions/:id/projects/:id/versions/:id' do
-    let(:valid_attributes) { { gitLink: 'Learn Elm', docLink: "myself", ciLink: "some url", buildDate: "" } }
+    let(:valid_attributes) { { gitLink: 'Learn Elm', docLink: "myself", ciLink: "some url", buildDate: "", version_type_id: version_type.id } }
 
     context 'when the record exists' do
 	    before { put "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version_id}", params: valid_attributes }

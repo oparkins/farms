@@ -5,8 +5,13 @@ RSpec.describe 'Operating Systems API', type: :request do
   let!(:company) { create(:company) }
   let!(:division) { create(:division, company_id: company.id) }
   let!(:project) { create(:project, division_id: division.id) }
-  let!(:version) { create(:version, project_id: project.id) }
-  let!(:operating_systems) { create_list(:operating_system, 10, version_id: version.id) }
+
+  let!(:version_type) { create(:version_type, project_id: project.id) }
+  let!(:version) { create(:version, project_id: project.id, version_type_id: version_type.id) }
+  
+  let!(:os_type) { create(:os_type) }
+
+  let!(:operating_systems) { create_list(:operating_system, 10, version_id: version.id, os_type_id: os_type.id) }
   let(:operating_system_id) { operating_systems.first.id }
 
   # Test suite for GET 
@@ -56,7 +61,7 @@ RSpec.describe 'Operating Systems API', type: :request do
   # Test suite for POST 
   describe 'POST /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
     # valid payload
-    let(:valid_attributes) { {  } }
+    let(:valid_attributes) { { os_type_id: os_type.id  } }
 
     context 'when the request is valid' do
       before { post "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems", params: valid_attributes }
@@ -69,7 +74,7 @@ RSpec.describe 'Operating Systems API', type: :request do
 
   # Test suite for PUT
   describe 'PUT /v1/companies/:id/divisions/:id/projects/:id/versions/:id/operating_systems/:id' do
-    let(:valid_attributes) { { } }
+    let(:valid_attributes) { { os_type_id: os_type.id } }
 
     context 'when the record exists' do
 	    before { put "/v1/companies/#{company.id}/divisions/#{division.id}/projects/#{project.id}/versions/#{version.id}/operating_systems/#{operating_system_id}", params: valid_attributes }
