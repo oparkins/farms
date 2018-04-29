@@ -79,7 +79,8 @@ class ProjectsTab extends Component {
                         onChange={(event, checked) => {_self.checkboxHandler({id})}}
                         value='checked1'
                     />
-                </ListItem>);
+                </ListItem>
+                );
     }
 
 
@@ -95,7 +96,7 @@ class ProjectsTab extends Component {
             email: _self.state.email
         }
         //TODO: Change the below template to use input values from dialog box
-        NetworkManager.post("/companies/" + _self.state.index + "/divisions", "POST", tmpData).then((data) => {
+        NetworkManager.post("/companies/" + _self.state.index + "/divisions/1/projects", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getProjects(_self);
         }).catch((error) => { 
@@ -119,7 +120,7 @@ class ProjectsTab extends Component {
         if(_self === undefined) {
             _self = this;
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions", "GET").then((data) => {
+        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/1/projects", "GET").then((data) => {
             data.json().then(function(data) {
                 var tmp = [];
                 for(var i = 0; i < data.length; i++) {
@@ -145,13 +146,13 @@ class ProjectsTab extends Component {
         // get reid of dialg immediately: not sure is this should be done because the dialog disappears if it fails
         _self.setState({showDialog: false});
         for(i = 0; i < _self.state.checkedItems.length -1; i++) {
-            NetworkManager.fetch("/companies/" + _self.start.index + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+            NetworkManager.fetch("/companies/" + _self.start.index + "/divisions/1/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
                 console.log(data);              
             }).catch(function(error) {
                 console.log(error); //TODO: show error?
             });
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/1/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
             _self.setState({deleteItem: false, checkedItems: []});
             _self.getProjects(_self);
         }).catch(function(error) {
@@ -249,6 +250,9 @@ class ProjectsTab extends Component {
             <Paper style={{width: '50%', margin: '0 auto'}}>
                 <List component="nav">
                 {this.state.listItems}
+                <ListItem button={true} onClick={this.changeWindow}>
+                    <ListItemText inset primary="PROJECT 2" />
+                </ListItem>
                 </List>
 
                 <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
