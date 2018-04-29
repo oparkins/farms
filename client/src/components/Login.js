@@ -2,18 +2,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
 import Fade from 'material-ui/transitions/Fade';
-
-const styles = theme => ({
-    root: theme.mixins.gutters({
-        paddingTop: 16,
-        paddingBottom: 16,
-        marginTop: theme.spacing.unit * 3,
-    }),
-});
 
 class Login extends Component {
     constructor(props) {
@@ -33,42 +24,48 @@ class Login extends Component {
     };
 
     setHeightStuff() {
-        console.log(window.innerHeight)
-        if(window.innerHeight >= 2000) {
-            return(window.innerHeight * .14)
-        }else if(window.innerHeight >= 1000) {
-            return(window.innerHeight * .25)
+        if (window.innerHeight >= 2000) {
+            return (window.innerHeight * .14)
+        } else if (window.innerHeight >= 1000) {
+            return (window.innerHeight * .25)
         } else if (window.innerHeight >= 800) {
-            return(window.innerHeight * .35)
-        } else if(window.innerHeight >= 700) {
-            return(window.innerHeight * .42)
+            return (window.innerHeight * .35)
+        } else if (window.innerHeight >= 700) {
+            return (window.innerHeight * .42)
         } else {
-            return(window.innerHeight * .55)
+            return (window.innerHeight * .55)
         }
     }
 
     setWidthStuff() {
-        if(window.innerWidth >= 3800) { //4K
-            return(window.innerWidth * .45)
+        if (window.innerWidth >= 3800) { //4K
+            return (window.innerWidth * .45)
         } else if (window.innerWidth >= 1800) { //1080p
-            return(window.innerWidth * .40)
+            return (window.innerWidth * .40)
         } else if (window.innerWidth >= 1200) { //720p
-            return(window.innerWidth * .35)
+            return (window.innerWidth * .35)
         } else {
-            return(window.innerWidth * .30)
+            return (window.innerWidth * .30)
         }
     }
 
     render() {
-        console.log(window.innerWidth);
         var divStyleFullScreen = {
             paddingRight: this.setWidthStuff(),
             paddingLeft: this.setWidthStuff(),
             paddingTop: window.innerHeight * .10,
         };
+        var divStyleSecondaryPaper = {
+            paddingRight: this.setWidthStuff(),
+            paddingLeft: this.setWidthStuff(),
+            //paddingTop: window.innerHeight * .10,
+        };
 
-        var paperStyleFullScreen = { 
+        var paperStyleFullScreen = {
             minHeight: this.setHeightStuff(),
+        };
+        var paperStyleSecondary = {
+            minHeight: this.setHeightStuff() - 225,
         };
         return (
             <div>
@@ -120,6 +117,13 @@ class Login extends Component {
                             }}
                             message={<span id="message-id">Password Recovery E-Mail Sent</span>}
                         />
+                    </div>
+                    <br></br>
+                    <div style={divStyleSecondaryPaper} >
+                        <Paper elevation={4} style={paperStyleSecondary}>
+                            <br></br>
+                            New to FARMS? Register <Button size="small" onClick={(value) => { this.state.changeWindowHandler(4) }}>here</Button>
+                        </Paper>
                     </div>
                 </MuiThemeProvider>
             </div>
