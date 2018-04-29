@@ -24,17 +24,17 @@ class CompaniesTab extends Component {
             deleteItem: false, //Decide if we are deleting or adding companies
             checkedItems: [], //Holds the id numbers of the checked items
             
-            addData: {},
-
-            name: "",
-            addressLine1: "",
-            addressLine2: "",
-            addressCity: "",
-            addressState: "",
-            addressZip: "",
-            logo: "",
-            phone: "",
-            email: ""
+            addData: {
+                name: "",
+                addressLine1: "",
+                addressLine2: "",
+                addressCity: "",
+                addressState: "",
+                addressZip: "",
+                logo: "",
+                phone: "",
+                email: ""
+            }
         };
         this.getCompanies(this); //Populate the list with companies
     }
@@ -168,6 +168,7 @@ class CompaniesTab extends Component {
 
     addInfo = (event) => {
         this.addData[event.target.name] = event.target.value;
+        this.addData["name"] = "test";
     }
 
 
@@ -191,7 +192,6 @@ class CompaniesTab extends Component {
                     <TextField
                         name="name"
                         label="Company Name *"
-                        value={this.state.addData.name}
                         onChange={this.addInfo}
                         margin="normal"
                     />
