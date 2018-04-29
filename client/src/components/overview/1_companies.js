@@ -24,6 +24,8 @@ class CompaniesTab extends Component {
             deleteItem: false, //Decide if we are deleting or adding companies
             checkedItems: [], //Holds the id numbers of the checked items
             
+            addData: {},
+
             name: "",
             addressLine1: "",
             addressLine2: "",
@@ -102,7 +104,7 @@ class CompaniesTab extends Component {
             email: _self.state.email
         }
         //TODO: Change the below template to use input values from dialog box
-        NetworkManager.post("/companies", "POST", tmpData).then((data) => {
+        NetworkManager.post("/companies", "POST", _self.state.addData).then((data) => {
             _self.setState({showDialog: false});
             _self.getCompanies(_self);
         }).catch((error) => { 
@@ -112,16 +114,7 @@ class CompaniesTab extends Component {
 
         // TODO: find a better way to reset everything, maybe an array of elements?
         // set everything back to zero
-        _self.state.name = ""
-        _self.state.addressLine1 = ""
-        _self.state.addressLine2 = ""
-        _self.state.addressCity = ""
-        _self.state.addressState = ""
-        _self.state.addressZip = ""
-        _self.state.logo = ""
-        _self.state.phone = ""
-        _self.state.emai = ""
-
+        _self.setState({addData: {}});
 
     }
 
@@ -174,7 +167,7 @@ class CompaniesTab extends Component {
     }
 
     addInfo = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.addData[event.target.name] = event.target.value;
     }
 
 
@@ -198,7 +191,7 @@ class CompaniesTab extends Component {
                     <TextField
                         name="name"
                         label="Company Name *"
-                        value={this.state.name}
+                        value={this.state.addData.name}
                         onChange={this.addInfo}
                         margin="normal"
                     />
@@ -207,14 +200,14 @@ class CompaniesTab extends Component {
                     <TextField
                         name="addressLine1"
                         label="Primary Address"
-                        value={this.state.addressLine1}
+                        value={this.state.addData.addressLine1}
                         onChange={this.addInfo}
                         style={{ marginRight: "20px" }}
                     />
                     <TextField
                         name="addressLine2"
                         label="Secondary Address"
-                        value={this.state.addressLine2}
+                        value={this.state.addData.addressLine2}
                         onChange={this.addInfo}
                         margin="normal"
                     />
@@ -223,7 +216,7 @@ class CompaniesTab extends Component {
                     <TextField
                         name="addressCity"
                         label="City"
-                        value={this.state.addressCity}
+                        value={this.state.addData.addressCity}
                         onChange={this.addInfo}
                         margin="normal"
                         style={{ marginRight: "20px" }}
@@ -231,14 +224,14 @@ class CompaniesTab extends Component {
                     <TextField
                         name="addressState"
                         label="State"
-                        value={this.state.addressState}
+                        value={this.state.addData.addressState}
                         onChange={this.addInfo}
                         margin="normal"
                     />
                     <TextField
                         name="addressZip"
                         label="Zip"
-                        value={this.state.addressZip}
+                        value={this.state.addData.addressZip}
                         onChange={this.addInfo}
                         margin="normal"
                     />
@@ -248,14 +241,14 @@ class CompaniesTab extends Component {
                         name="phone"
                         label="Phone"
                         margin="normal"
-                        value={this.state.phone}
+                        value={this.state.addData.phone}
                         onChange={this.addInfo}
                         style={{ marginRight: "20px" }}
                     />
                     <TextField
                         name="email"
                         label="Email"
-                        value={this.state.email}
+                        value={this.state.addData.email}
                         onChange={this.addInfo}
                         margin="normal"
                     />
@@ -264,7 +257,7 @@ class CompaniesTab extends Component {
                     <TextField
                         name="logo"
                         label="Logo Path"
-                        value={this.state.logo}
+                        value={this.state.addData.logo}
                         onChange={this.addInfo}
                         margin="normal"
                     />
