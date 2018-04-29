@@ -60,18 +60,20 @@ class Login extends Component {
             paddingTop: window.innerHeight * .10,
         };
         var paperStyleFullScreen = {
-            minHeight: this.setHeightStuff(),
+            minHeight: this.setHeightStuff() + 20,
         };
         return (
             <div>
                 <MuiThemeProvider>
                     <div style={divStyleFullScreen} >
                         <Paper elevation={4} style={paperStyleFullScreen}>
+                        <br></br>
+                        Welcome to FARMS!
                             <br></br>
                             <br></br>
                             <div>
                                 <TextField
-                                    label="Enter your username:"
+                                    label="Enter a username:"
                                     placeholder="Username"
                                     InputLabelProps={{
                                         shrink: true,
@@ -79,10 +81,20 @@ class Login extends Component {
                                     onChange={(event, newValue) => this.setState({ username: newValue })}
                                 />
                                 <br></br>
-                                <br />
+                                <br/>
                                 <TextField
-                                    label="Enter your password:"
+                                    label="Enter a password:"
                                     placeholder="Password"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    onChange={(event, newValue) => this.setState({ password: newValue })}
+                                />
+                                <br></br>
+                                <br></br>
+                                <TextField
+                                    label="Enter your e-mail:"
+                                    placeholder="Email"
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
