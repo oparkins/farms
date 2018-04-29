@@ -27,7 +27,7 @@ class App extends Component {
         value: 0,
         auth: false,
         anchorEl: null,
-        currentWindow: 3,
+        currentWindow: 2,
         changeWindowHandler: props.changeWindowHandler
     }
   }
@@ -37,7 +37,7 @@ class App extends Component {
     console.log("Checking for valid server...");
     var thisWindow = this;
     NetworkManager.isServerValid().then(function(data) {
-      thisWindow.setState({currentWindow: 0});
+      thisWindow.setState({currentWindow: 2});
       console.log("Server Found");
     }).catch(function(error) {
       thisWindow.setState({currentWindow: -1});

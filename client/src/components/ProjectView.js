@@ -119,7 +119,8 @@ class ProjectView extends Component {
       division_id : 1,
       project_id : 1,
       items: new Array(),
-      os_array: new Array()
+      os_array: new Array(),
+      state: new Array()
     }
     this.getVersions();
   }
@@ -130,7 +131,6 @@ class ProjectView extends Component {
         NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/versions", "GET").then((versions_list) => { 
             versions_list.json().then((versions) => {
                 for(var version_id in versions) {     
-                    console.log("Doing Version: " + version_id);
                     _self.setState({items: versions});
                 }
             });            
@@ -148,21 +148,15 @@ class ProjectView extends Component {
                 });
     }
     
-    getOperationSystems(version, _self) {
+    getOperatingSystems(version, _self) {
         
         _self = _self || this;
+        console.log(version);
         NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/versions/" + version['id'] + "/operating_systems/").then(function(operating_systems_list) {
                         operating_systems_list.json().then((operating_systems) => {
-                            var os_array = [];
-                            for(var os_id in operating_systems) {
-                                
-                                var os = operating_systems[os_id];
-                                os_array.push(_self.getOperatingSystemType(os));
-                                console.log(os_array);
-                            }
-                            console.log(os_array);
-                            _self.state.os_array.push({id : version['id'], name : version['buildDate'], os : os_array });
                             
+                            _self.state.os_array.push({id : version['id'], name : version['buildDate'], os : operating_systems });
+                            console.log(_self.state.os_array);
                             _self.setState({os_array: _self.state.os_array});
                         });
                     })
@@ -191,13 +185,29 @@ class ProjectView extends Component {
      this.setState({ [e]: !this.state[e] });
    };
 
-   get_os_array_item(version_id) {
-        for(var os in this.state.os_array) {
-            if(os["id"] === version_id) {
-                return os;
+   get_os_array_item(version) {
+        for(var os_array_id in this.state.os_array) {
+            var os = this.state.os_array[os_array_id];
+            console.log("OS:")
+            console.log(os);
+            console.log("ID: " + os.id + " Version ID: " + version.id)
+            if(os.id == version.id) {
+                console.log("Returning found:");
+                console.log(os.os);
+                return os.os;
             }
         }
-        return new Array({ id: "", name: ""});
+        console.log("checking previous states")
+        for(var id in this.state.state) {
+            console.log("ID: " + id + " Version ID: " + version.id)
+            if(id == version.id) {
+                console.log("Found one already");
+                return new Array();
+            }
+        }
+        this.state.state.push(version.id);
+        this.getOperatingSystems(version, this);
+        return new Array();
    }
    
 
@@ -208,14 +218,15 @@ class ProjectView extends Component {
         <div>
             <Paper style={{width: '50%', margin: '0 auto'}}>
                 <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
-                {this.state.items.map((list) => {
+                {this.state.items.map((list) => { // Maps the Versions (Release, debug, and version_id)
                 return (
                     <List key={list.id} subheader={<ListSubheader>{list.buildDate + "  Release | DEBUG"}</ListSubheader>}>
-                        {this.get_os_array_item(list.id).map((item) => {
+                        {console.log(this.get_os_array_item(list))}
+                        {this.get_os_array_item(list).map((item) => { // Maps the operating systems under each version
                             return ( 
                                 <div key={item.id}>
                                     <ListItem button key={item.id}>
-                                        <ListItemText primary={item.name} />
+                                        <ListItemText primary={item.os_type_id} />
                                     </ListItem>
                                 </div>                            
                             )
