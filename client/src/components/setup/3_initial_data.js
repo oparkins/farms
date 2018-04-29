@@ -11,11 +11,23 @@ import {
     FormGroup,
     FormControlLabel,
   } from 'material-ui/Form';
+import NetworkManager from "../NetworkManager";
+import AuthenticationManager from '../AuthenticationManager';
+
 class InitialDataTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            callback : props.callback
+            callback : props.callback,
+            name: "",
+            email: "",
+            password: "",
+            company: "",
+            division: "",
+            project: "",
+            company_id: nil,
+            division_id: nil,
+            project_id: nil
         }
     }
 
@@ -27,9 +39,42 @@ class InitialDataTab extends Component {
         //this.state.callback(3);
     };
 
-    initializeDatabase = () => {
-        //this.handleChange();
+    initializeDatabase() {
+        this.addUser();
     }
+
+    addUser() {
+        AuthenticationManager.createAccount(this.state.email, this.state.password);
+    }
+
+    addCompany() {
+        NetworkManager.fetchWithParameters("/companies", "POST", {
+            name: this.state.company
+        }).then((response) => {
+            addDivision();
+        }).catch((error) => {
+            //TODO: Show an error
+        });
+    }
+
+    addDivision() {
+
+    }
+
+    addProject() {
+        
+    }
+
+    
+
+    addOperationSystems() {
+
+    }
+
+    addVersionTypes() {
+
+    }
+    
 
     render () {
         const { value } = this.state;
@@ -48,19 +93,22 @@ class InitialDataTab extends Component {
                             <TextField 
                                 id="usersName"
                                 label="Name"
-                                placeholder="John Smith"/>
+                                placeholder="John Smith"
+                                onChange={(event) => { this.setState({name: event.target.value})}} />
                             <br/>
                             <TextField 
                                 required
                                 id="email"
                                 label="Email Address"
-                                placeholder="jsmith@fake.email.com"/>
+                                placeholder="jsmith@fake.email.com"
+                                onChange={(event) => { this.setState({email: event.target.value})}}/>
                             <br/>
                             <TextField 
                                 required
                                 id="password"
                                 label="Password"
-                                type="password"/>
+                                type="password"
+                                onChange={(event) => { this.setState({password: event.target.value})}}/>
                             <br/>
                             <TextField 
                                 required
@@ -78,16 +126,19 @@ class InitialDataTab extends Component {
                             <br/>
                             <TextField 
                                 id="company"
-                                label="Company"/>
+                                label="Company"
+                                onChange={(event) => { this.setState({company: event.target.value})}}/>
                             <br/>
                             <TextField                             
                                 id="division"
-                                label="Division"/>
+                                label="Division"
+                                onChange={(event) => { this.setState({company: event.target.value})}}/>
                             <br/>
                             <TextField 
                                 required
                                 id="project"
-                                label="Project"/>
+                                label="Project"
+                                onChange={(event) => { this.setState({company: event.target.value})}}/>
                         </CardContent>
                     </Card>
                     <br/>
@@ -156,8 +207,7 @@ class InitialDataTab extends Component {
                     <Card className="card">
                         <CardContent>
                             <Typography className="title" variant="headline" component="h2">
-                                Last, But Not Least...
-                            </Typography>
+z                            </Typography>
                             <br/>
                             <FormGroup>
                                 <FormControlLabel
