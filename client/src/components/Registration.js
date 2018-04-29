@@ -2,18 +2,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
-import Snackbar from 'material-ui/Snackbar';
-import Fade from 'material-ui/transitions/Fade';
-
-const styles = theme => ({
-    root: theme.mixins.gutters({
-        paddingTop: 16,
-        paddingBottom: 16,
-        marginTop: theme.spacing.unit * 3,
-    }),
-});
 
 class Login extends Component {
     constructor(props) {
@@ -26,7 +15,6 @@ class Login extends Component {
     }
 
     setHeightStuff() {
-        console.log(window.innerHeight)
         if (window.innerHeight >= 2000) {
             return (window.innerHeight * .14)
         } else if (window.innerHeight >= 1000) {
@@ -53,7 +41,6 @@ class Login extends Component {
     }
 
     render() {
-        console.log(window.innerWidth);
         var divStyleFullScreen = {
             paddingRight: this.setWidthStuff(),
             paddingLeft: this.setWidthStuff(),
