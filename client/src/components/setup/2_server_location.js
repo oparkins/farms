@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
@@ -47,8 +47,7 @@ class ServerLocationTab extends Component {
         this.checkServerStatus();
     }
 
-    render () {
-        const { value } = this.state;
+    render () { 
         return  (
             <div>
             <br/>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
 import '../../styles/setup/2_server_location.css';
 import Paper from 'material-ui/Paper';
 import { CircularProgress } from 'material-ui/Progress';
@@ -28,7 +26,6 @@ class InitialDataTab extends Component {
     }
 
     render () {
-        const { value } = this.state;
         return  (
             <div>
             <br/>

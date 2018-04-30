@@ -8,7 +8,7 @@ class V1::OperatingSystemsController < V1::ApplicationController
 
   # GET /os
   def index
-    json_response(@version.operating_systems)
+    render :json => @version.operating_systems.to_json(:include => [:os_type]), status: :ok
   end
 
   # POST /os
@@ -19,7 +19,7 @@ class V1::OperatingSystemsController < V1::ApplicationController
 
   # GET /os/:id
   def show
-    json_response(@operating_system)
+    render :json => @operating_system.to_json(:include => [:os_type]), status: :ok
   end
 
   # PUT /os/:id

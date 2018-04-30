@@ -19,7 +19,7 @@ class LoginScreen extends Component {
 
     componentWillMount() {
         var loginscreen = [];
-        loginscreen.push(<Login changeWindowHandler={this.state.changeWindowHandler} parentContext={this} appContext={this.props.parentContext} />);
+        loginscreen.push(<Login key="login_thing" changeWindowHandler={this.state.changeWindowHandler} parentContext={this} appContext={this.props.parentContext} />);
         var loginmessage = "";
         this.setState({
             loginscreen: loginscreen,
