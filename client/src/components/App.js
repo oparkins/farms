@@ -7,6 +7,7 @@ import ListFolder from './FileView'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
 import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
 import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
 import AppBar from 'material-ui/AppBar';
