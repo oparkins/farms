@@ -48,7 +48,6 @@ class ProjectsTab extends Component {
      * logic is to allow users to unselect items if they wish.
      */
     checkboxHandler = (value) => {
-        console.log("Handling Check Change...");
         var id = value["id"];
         var index =this.state.checkedItems.indexOf(id); 
         
@@ -75,7 +74,6 @@ class ProjectsTab extends Component {
      */
     createListItem = (id, name, self) => {
         var _self = self || this;
-        console.log("Creating list item...");
         return (<Link key={name+id+"link"} to={this.state.match.url + id + "/versions/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
@@ -196,9 +194,9 @@ class ProjectsTab extends Component {
     }
 
     changeTab(event, value) {
-        if(value == 0) {
+        if(value === 0) {
             this.setState({redirect: <Redirect to="/overview/companies/"/>});
-        } else if(value == 1) {
+        } else if(value === 1) {
             this.setState({redirect: <Redirect to={"/overview/companies/" + this.state.company_id + "/divisions/"}/>});
         }
     }

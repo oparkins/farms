@@ -32,6 +32,9 @@ class DivisionsTab extends Component {
             director: "",
             divisionlink: "",
         };
+    }
+
+    componentDidMount() {
         this.getDivisions(this); //Populate the list with companies
     }
 
@@ -43,7 +46,6 @@ class DivisionsTab extends Component {
      * logic is to allow users to unselect items if they wish.
      */
     checkboxHandler = (value) => {
-        console.log("Handling Check Change...");
         var id = value["id"];
         var index =this.state.checkedItems.indexOf(id); 
         
@@ -70,7 +72,6 @@ class DivisionsTab extends Component {
      */
     createListItem = (id, name, self) => {
         var _self = self || this;
-        console.log("Creating list item...");
         return (<Link key={name+id+"Link"} to={this.state.match.url + id + "/projects/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
@@ -183,7 +184,7 @@ class DivisionsTab extends Component {
     }
 
     changeTab(event, value) {
-        if(value == 0) {
+        if(value === 0) {
             this.setState({redirect: <Redirect to="/overview/companies/"/>});
         }
     }

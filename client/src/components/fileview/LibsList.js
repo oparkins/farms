@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
-import ImageIcon from 'material-ui-icons/Image';
 import WorkIcon from 'material-ui-icons/Work';
-import BeachAccessIcon from 'material-ui-icons/BeachAccess';
 import NetworkManager from '../NetworkManager';
 import Paper from 'material-ui/Paper';
 import {isMobile} from 'react-device-detect';
-
 
 class LibsList extends Component {
 
@@ -40,7 +36,7 @@ class LibsList extends Component {
 
   createLibsListItem (name, link) {
    return(
-      <ListItem>
+      <ListItem key={name+link+"ID"}>
           <Avatar>
             <WorkIcon/>
           </Avatar>

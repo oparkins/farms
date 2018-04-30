@@ -126,7 +126,7 @@ class Login extends Component {
                     <div style={divStyleSecondaryPaper} >
                         <Paper elevation={4} style={paperStyleSecondary}>
                             <br></br>
-                            New to FARMS? Register <Button size="small" onClick={(value) => { this.state.changeWindowHandler(4) }}>here</Button>
+                            New to FARMS? Register <Link to="/register/"><Button size="small" onClick={(value) => { this.state.changeWindowHandler(4) }}>here</Button></Link>
                         </Paper>
                     </div>
                 </MuiThemeProvider>

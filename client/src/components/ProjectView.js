@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import Button from 'material-ui/Button';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
 import NetworkManager from './NetworkManager';
 import {isMobile} from 'react-device-detect';
 import { Link } from 'react-router-dom';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
-});
 
 class ProjectView extends Component {
   constructor(props) {
@@ -31,22 +15,18 @@ class ProjectView extends Component {
       company_id: props.match.params.company_id,
       division_id: props.match.params.division_id,
       project_id: props.match.params.project_id,
-      open : false, //closed initially
-      items: new Array(),
-      os_array: new Array(),
-      state: new Array()
+      items: [],
+      os_array: [],
+      requested_os_ids: []
     }
     this.getVersions();
   }
   
     getVersions() {
-        var data = [];
         var _self = this;
         NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.project_id + "/versions", "GET").then((versions_list) => { 
             versions_list.json().then((versions) => {
-                for(var version_id in versions) {     
-                    _self.setState({items: versions});
-                }
+                _self.setState({items: versions});
             });            
         }).catch(function(error){
             console.log(" Versions Error " + error);
@@ -85,30 +65,22 @@ class ProjectView extends Component {
             console.log(" Versions Error " + error);
         });
     }
-  
-    getJSONData() {
-        this.getVersions();
-    }
-  
-   handleClick = (e) => {
-     this.setState({ [e]: !this.state[e] });
-   };
 
    get_os_array_item(version) {
         for(var os_array_id in this.state.os_array) {
             var os = this.state.os_array[os_array_id];
-            if(os.id == version.id) {
+            if(os.id === version.id) {
                 return os.os;
             }
         }
         for(var id in this.state.state) {
-            if(id == version.id) {
-                return new Array();
+            if(id === version.id) {
+                return [];
             }
         }
-        this.state.state.push(version.id);
+        this.state.requested_os_ids.push(version.id);
         this.getOperatingSystems(version, this);
-        return new Array();
+        return [];
    }
    
    getPaperStyle() {
@@ -126,7 +98,7 @@ class ProjectView extends Component {
         <div>
             <br/>
             <Paper style={this.getPaperStyle()}>
-                {this.state.items.map((list) => { // Maps the Versions (Release, debug, and version_id)
+                {this.state.items && this.state.items.map((list) => { // Maps the Versions (Release, debug, and version_id)
                 return (
                     <List key={list.id} subheader={<ListSubheader>{"Version: " + list.buildDate + " " + list.version_type.name}</ListSubheader>}>
                         {this.get_os_array_item(list).map((item) => { // Maps the operating systems under each version
@@ -149,8 +121,5 @@ class ProjectView extends Component {
    }
 }
 
-ProjectView.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
-export default withStyles(styles)(ProjectView);
+export default ProjectView;

@@ -36,7 +36,7 @@ class FileList extends Component {
 
   createFileListItem (name, hash) {
    return(
-      <ListItem>
+      <ListItem key={name+hash}>
           <Avatar>
             <WorkIcon/>
           </Avatar>

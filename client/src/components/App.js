@@ -36,14 +36,11 @@ class App extends Component {
 
   componentDidMount() {
     //Need to determine if the server is setup properly
-    console.log("Checking for valid server...");
-    var thisWindow = this;
+    var _self = this;
     NetworkManager.isServerValid().then(function(data) {
-      thisWindow.setState({currentWindow: 0});
-      console.log("Server Found");
+        _self.setState({currentWindow: 0});
     }).catch(function(error) {
-      thisWindow.setState({currentWindow: -1});
-      console.log("Server Not Found");
+        _self.setState({currentWindow: -1});
     })
   }
 
@@ -58,8 +55,8 @@ class App extends Component {
       this.setState({ anchorEl: null });
       this.setState({ auth: false });
       this.setState({ value: 0 });
-      this.setState({ currentWindow: 0 });
       this.setState({ openDrawer: false });
+      window.location.href = "/login";
   };
 
   toggleDrawer = () => {
@@ -80,7 +77,7 @@ class App extends Component {
       <div className="App">
         <AppBar position="static" className="App-Appbar">
             <Toolbar>
-            {this.state.currentWindow > 0 && (
+            {window.location.href.includes("overview") && (
                 <IconButton 
                     onClick={this.toggleDrawer} 
                     color="inherit" aria-label="Menu" 
@@ -93,7 +90,7 @@ class App extends Component {
             <Typography variant="title" color="inherit" className="appbarFlex">
                 F.A.R.M.S
             </Typography>
-            {this.state.currentWindow > 0 && (
+            {window.location.href.includes("overview") && (
                 <div>
                     <IconButton
                     onClick={this.handleMenu}
@@ -146,7 +143,8 @@ class App extends Component {
         </AppBar>
 
         <BrowserRouter>
-            <div>                
+            <div>   
+                <Route exact path="/" component={ ({ match }) => { window.location.href=match.url + "login/"; return <br/> }} />             
                 <Route path="/login/" component={ ({ match }) => { return <LoginScreen url={match.url}/> }} />
                 <Route path="/setup/" component={ ({ match }) => { return <SetupView url={match.url}/> }} />
                 <Route path="/overview/" component={ ({ match }) => { return <Overview match={match}/> }} />
@@ -155,10 +153,6 @@ class App extends Component {
                 <Route exact path="/overview/companies/:company_id/divisions/:division_id/projects/:project_id/versions/:version_id/operating_systems/:operating_system_id/" component={ ({ match }) => { return <FileView match={match}/> }} />
             </div>
         </BrowserRouter>
-        {/*{ this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 3 && <ListFolder changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 4 && <Registration changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        */}
       </div>
     );
   }
