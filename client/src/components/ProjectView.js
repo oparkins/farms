@@ -22,93 +22,6 @@ const styles = theme => ({
   },
 });
 
-function getItems() {
-     var json =  {
-      "list": [{ "id": 1,
-                 "title": "Version 1.2 JSON",
-                 "items": [{
-                            "id": 1,
-                            "name": "Android",
-                            "subitems": [{
-                              "id": 1,
-                              "name": "Nougat"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Lollipop"
-                            }]
-                          },
-                          {
-                            "id": 2,
-                            "name": "Chrome",
-                            "subitems": [{
-                              "id": 1,
-                              "name": "Iphone 6"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Iphone 10"
-                            }]
-                          }
-                        ]},
-              { "id": 2,
-                 "title": "Mac JSON",
-                 "items": [{
-                            "id": 1,
-                            "name": "Mac"
-                          },
-                          {
-                            "id": 2,
-                            "name": "Iphone",
-                            "subitems": [{
-                              "id": 1,
-                              "name": "Iphone 6"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Iphone 10",
-                              "subitems": [{
-                              "id": 1,
-                              "name": "Iphone 6"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Iphone 10"
-                            }]
-                            }]
-                          }
-                        ]},
-              { "id": 3,
-                            "title": "Linux JSON",
-                            "items": [{
-                              "id": 1,
-                              "name": "Eats",
-                              "subitems": [{
-                              "id": 1,
-                              "name": "Iphone 6"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Iphone 10"
-                            }]
-                            },
-                             {
-                              "id": 2,
-                              "name": "Freight",
-                              "subitems": [{
-                              "id": 1,
-                              "name": "Iphone 6"
-                            },
-                             {
-                              "id": 2,
-                              "name": "Iphone 10"
-                                }]
-                            }]
-                          }
-                        ]};
-  return json;
-}
-
 class ProjectView extends Component {
   constructor(props) {
     super(props);
@@ -212,7 +125,6 @@ class ProjectView extends Component {
    
 
    render() {
-    const items = getItems();
  
      return (
         <div>
@@ -220,13 +132,13 @@ class ProjectView extends Component {
                 <Button variant="raised" onClick={(value) => { this.state.changeWindowHandler(1)}} >Back To Projects</Button>
                 {this.state.items.map((list) => { // Maps the Versions (Release, debug, and version_id)
                 return (
-                    <List key={list.id} subheader={<ListSubheader>{list.buildDate + "  Release | DEBUG"}</ListSubheader>}>
+                    <List key={list.id} subheader={<ListSubheader>{"Version: " + list.buildDate + " " + list.version_type.name}</ListSubheader>}>
                         {console.log(this.get_os_array_item(list))}
                         {this.get_os_array_item(list).map((item) => { // Maps the operating systems under each version
                             return ( 
                                 <div key={item.id}>
                                     <ListItem button key={item.id}>
-                                        <ListItemText primary={item.os_type_id} />
+                                        <ListItemText primary={item.os_type.name} />
                                     </ListItem>
                                 </div>                            
                             )
