@@ -235,7 +235,7 @@ class ProjectsTab extends Component {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => {this.addDivision(this)}} color="primary" autoFocus style={{ marginLeft: "100%"}}>
+                    <Button onClick={() => {this.addProject(this)}} color="primary" autoFocus style={{ marginLeft: "100%"}}>
                     Add
                     </Button>
                 </DialogActions>
@@ -254,7 +254,7 @@ class ProjectsTab extends Component {
                     <Button onClick={() => {this.setState({showDialog: false})}} color="primary" autoFocus>
                     No
                     </Button>
-                    <Button onClick={() => this.deleteDivisions(this)} color="primary" autoFocus>
+                    <Button onClick={() => this.deleteProjects(this)} color="primary" autoFocus>
                     Yes
                     </Button>
                 </DialogActions>
@@ -279,9 +279,6 @@ class ProjectsTab extends Component {
                 <Paper style={this.getPaperHeader()}>
                     <List component="nav">
                     {this.state.listItems}
-                    <ListItem button={true} onClick={this.changeWindow}>
-                        <ListItemText inset primary="PROJECT 2" />
-                    </ListItem>
                     </List>
 
                     <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>

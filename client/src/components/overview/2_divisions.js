@@ -92,7 +92,7 @@ class DivisionsTab extends Component {
         var tmpData = {
             name: _self.state.name,
             director: _self.state.director,
-            divisionlink: _self.sate.divisionlink
+            divisionlink: _self.state.divisionlink
         }
         //TODO: Change the below template to use input values from dialog box
         NetworkManager.post("/companies/" + _self.state.company_id + "/divisions", "POST", tmpData).then((data) => {
