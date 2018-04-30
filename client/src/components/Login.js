@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
 import Fade from 'material-ui/transitions/Fade';
+import {isMobile} from 'react-device-detect';
 
 class Login extends Component {
     constructor(props) {
@@ -38,6 +39,9 @@ class Login extends Component {
     }
 
     setWidthStuff() {
+        if(isMobile) {
+            return {width: '100%'}
+        }
         if (window.innerWidth >= 3800) { //4K
             return (window.innerWidth * .45)
         } else if (window.innerWidth >= 1800) { //1080p

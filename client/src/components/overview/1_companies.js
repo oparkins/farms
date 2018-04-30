@@ -9,10 +9,10 @@ import NetworkManager from '../NetworkManager';
 import Dialog, {
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
   } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import {isMobile} from 'react-device-detect';
 
 class CompaniesTab extends Component {
     constructor(props) {
@@ -182,11 +182,18 @@ class CompaniesTab extends Component {
         this.setState({showDialog: false});
     }
 
+    getPaperHeader() {
+        if(isMobile) {
+            return {width: '100%', margin: '0 auto'};
+        } else {
+            return {width: '50%', margin: '0 auto'};
+        }
+    }
+
     /**
      * Renders the view based on the state of the component.
      */
-    render () {
-        const { value } = this.state;
+    render () { 
 
         const AddDialog = (
             <div>
@@ -297,10 +304,11 @@ class CompaniesTab extends Component {
             </div>
         );
 
+        
 
         return  (
             <div>
-            <Paper style={{width: '50%', margin: '0 auto'}}>
+            <Paper style={this.getPaperHeader()}>
                 <List component="nav">
                 {this.state.listItems}
                 </List>

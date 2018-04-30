@@ -9,10 +9,10 @@ import NetworkManager from '../NetworkManager';
 import Dialog, {
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
   } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import {isMobile} from 'react-device-detect';
 
 class DivisionsTab extends Component {
     constructor(props) {
@@ -172,9 +172,15 @@ class DivisionsTab extends Component {
         this.setState({ [name]: event.target.checked });
     };
 
-    render () {
-        const { value } = this.state;
-        
+    getPaperHeader() {
+        if(isMobile) {
+            return {width: '100%', margin: '0 auto'};
+        } else {
+            return {width: '50%', margin: '0 auto'};
+        }
+    }
+
+    render () {        
         const AddDialog = (
             <div>
                 <DialogTitle>
@@ -237,7 +243,7 @@ class DivisionsTab extends Component {
 
         return  (
             <div>
-            <Paper style={{width: '50%', margin: '0 auto'}}>
+            <Paper style={this.getPaperHeader()}>
                 <List component="nav">
                 {this.state.listItems}
                 </List>

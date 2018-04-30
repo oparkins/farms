@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import LoginScreen from './LoginScreen';
 import Overview from './Overview';
 import ProjectView from './ProjectView';
@@ -7,11 +6,9 @@ import SetupView from './Setup';
 import ListFolder from './FileView'
 import '../styles/App.css';
 import CreateHistory from 'history/createBrowserHistory';
-import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
 import AppBar from 'material-ui/AppBar';
 import NetworkManager from './NetworkManager';
 import Typography from 'material-ui/Typography';
@@ -20,7 +17,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import Info from 'material-ui-icons/Info';
 import Drawer from 'material-ui/Drawer';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Registration from './Registration';
 
 class App extends Component {
@@ -85,7 +82,7 @@ class App extends Component {
 
 
   render() {
-    const { value, auth, anchorEl, openDrawer } = this.state;
+    const { anchorEl, openDrawer } = this.state;
     const open = Boolean(anchorEl);
 
 
