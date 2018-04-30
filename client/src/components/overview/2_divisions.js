@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import DeleteIcon from 'material-ui-icons/Delete';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import Checkbox from 'material-ui/Checkbox';
 import NetworkManager from '../NetworkManager';
 import Dialog, {
@@ -13,6 +14,8 @@ import Dialog, {
   } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {isMobile} from 'react-device-detect';
+import Redirect from 'react-router/Redirect';
+import { Link } from 'react-router-dom';
 
 class DivisionsTab extends Component {
     constructor(props) {
@@ -23,9 +26,8 @@ class DivisionsTab extends Component {
             showDialog: false, //Shows the dialog box
             deleteItem: false, //Decide if we are deleting or adding companies
             checkedItems: [], //Holds the id numbers of the checked items
-
-            index: "1",
-
+            match: props.match,
+            company_id: props.match.params.company_id,
             name: "",
             director: "",
             divisionlink: "",
@@ -69,14 +71,14 @@ class DivisionsTab extends Component {
     createListItem = (id, name, self) => {
         var _self = self || this;
         console.log("Creating list item...");
-        return (<ListItem button value={id} key={name + id}>
+        return (<Link to={this.state.match.url + id + "/projects/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
                         key={name + id + "checkbox"}
                         onChange={(event, checked) => {_self.checkboxHandler({id})}}
                         value='checked1'
                     />
-                </ListItem>);
+                </ListItem></Link>);
     }
 
 
@@ -92,7 +94,7 @@ class DivisionsTab extends Component {
             divisionlink: _self.sate.divisionlink
         }
         //TODO: Change the below template to use input values from dialog box
-        NetworkManager.post("/companies/" + _self.state.index + "/divisions", "POST", tmpData).then((data) => {
+        NetworkManager.post("/companies/" + _self.state.company_id + "/divisions", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getDivisions(_self);
         }).catch((error) => { 
@@ -115,7 +117,7 @@ class DivisionsTab extends Component {
         if(_self === undefined) {
             _self = this;
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions", "GET").then((data) => {
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions", "GET").then((data) => {
             data.json().then(function(data) {
                 var tmp = [];
                 for(var i = 0; i < data.length; i++) {
@@ -141,13 +143,13 @@ class DivisionsTab extends Component {
         // get reid of dialg immediately: not sure is this should be done because the dialog disappears if it fails
         _self.setState({showDialog: false});
         for(i = 0; i < _self.state.checkedItems.length -1; i++) {
-            NetworkManager.fetch("/companies/" + _self.start.index + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+            NetworkManager.fetch("/companies/" + _self.start.company_id + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
                 console.log(data);              
             }).catch(function(error) {
                 console.log(error); //TODO: show error?
             });
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
             _self.setState({deleteItem: false, checkedItems: []});
             _self.getDivisions(_self);
         }).catch(function(error) {
@@ -179,6 +181,13 @@ class DivisionsTab extends Component {
             return {width: '50%', margin: '0 auto'};
         }
     }
+
+    changeTab(event, value) {
+        if(value == 0) {
+            this.setState({redirect: <Redirect to="/overview/companies/"/>});
+        }
+    }
+
 
     render () {        
         const AddDialog = (
@@ -243,6 +252,18 @@ class DivisionsTab extends Component {
 
         return  (
             <div>
+                {this.state.redirect}
+            <Tabs
+                value={1}
+                onChange={this.handleChange}
+                centered
+                className="Overview-TabBar"
+                >
+                <Tab label="Companies" />
+                <Tab label="Divisions" />
+                <Tab label="Projects" />
+            </Tabs>
+            <br/>
             <Paper style={this.getPaperHeader()}>
                 <List component="nav">
                 {this.state.listItems}
