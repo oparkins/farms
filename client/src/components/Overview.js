@@ -16,10 +16,6 @@ class Overview extends Component {
         }
     }
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
-
     changeTab = (value) => {
         this.setState({value: value});
     }
@@ -28,15 +24,11 @@ class Overview extends Component {
         const { value } = this.state;
         const _self = this;
         return  (
-            <div>
-                <BrowserRouter>
-                    <div>                
-                        <Route exact path={this.state.match.url + "/"} component={ ({ match }) => { window.location.href=match.url + "companies/"; }} />
-                        <Route exact path={this.state.match.url + "/companies/"} component={ ({ match }) => { return <CompaniesTab match={match}/> }} />
-                        <Route exact path={this.state.match.url + "/companies/:company_id/divisions/"} component={ ({ match }) => { return <DivisionsTab match={match}/> }} />
-                        <Route exact path={this.state.match.url + "/companies/:company_id/divisions/:division_id/projects"} component={ ({ match }) => { return <ProjectsTab match={match}/> }} />            
-                    </div>
-                </BrowserRouter>
+            <div>        
+                <Route exact path={this.state.match.url + "/"} component={ ({ match }) => { window.location.href=match.url + "companies/"; }} />
+                <Route exact path={this.state.match.url + "/companies/"} component={ ({ match }) => { return <CompaniesTab match={match}/> }} />
+                <Route exact path={this.state.match.url + "/companies/:company_id/divisions/"} component={ ({ match }) => { return <DivisionsTab match={match}/> }} />
+                <Route exact path={this.state.match.url + "/companies/:company_id/divisions/:division_id/projects"} component={ ({ match }) => { return <ProjectsTab match={match}/> }} />
             </div>
         );
     }

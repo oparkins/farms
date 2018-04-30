@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FileList from './FileList';
-import LibsList from './LibsList';
+import FileList from './fileview/FileList';
+import LibsList from './fileview/LibsList';
 import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
@@ -14,15 +14,21 @@ const style = {
 };
 
 class FileView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      match: props.match
+    };
+  }
 
   render() {
     return (
       <div>
         <List subheader={<ListSubheader style={style}>Files List</ListSubheader>}>
-          <FileList/>
+          <FileList match={this.state.match}/>
         </List>
         <List subheader={<ListSubheader style={style}>Libraries List</ListSubheader>}>
-          <LibsList/>
+          <LibsList match={this.state.match}/>
         </List>
       </div>
     );

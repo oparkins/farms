@@ -3,7 +3,7 @@ import LoginScreen from './LoginScreen';
 import Overview from './Overview';
 import ProjectView from './ProjectView';
 import SetupView from './Setup';
-import ListFolder from './FileView'
+import FileView from './FileView'
 import '../styles/App.css';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
@@ -151,7 +151,8 @@ class App extends Component {
                 <Route path="/setup/" component={ ({ match }) => { return <SetupView url={match.url}/> }} />
                 <Route path="/overview/" component={ ({ match }) => { return <Overview match={match}/> }} />
                 <Route path="/register/" component={ ({ match }) => { return <Registration url={match.url}/> }} />     
-                <Route exact path="/overview/companies/:company_id/divisions/:division_id/projects/:project_id/versions/" component={ ({ match }) => { return <ProjectView url={match.url}/> }} />       
+                <Route exact path="/overview/companies/:company_id/divisions/:division_id/projects/:project_id/versions/" component={ ({ match }) => { return <ProjectView match={match}/> }} />       
+                <Route exact path="/overview/companies/:company_id/divisions/:division_id/projects/:project_id/versions/:version_id/operating_systems/:operating_system_id/" component={ ({ match }) => { return <FileView match={match}/> }} />
             </div>
         </BrowserRouter>
         {/*{ this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }

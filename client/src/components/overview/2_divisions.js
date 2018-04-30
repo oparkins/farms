@@ -71,7 +71,7 @@ class DivisionsTab extends Component {
     createListItem = (id, name, self) => {
         var _self = self || this;
         console.log("Creating list item...");
-        return (<Link to={this.state.match.url + id + "/projects/"}><ListItem button value={id} key={name + id}>
+        return (<Link key={name+id+"Link"} to={this.state.match.url + id + "/projects/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
                         key={name + id + "checkbox"}
