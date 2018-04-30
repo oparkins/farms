@@ -6,14 +6,14 @@ import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
 import Fade from 'material-ui/transitions/Fade';
 import {isMobile} from 'react-device-detect';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             username: '',
-            password: '',
-            changeWindowHandler: props.changeWindowHandler
+            password: ''
         }
     }
     handleClick = () => {
@@ -100,12 +100,12 @@ class Login extends Component {
                                 <br />
                                 <br></br>
                                 <div>
-                                    <Button
+                                    <Link to="/overview/"><Button
                                         variant="raised"
                                         size="large"
-                                        onClick={(value) => { this.state.changeWindowHandler(1) }}>
+                                        >
                                         Log In
-                                    </Button>
+                                    </Button></Link>
                                 </div>
                                 <br></br>
                                 <br></br>

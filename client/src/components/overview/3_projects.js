@@ -5,6 +5,7 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import Checkbox from 'material-ui/Checkbox';
 import DeleteIcon from 'material-ui-icons/Delete';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import NetworkManager from '../NetworkManager';
 import Dialog, {
     DialogActions,
@@ -13,6 +14,8 @@ import Dialog, {
   } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {isMobile} from 'react-device-detect';
+import { Link } from 'react-router-dom';
+import Redirect from 'react-router/Redirect';
 
 class ProjectsTab extends Component {
     constructor(props) {
@@ -25,8 +28,9 @@ class ProjectsTab extends Component {
             showDialog: false, //Shows the dialog box
             deleteItem: false, //Decide if we are deleting or adding companies
             checkedItems: [], //Holds the id numbers of the checked items
-
-            index: "1",
+            match: props.match,
+            company_id: props.match.params.company_id,
+            division_id: props.match.params.division_id,
             
             name: "",
             projectLead: "",
@@ -72,14 +76,14 @@ class ProjectsTab extends Component {
     createListItem = (id, name, self) => {
         var _self = self || this;
         console.log("Creating list item...");
-        return (<ListItem button value={id} key={name + id}>
+        return (<Link key={name+id+"link"} to={this.state.match.url + id + "/versions/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
                         key={name + id + "checkbox"}
                         onChange={(event, checked) => {_self.checkboxHandler({id})}}
                         value='checked1'
                     />
-                </ListItem>
+                </ListItem></Link>
                 );
     }
 
@@ -96,7 +100,7 @@ class ProjectsTab extends Component {
             email: _self.state.email
         }
         //TODO: Change the below template to use input values from dialog box
-        NetworkManager.post("/companies/" + _self.state.index + "/divisions/1/projects", "POST", tmpData).then((data) => {
+        NetworkManager.post("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects", "POST", tmpData).then((data) => {
             _self.setState({showDialog: false});
             _self.getProjects(_self);
         }).catch((error) => { 
@@ -120,7 +124,7 @@ class ProjectsTab extends Component {
         if(_self === undefined) {
             _self = this;
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/1/projects", "GET").then((data) => {
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects", "GET").then((data) => {
             data.json().then(function(data) {
                 var tmp = [];
                 for(var i = 0; i < data.length; i++) {
@@ -146,13 +150,13 @@ class ProjectsTab extends Component {
         // get reid of dialg immediately: not sure is this should be done because the dialog disappears if it fails
         _self.setState({showDialog: false});
         for(i = 0; i < _self.state.checkedItems.length -1; i++) {
-            NetworkManager.fetch("/companies/" + _self.start.index + "/divisions/1/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+            NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
                 console.log(data);              
             }).catch(function(error) {
                 console.log(error); //TODO: show error?
             });
         }
-        NetworkManager.fetch("/companies/" + _self.state.index + "/divisions/1/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
+        NetworkManager.fetch("/companies/" + _self.state.company_id + "/divisions/" + _self.state.division_id + "/projects/" + _self.state.checkedItems[i], "DELETE").then(function(data) {
             _self.setState({deleteItem: false, checkedItems: []});
             _self.getProjects(_self);
         }).catch(function(error) {
@@ -191,9 +195,18 @@ class ProjectsTab extends Component {
         }
     }
 
+    changeTab(event, value) {
+        if(value == 0) {
+            this.setState({redirect: <Redirect to="/overview/companies/"/>});
+        } else if(value == 1) {
+            this.setState({redirect: <Redirect to={"/overview/companies/" + this.state.company_id + "/divisions/"}/>});
+        }
+    }
+
     render () {        
         const AddDialog = (
             <div>
+                
                 <DialogTitle>
                     Add Company
                 </DialogTitle>
@@ -253,22 +266,34 @@ class ProjectsTab extends Component {
 
         return  (
             <div>
-            <Paper style={this.getPaperHeader()}>
-                <List component="nav">
-                {this.state.listItems}
-                <ListItem button={true} onClick={this.changeWindow}>
-                    <ListItemText inset primary="PROJECT 2" />
-                </ListItem>
-                </List>
+                {this.state.redirect}
+                <Tabs
+                    value={2}
+                    onChange={(event, value) => this.changeTab(event, value)}
+                    centered
+                    className="Overview-TabBar"
+                    >
+                    <Tab label="Companies" />
+                    <Tab label="Divisions" />
+                    <Tab label="Projects" />
+                </Tabs>
+                <br/>
+                <Paper style={this.getPaperHeader()}>
+                    <List component="nav">
+                    {this.state.listItems}
+                    <ListItem button={true} onClick={this.changeWindow}>
+                        <ListItemText inset primary="PROJECT 2" />
+                    </ListItem>
+                    </List>
 
-                <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
-                    { this.state.deleteItem ? <DeleteIcon/>: <AddIcon/>}
-                </Button>
+                    <Button onClick={() => {this.setState({showDialog : true})}} variant="fab" color='primary' aria-label="add" style={{bottom: 20, right: 20, position: 'fixed'}}>
+                        { this.state.deleteItem ? <DeleteIcon/>: <AddIcon/>}
+                    </Button>
 
-                <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
-                    { this.state.deleteItem ? DeleteDialog : AddDialog}
-                </Dialog>
-            </Paper>
+                    <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
+                        { this.state.deleteItem ? DeleteDialog : AddDialog}
+                    </Dialog>
+                </Paper>
             </div>
         );
     }

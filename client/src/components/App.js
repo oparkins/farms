@@ -5,9 +5,7 @@ import ProjectView from './ProjectView';
 import SetupView from './Setup';
 import ListFolder from './FileView'
 import '../styles/App.css';
-import CreateHistory from 'history/createBrowserHistory';
 import IconButton from 'material-ui/IconButton';
-import Button from 'material-ui/Button';
 import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
 import AppBar from 'material-ui/AppBar';
@@ -18,18 +16,12 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import Info from 'material-ui-icons/Info';
 import Drawer from 'material-ui/Drawer';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-  } from 'material-ui/Dialog';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Registration from './Registration';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends Component {
 
-  AppHistory = CreateHistory();
   constructor(props) {
     super(props);
     this.state = {
@@ -38,8 +30,7 @@ class App extends Component {
         anchorEl: null,
         currentWindow: 0,
         changeWindowHandler: props.changeWindowHandler,
-        openDrawer: false,
-        showDialog: false
+        openDrawer: false
     }
   }
 
@@ -54,15 +45,6 @@ class App extends Component {
       thisWindow.setState({currentWindow: -1});
       console.log("Server Not Found");
     })
-
-    this.AppHistory.listen((location, action) => {
-        console.log(action, location.pathname, location.state)
-        console.log("History Length: " + this.AppHistory.length);
-        if(action === "POP") {
-            this.setState({ currentWindow: location.state["currentWindow"] });
-        }
-    })
-    this.AppHistory.push("/login", { currentWindow : 0 });
   }
 
   handleMenu = event => {
@@ -154,7 +136,7 @@ class App extends Component {
                     <ArrowBack />
                     <ListItemText primary="Logout" /> 
                 </ListItem>
-                <ListItem button onClick={() => {this.setState({showDialog: true, openDrawer: false})}}> 
+                <ListItem button> 
                     <Info />
                     <ListItemText primary="About" /> 
                 </ListItem>
@@ -163,36 +145,19 @@ class App extends Component {
             </Drawer>
         </AppBar>
 
-        <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
-            <DialogTitle>
-                About Us
-            </DialogTitle>
-            <DialogContent>
-                Free Artifact Repository Management System (F.A.R.M.S)
-                <br/>
-                <br/>
-                Artifact repositories are tools used at the end of continuous integration systems. 
-                The systems currently available are designed to efficiently work with only Java packages.
-                We want to develop a system that allows developers to save artifacts. This system will involve 
-                a server backend, frontend, and hooks that will allow continuous integration systems to 
-                interface with it. This will create a unique ecosystem that will allow developers to use our 
-                system anywhere. In addition, our project will be open source and hosted on GitHub.
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {this.setState({showDialog: false})}} color="primary" autoFocus>
-                GitHub
-                </Button>
-            </DialogActions>
-        </Dialog>
-
-        { this.state.currentWindow !== 1 && <br/>}
-
-        { this.state.currentWindow === -1 && <SetupView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 0 && <LoginScreen changeWindowHandler={(value) => {this.AppHistory.push("/overview", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 1 && <Overview changeWindowHandler={(value) => {this.AppHistory.push("/projects", { currentWindow : value }); this.setState({currentWindow : value})}} /> }
-        { this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        <BrowserRouter>
+            <div>                
+                <Route path="/login/" component={ ({ match }) => { return <LoginScreen url={match.url}/> }} />
+                <Route path="/setup/" component={ ({ match }) => { return <SetupView url={match.url}/> }} />
+                <Route path="/overview/" component={ ({ match }) => { return <Overview match={match}/> }} />
+                <Route path="/register/" component={ ({ match }) => { return <Registration url={match.url}/> }} />     
+                <Route exact path="/overview/companies/:company_id/divisions/:division_id/projects/:project_id/versions/" component={ ({ match }) => { return <ProjectView url={match.url}/> }} />       
+            </div>
+        </BrowserRouter>
+        {/*{ this.state.currentWindow === 2 && <ProjectView changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 3 && <ListFolder changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
         { this.state.currentWindow === 4 && <Registration changeWindowHandler={(value) => {this.setState({currentWindow : value})}} /> }
+        */}
       </div>
     );
   }

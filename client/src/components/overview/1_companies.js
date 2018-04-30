@@ -6,12 +6,14 @@ import AddIcon from 'material-ui-icons/Add';
 import DeleteIcon from 'material-ui-icons/Delete';
 import Checkbox from 'material-ui/Checkbox';
 import NetworkManager from '../NetworkManager';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogTitle,
   } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import { Link } from 'react-router-dom';
 import {isMobile} from 'react-device-detect';
 
 class CompaniesTab extends Component {
@@ -23,7 +25,7 @@ class CompaniesTab extends Component {
             showDialog: false, //Shows the dialog box
             deleteItem: false, //Decide if we are deleting or adding companies
             checkedItems: [], //Holds the id numbers of the checked items
-            
+            match: props.match,
             name: "",
             addressLine1: "",
             addressLine2: "",
@@ -73,14 +75,14 @@ class CompaniesTab extends Component {
     createListItem = (id, name, self) => {
         var _self = self || this;
         console.log("Creating list item...");
-        return (<ListItem button value={id} key={name + id}>
+        return (<Link key={name+id+"Link"} to={this.state.match.url + id + "/divisions/"}><ListItem button value={id} key={name + id}>
                     <ListItemText inset primary={name} />
                     <Checkbox
                         key={name + id + "checkbox"}
                         onChange={(event, checked) => {_self.checkboxHandler({id})}}
                         value='checked1'
                     />
-                </ListItem>);
+                </ListItem></Link>);
     }
 
 
@@ -308,6 +310,17 @@ class CompaniesTab extends Component {
 
         return  (
             <div>
+            <Tabs
+                value={0}
+                onChange={this.handleChange}
+                centered
+                className="Overview-TabBar"
+                >
+                <Tab label="Companies" />
+                <Tab label="Divisions" />
+                <Tab label="Projects" />
+            </Tabs>
+            <br/>
             <Paper style={this.getPaperHeader()}>
                 <List component="nav">
                 {this.state.listItems}
