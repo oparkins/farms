@@ -24,7 +24,6 @@ import Dialog, {
     DialogContentText,
     DialogTitle,
   } from 'material-ui/Dialog';
-import List, { ListItem, ListItemText } from 'material-ui/List';
 import Registration from './Registration';
 
 class App extends Component {
