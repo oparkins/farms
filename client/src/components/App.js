@@ -48,7 +48,7 @@ class App extends Component {
     console.log("Checking for valid server...");
     var thisWindow = this;
     NetworkManager.isServerValid().then(function(data) {
-      thisWindow.setState({currentWindow: 2});
+      thisWindow.setState({currentWindow: 0});
       console.log("Server Found");
     }).catch(function(error) {
       thisWindow.setState({currentWindow: -1});
