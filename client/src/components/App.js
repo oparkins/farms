@@ -17,6 +17,13 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import Info from 'material-ui-icons/Info';
 import Drawer from 'material-ui/Drawer';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+  } from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Registration from './Registration';
 
@@ -31,7 +38,8 @@ class App extends Component {
         anchorEl: null,
         currentWindow: 0,
         changeWindowHandler: props.changeWindowHandler,
-        openDrawer: false
+        openDrawer: false,
+        showDialog: false
     }
   }
 
@@ -146,7 +154,7 @@ class App extends Component {
                     <ArrowBack />
                     <ListItemText primary="Logout" /> 
                 </ListItem>
-                <ListItem button> 
+                <ListItem button onClick={() => {this.setState({showDialog: true, openDrawer: false})}}> 
                     <Info />
                     <ListItemText primary="About" /> 
                 </ListItem>
@@ -154,6 +162,28 @@ class App extends Component {
             </div>
             </Drawer>
         </AppBar>
+
+        <Dialog open={this.state.showDialog} onClose={() => {this.setState({showDialog: false})}}>
+            <DialogTitle>
+                About Us
+            </DialogTitle>
+            <DialogContent>
+                Free Artifact Repository Management System (F.A.R.M.S)
+                <br/>
+                <br/>
+                Artifact repositories are tools used at the end of continuous integration systems. 
+                The systems currently available are designed to efficiently work with only Java packages.
+                We want to develop a system that allows developers to save artifacts. This system will involve 
+                a server backend, frontend, and hooks that will allow continuous integration systems to 
+                interface with it. This will create a unique ecosystem that will allow developers to use our 
+                system anywhere. In addition, our project will be open source and hosted on GitHub.
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => {this.setState({showDialog: false})}} color="primary" autoFocus>
+                GitHub
+                </Button>
+            </DialogActions>
+        </Dialog>
 
         { this.state.currentWindow !== 1 && <br/>}
 
