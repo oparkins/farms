@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import '../../styles/setup/1_initial.css';
@@ -18,7 +18,6 @@ class InitialTab extends Component {
       };
 
     render () {
-        const { value } = this.state;
         return  (
             <div>
             <br/>

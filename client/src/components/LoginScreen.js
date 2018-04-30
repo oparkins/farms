@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+//import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Login from './Login';
-import Button from 'material-ui/Button';
+//import Button from 'material-ui/Button';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -19,7 +19,7 @@ class LoginScreen extends Component {
 
     componentWillMount() {
         var loginscreen = [];
-        loginscreen.push(<Login changeWindowHandler={this.state.changeWindowHandler} parentContext={this} appContext={this.props.parentContext} />);
+        loginscreen.push(<Login key="login_thing" changeWindowHandler={this.state.changeWindowHandler} parentContext={this} appContext={this.props.parentContext} />);
         var loginmessage = "";
         this.setState({
             loginscreen: loginscreen,
@@ -34,9 +34,5 @@ class LoginScreen extends Component {
         );
     }
 }
-
-const style = {
-    margin: 15,
-};
 
 export default LoginScreen;

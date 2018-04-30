@@ -64,7 +64,7 @@ class NetworkManager {
                 for(var p of data.headers) {
                     console.log(p);
                 }
-                if(contentType && contentType == "yes-sir" !== -1) {
+                if(contentType && contentType.indexOf("yes-sir") !== -1) {
                     contentType = data.headers.get("FARMS-API");
                     if(contentType && contentType.indexOf("v1") !== -1) {
                         resolve(data);
